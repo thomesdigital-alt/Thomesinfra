@@ -234,23 +234,25 @@ export function Footer() {
         <div className="container mx-auto px-6 py-5 flex flex-col md:flex-row items-center gap-5">
 
           {/* LEFT: Socials */}
-          <div className="flex items-center gap-2 flex-shrink-0">
-            {([
-              { Icon: Facebook,  color: "#1877F2", href: "https://www.facebook.com/THomesInfra.official" },
-              { Icon: Youtube,   color: "#FF0000", href: "https://www.youtube.com/@THOMESINFRAPRIVATELIMITED" },
-              { Icon: Instagram, color: "#E1306C", href: "https://www.instagram.com/thomes_infra?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D" },
-              { Icon: Linkedin,  color: "#0A66C2", href: "https://in.linkedin.com/company/t-homes-infra" },
-            ] as const).map(({ Icon, color, href }, i) => (
-              <a
-                key={i}
-                href={href}
-                className="th-social h-9 w-9 flex items-center justify-center rounded-full transition-all"
-                style={{ background: "#F0F3FA", border: "1.5px solid #E4E9F4", color }}
-              >
-                <Icon className="h-4 w-4" />
-              </a>
-            ))}
-          </div>
+        <div className="flex items-center gap-2 flex-shrink-0">
+  {([
+    { Icon: Facebook,  color: "#1877F2", href: "https://www.facebook.com/THomesInfra.official" },
+    { Icon: Youtube,   color: "#FF0000", href: "https://www.youtube.com/@THOMESINFRAPRIVATELIMITED" },
+    { Icon: Instagram, color: "#E1306C", href: "https://www.instagram.com/thomes_infra?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D" },
+    { Icon: Linkedin,  color: "#0A66C2", href: "https://in.linkedin.com/company/t-homes-infra" },
+  ] as const).map(({ Icon, color, href }, i) => (
+    <a
+      key={i}
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="th-social h-9 w-9 flex items-center justify-center rounded-full transition-all"
+      style={{ background: "#F0F3FA", border: "1.5px solid #E4E9F4", color }}
+    >
+      <Icon className="h-4 w-4" />
+    </a>
+  ))}
+</div>
 
           {/* CENTER: Logo */}
           <div className="flex flex-1 justify-center">
@@ -402,31 +404,34 @@ export function Footer() {
             </span>{" "}
             All Rights Reserved.
           </p>
-          <div
-            className="flex flex-wrap items-center justify-center gap-5 text-xs"
-            style={{ color: "rgba(255,255,255,0.45)" }}
-          >
-            {["Privacy Policy", "Asset Usage Policy", "Terms & Conditions", "Cookie Policy"].map(
-              (item, i, arr) => (
-                <React.Fragment key={item}>
-                  <a
-                    href="#"
-                    onMouseEnter={(e) =>
-                      ((e.currentTarget as HTMLElement).style.color = "#F5A623")
-                    }
-                    onMouseLeave={(e) =>
-                      ((e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.45)")
-                    }
-                  >
-                    {item}
-                  </a>
-                  {i < arr.length - 1 && (
-                    <span style={{ color: "rgba(255,255,255,0.15)" }}>•</span>
-                  )}
-                </React.Fragment>
-              )
-            )}
-          </div>
+         <div
+  className="flex flex-wrap items-center justify-center gap-5 text-xs"
+  style={{ color: "rgba(255,255,255,0.45)" }}
+>
+  {([
+    { label: "Privacy Policy", href: "/privacy" },
+    // { label: "Asset Usage Policy", href: "/asset-usage-policy" },
+    { label: "Terms & Conditions", href: "/termsandcondition" },
+    // { label: "Cookie Policy", href: "/cookie-policy" },
+  ] as { label: string; href: string }[]).map(({ label, href }, i, arr) => (
+    <React.Fragment key={label}>
+      <a
+        href={href}
+        onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
+          e.currentTarget.style.color = "#F5A623";
+        }}
+        onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
+          e.currentTarget.style.color = "rgba(255,255,255,0.45)";
+        }}
+      >
+        {label}
+      </a>
+      {i < arr.length - 1 && (
+        <span style={{ color: "rgba(255,255,255,0.15)" }}>•</span>
+      )}
+    </React.Fragment>
+  ))}
+</div>
         </div>
       </div>
     </footer>

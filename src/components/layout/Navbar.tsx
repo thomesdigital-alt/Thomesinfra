@@ -158,7 +158,7 @@ export function Navbar() {
           <Link href="/">
             <div className="relative w-[180px] h-[60px]">
               <Image
-                src="https://thomesinfra.com/wp-content/uploads/2026/02/T-Homes-Logo-1.png"
+                src="https://thomestowers.com/wp-content/uploads/2026/03/T-Homes-Logo-1.png"
                 alt="logo"
                 fill
                 className="object-contain"
