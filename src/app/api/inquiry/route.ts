@@ -1,20 +1,15 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Inquiry from "@/lib/models/Inquiry";
-
-// GET all inquiries (optionally filter by status)
 export async function GET(req: Request) {
   try {
     await connectDB();
-
     const { searchParams } = new URL(req.url);
     const status = searchParams.get("status");
 
     const filter: any = {};
     if (status) filter.status = status;
-
     const inquiries = await Inquiry.find(filter).sort({ createdAt: -1 });
-
     return NextResponse.json(inquiries);
   } catch (error: any) {
     return NextResponse.json(
@@ -23,7 +18,6 @@ export async function GET(req: Request) {
     );
   }
 }
-
 // POST — keep your existing handler exactly as-is
 export async function POST(req: Request) {
   try {
@@ -36,15 +30,14 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-
     await connectDB();
-
     const inquiry = await Inquiry.create({
       name,
       email: email || "no-email@provided.com",
       phone,
       project,
       message,
+      status: "new", // default to "new" for all new inquiries
     });
 
     return NextResponse.json(

@@ -258,7 +258,7 @@ export function Footer() {
           <div className="flex flex-1 justify-center">
             <div className="relative h-14 w-52">
               <NextImage
-                src="https://thomesinfra.com/wp-content/uploads/2026/02/T-Homes-Logo-1.png"
+                src="https://thomestowers.com/wp-content/uploads/2026/03/T-Homes-Logo-1.png"
                 alt="THomes Infra"
                 fill
                 className="object-contain"

@@ -29,7 +29,23 @@ export default function AdminInquiriesPage() {
       setLoading(false);
     }
   };
-
+const updateStatus = async (doc: any, status: string) => {
+  const id = getId(doc);
+  try {
+    const res = await fetch(`/api/inquiry/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
+    });
+    if (!res.ok) throw new Error("Failed");
+    toast.success(`Status updated to ${status}`);
+    setInquiries((prev) =>
+      prev.map((i) => (getId(i) === id ? { ...i, status } : i))
+    );
+  } catch {
+    toast.error("Failed to update inquiry");
+  }
+};
   const getId = (doc: any) => doc._id ?? doc.id ?? "";
 
   const markAsRead = async (doc: any) => {
@@ -198,26 +214,28 @@ export default function AdminInquiriesPage() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-2 flex-shrink-0">
-                  {inquiry.status === "new" && (
-                    <Button
-                      size="sm"
-                      onClick={() => markAsRead(inquiry)}
-                      className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg"
-                    >
-                      <CheckCircle className="h-4 w-4 mr-1" />
-                      Mark Read
-                    </Button>
-                  )}
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => deleteInquiry(inquiry)}
-                    className="text-red-600 border-red-200 hover:bg-red-50 rounded-lg"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
+              {/* Actions */}
+<div className="flex gap-2 flex-shrink-0 items-center">
+  <select
+    value={inquiry.status}
+    onChange={(e) => updateStatus(inquiry, e.target.value)}
+    className="text-sm border border-gray-200 rounded-lg px-2 py-1.5 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400"
+  >
+    <option value="new">New</option>
+    <option value="pending">Pending</option>
+    <option value="contacted">Contacted</option>
+    <option value="resolved">Resolved</option>
+    <option value="read">Read</option>
+  </select>
+  <Button
+    size="sm"
+    variant="outline"
+    onClick={() => deleteInquiry(inquiry)}
+    className="text-red-600 border-red-200 hover:bg-red-50 rounded-lg"
+  >
+    <Trash2 className="h-4 w-4" />
+  </Button>
+</div>
               </div>
             </div>
           ))

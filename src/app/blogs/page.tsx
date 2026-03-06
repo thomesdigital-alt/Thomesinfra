@@ -3,277 +3,348 @@
 import React, { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Calendar, Clock } from "lucide-react"
+import { Calendar, Clock, ArrowRight, ArrowUpRight, ChevronRight } from "lucide-react"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 
+// ─── Types ────────────────────────────────────────────────────────────────────
 type Blog = {
-  id:number
-  slug:string
-  date:string
-  title:{rendered:string}
-  excerpt:{rendered:string}
-  content:{rendered:string}
-  _embedded?:any
+  id: number
+  slug: string
+  date: string
+  title: { rendered: string }
+  excerpt: { rendered: string }
+  content: { rendered: string }
+  _embedded?: any
 }
 
-const FALLBACK_IMAGE =
-"https://thomestowers.com/wp-content/uploads/2026/03/DJI_0238-scaled.jpg"
+// ─── Config ───────────────────────────────────────────────────────────────────
+const WP_API      = "https://mediumpurple-sandpiper-111248.hostingersite.com/wp-json/wp/v2"
+const FALLBACK    = "https://thomestowers.com/wp-content/uploads/2026/03/DJI_0238-scaled.jpg"
+const HERO_BG     = "https://thomestowers.com/wp-content/uploads/2026/03/DJI_0459-scaled.jpg"
 
-const HERO_IMAGE =
-"https://thomestowers.com/wp-content/uploads/2026/03/DJI_0459-scaled.jpg"
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+const stripHtml = (h: string) => h.replace(/<[^>]+>/g, "").trim()
 
-
-function stripHtml(html:string){
-  return html.replace(/<[^>]+>/g,"")
+function formatDate(d: string) {
+  return new Date(d).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })
 }
 
-function formatDate(date:string){
-  return new Date(date).toLocaleDateString("en-IN",{
-    day:"numeric",
-    month:"short",
-    year:"numeric"
-  })
+function formatDateLong(d: string) {
+  return new Date(d).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
 }
 
-function readingTime(text:string){
-  const words = stripHtml(text).split(/\s+/).length
-  return `${Math.ceil(words/200)} min read`
+function readingTime(t: string) {
+  return `${Math.max(2, Math.ceil(stripHtml(t).split(/\s+/).length / 200))} min read`
 }
 
-export default function BlogsPage(){
-
-const [blogs,setBlogs] = useState<Blog[]>([])
-const [loading,setLoading] = useState(true)
-
-useEffect(()=>{
-
-fetch("https://mediumpurple-sandpiper-111248.hostingersite.com/wp-json/wp/v2/posts?_embed")
-.then(res=>res.json())
-.then(data=>{
-setBlogs(data)
-setLoading(false)
-})
-.catch(()=>setLoading(false))
-
-},[])
-
-const featured = blogs[0]
-const sidebar = blogs.slice(1,5)
-const recent = blogs.slice(5)
-
-return(
-
-<main className="bg-[#f7f7f7] min-h-screen">
-
-<Navbar/>
-
-{/* HERO SECTION */}
-
-<section
-className="relative h-[300px] flex items-center justify-center text-center text-white"
-style={{
-backgroundImage:`url(${HERO_IMAGE})`,
-backgroundSize:"cover",
-backgroundPosition:"center"
-}}
->
-
-<div className="absolute inset-0 bg-black/50"/>
-
-<div className="relative z-10">
-
-<h1 className="text-4xl font-bold mb-3">
-Blogs & Market Updates
-</h1>
-
-<p className="text-white/80 text-sm">
-Latest insights, investment guides and real estate trends
-</p>
-
-</div>
-
-</section>
-
-<div className="max-w-7xl mx-auto px-6 py-16">
-
-{/* HERO BLOG */}
-
-<div className="grid lg:grid-cols-3 gap-10 mb-16">
-
-{featured && (
-
-<Link
-href={`/blogs/${featured.slug}`}
-className="lg:col-span-2 relative rounded-2xl overflow-hidden group"
->
-
-<Image
-src={
-featured._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
-FALLBACK_IMAGE
+function getImg(post: Blog): string {
+  return post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || FALLBACK
 }
-alt={featured.title.rendered}
-width={900}
-height={500}
-onError={(e:any)=>{e.target.src=FALLBACK_IMAGE}}
-className="object-cover w-full h-[350px] group-hover:scale-105 transition"
-/>
 
-<div className="absolute inset-0 bg-black/40"/>
+function getCat(post: Blog): string {
+  return post._embedded?.["wp:term"]?.[0]?.[0]?.name || "Insights"
+}
 
-<div className="absolute bottom-6 left-6 text-white">
+// ─── Date Chip (pill showing date below card image) ───────────────────────────
+function DateChip({ date }: { date: string }) {
+  return (
+    <div className="flex items-center gap-1.5 text-xs" style={{ color: "#6B7A9F" }}>
+      <span
+        className="flex items-center justify-center rounded-full"
+        style={{ background: "rgba(245,166,35,0.12)", padding: "3px 8px", color: "#F5A623", fontWeight: 700, fontSize: 10, letterSpacing: "0.04em" }}
+      >
+        <Calendar className="inline mr-1" style={{ width: 10, height: 10 }} />
+        {formatDate(date)}
+      </span>
+    </div>
+  )
+}
 
-<span className="text-xs bg-white/20 px-3 py-1 rounded-full">
-Featured
-</span>
+// ─── Featured (Hero) Card — Image 1 layout: text LEFT, image RIGHT ───────────
+function HeroCard({ post }: { post: Blog }) {
+  const [src, setSrc] = useState(getImg(post))
 
-<h2
-className="text-2xl font-bold mt-3 max-w-lg"
-dangerouslySetInnerHTML={{__html:featured.title.rendered}}
-/>
+  return (
+    <Link href={`/blogs/${post.slug}`} className="group block rounded-2xl overflow-hidden"
+      style={{ background: "#fff", border: "1px solid #E8EDF5", boxShadow: "0 4px 32px rgba(26,45,107,0.10)" }}>
 
-</div>
+      <div className="flex flex-col md:flex-row items-stretch min-h-[340px]">
 
-</Link>
+        {/* ── LEFT: Text content ── */}
+        <div className="flex flex-col justify-between p-8 md:p-10 flex-1 min-w-0">
 
-)}
+          {/* Top: category pill */}
+          <div className="flex items-center gap-2 mb-5">
+            <span className="text-xs px-3 py-1.5 rounded-full font-medium"
+              style={{ background: "#F0F3FA", color: "#6B7A9F", border: "1px solid #E8EDF5" }}>
+              {getCat(post)}
+            </span>
+            <span className="text-xs px-3 py-1.5 rounded-full font-bold"
+              style={{ background: "#F5A623", color: "#fff", letterSpacing: "0.08em" }}>
+              ✦ Featured
+            </span>
+          </div>
 
-{/* SIDEBAR BLOGS */}
+          {/* Title — large, bold, dark navy */}
+          <h2
+            className="font-bold leading-tight mb-4 transition-colors group-hover:text-amber-500"
+            style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)", color: "#1A2D6B", fontFamily: "'Outfit',sans-serif" }}
+            dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+          />
 
-<div className="space-y-6">
+          {/* Excerpt */}
+          <p className="text-sm leading-relaxed mb-6 flex-1"
+            style={{ color: "#6B7A9F",
+              display: "-webkit-box", WebkitLineClamp: 3,
+              WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+            {stripHtml(post.excerpt.rendered).slice(0, 200)}
+          </p>
 
-<h3 className="font-semibold text-lg">
-Other featured posts
-</h3>
+          {/* Bottom: date + read time + CTA */}
+          <div className="flex items-center gap-4 flex-wrap">
+            <span className="text-xs" style={{ color: "#A0AABF" }}>
+              Published on {formatDateLong(post.date)}
+            </span>
+            <span style={{ color: "#E0E6F0" }}>•</span>
+            <span className="flex items-center gap-1 text-xs" style={{ color: "#A0AABF" }}>
+              <Clock style={{ width: 11, height: 11 }} />
+              {readingTime(post.content.rendered)}
+            </span>
+            <div className="ml-auto flex-shrink-0">
+              <span
+                className="inline-flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-full transition-all group-hover:gap-3"
+                style={{ background: "#F5A623", color: "#1A2D6B" }}>
+                Read Article <ArrowRight style={{ width: 14, height: 14 }} />
+              </span>
+            </div>
+          </div>
+        </div>
 
-{sidebar.map(post=>{
+        {/* ── RIGHT: Image ── */}
+        <div className="relative flex-shrink-0 overflow-hidden rounded-none md:rounded-r-2xl"
+          style={{ width: "100%", minHeight: 220, flex: "0 0 45%" }}>
+          <Image
+            src={src}
+            alt={post.title.rendered}
+            fill
+            priority
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            onError={() => setSrc(FALLBACK)}
+            sizes="(max-width:768px) 100vw, 45vw"
+          />
+        </div>
 
-const image =
-post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
-FALLBACK_IMAGE
+      </div>
+    </Link>
+  )
+}
 
-return(
+// ─── Standard Blog Card — reference: 3-col grid cards ────────────────────────
+function BlogCard({ post }: { post: Blog }) {
+  const [src, setSrc] = useState(getImg(post))
 
-<Link
-key={post.id}
-href={`/blogs/${post.slug}`}
-className="flex gap-4 items-center group"
->
+  return (
+    <Link href={`/blogs/${post.slug}`} className="group flex flex-col h-full">
+      <div className="h-full rounded-2xl overflow-hidden flex flex-col transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl"
+        style={{ background: "#fff", border: "1px solid #E8EDF5", boxShadow: "0 2px 16px rgba(26,45,107,0.06)" }}>
 
-<Image
-src={image}
-alt={post.title.rendered}
-width={80}
-height={80}
-onError={(e:any)=>{e.target.src=FALLBACK_IMAGE}}
-className="rounded-lg object-cover"
-/>
+        {/* Image */}
+        <div className="relative overflow-hidden flex-shrink-0" style={{ height: 200 }}>
+          <Image src={src} alt={post.title.rendered} fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            onError={() => setSrc(FALLBACK)} sizes="(max-width:768px) 100vw, 33vw" />
 
-<p
-className="text-sm font-medium group-hover:text-amber-500 transition"
-dangerouslySetInnerHTML={{__html:post.title.rendered}}
-/>
+          {/* dim overlay */}
+          <div className="absolute inset-0"
+            style={{ background: "linear-gradient(to top,rgba(10,20,60,0.35) 0%,transparent 60%)" }} />
 
-</Link>
+          {/* Category pill */}
+          <div className="absolute top-3 left-3">
+            <span className="text-[9px] font-bold uppercase px-2.5 py-1 rounded-full"
+              style={{ background: "#F5A623", color: "#fff", letterSpacing: "0.1em" }}>
+              {getCat(post)}
+            </span>
+          </div>
 
-)
+          {/* External arrow icon — top right (matches reference) */}
+          <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+            <span className="flex items-center justify-center rounded-full"
+              style={{ width: 28, height: 28, background: "rgba(255,255,255,0.18)", backdropFilter: "blur(6px)", border: "1px solid rgba(255,255,255,0.3)" }}>
+              <ArrowUpRight className="text-white" style={{ width: 14, height: 14 }} />
+            </span>
+          </div>
+        </div>
 
-})}
+        {/* Card body */}
+        <div className="p-5 flex flex-col flex-1">
 
-</div>
+          {/* Title */}
+          <h3 className="font-bold text-sm leading-snug mb-2 transition-colors group-hover:text-amber-500"
+            style={{ color: "#1A2D6B", fontFamily: "'Outfit',sans-serif",
+              display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}
+            dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
 
-</div>
+          {/* Excerpt */}
+          <p className="text-xs leading-relaxed flex-1 mb-4"
+            style={{ color: "#6B7A9F",
+              display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+            {stripHtml(post.excerpt.rendered).slice(0, 130)}
+          </p>
 
-{/* RECENT POSTS */}
+          {/* ── Date + reading time footer — matches reference ── */}
+          <div className="flex items-center justify-between pt-3"
+            style={{ borderTop: "1px solid #F0F3FA" }}>
+            <div className="flex items-center gap-2">
+              {/* Amber date chip */}
+              <span className="flex items-center gap-1 text-[10px] font-semibold px-2.5 py-1 rounded-full"
+                style={{ background: "rgba(245,166,35,0.1)", color: "#F5A623", border: "1px solid rgba(245,166,35,0.2)" }}>
+                <Calendar style={{ width: 9, height: 9 }} />
+                {formatDate(post.date)}
+              </span>
+            </div>
+            <span className="flex items-center gap-1 text-[10px]" style={{ color: "#A0AABF" }}>
+              <Clock style={{ width: 9, height: 9 }} />
+              {readingTime(post.content.rendered)}
+            </span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  )
+}
 
-<div className="flex justify-between items-center mb-8">
+// ─── Skeleton ─────────────────────────────────────────────────────────────────
+function GridSkeleton() {
+  return (
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
+      {[1, 2, 3, 4, 5, 6].map(i => (
+        <div key={i} className="animate-pulse rounded-2xl overflow-hidden"
+          style={{ background: "#fff", border: "1px solid #E8EDF5", height: 320 }}>
+          <div style={{ height: 180, background: "#E8EDF5" }} />
+          <div className="p-5 space-y-2">
+            <div style={{ height: 14, background: "#E8EDF5", borderRadius: 8, width: "80%" }} />
+            <div style={{ height: 11, background: "#F0F3FA", borderRadius: 8 }} />
+            <div style={{ height: 11, background: "#F0F3FA", borderRadius: 8, width: "65%" }} />
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
 
-<h2 className="text-2xl font-bold">
-Recent Posts
-</h2>
+// ─── Page ─────────────────────────────────────────────────────────────────────
+export default function BlogsPage() {
+  const [blogs,   setBlogs]   = useState<Blog[]>([])
+  const [loading, setLoading] = useState(true)
+  const [page,    setPage]    = useState(1)
+  const PER_PAGE = 9
 
-<Link
-href="/blogs"
-className="text-sm text-gray-500 hover:text-black"
->
-All Posts
-</Link>
+  useEffect(() => {
+    fetch(`${WP_API}/posts?_embed&per_page=20`)
+      .then(r => r.json())
+      .then((d: Blog[]) => { setBlogs(d); setLoading(false) })
+      .catch(() => setLoading(false))
+  }, [])
 
-</div>
+  const featured   = blogs[0]
+  const gridBlogs  = blogs.slice(1)
+  const paginated  = gridBlogs.slice(0, page * PER_PAGE)
+  const hasMore    = paginated.length < gridBlogs.length
 
-{loading && (
-<p className="text-center py-20">
-Loading blogs...
-</p>
-)}
+  return (
+    <main style={{ background: "#F8F9FC", fontFamily: "'Outfit',sans-serif", minHeight: "100vh" }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+      `}</style>
 
-<div className="grid md:grid-cols-3 gap-10">
+      <Navbar />
 
-{recent.map(post=>{
 
-const image =
-post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
-FALLBACK_IMAGE
+      {/* ── Main content ── */}
+      <div className="max-w-7xl mx-auto px-6 py-12 space-y-14 mt-10">
 
-return(
+        {/* ── Featured hero post ── */}
+        {!loading && featured && (
+          <div>
+            <HeroCard post={featured} />
+          </div>
+        )}
 
-<Link
-key={post.id}
-href={`/blogs/${post.slug}`}
-className="bg-white rounded-xl overflow-hidden hover:shadow-lg transition"
->
+        {loading && (
+          <div className="animate-pulse rounded-2xl"
+            style={{ height: 460, background: "#E8EDF5" }} />
+        )}
 
-<Image
-src={image}
-alt={post.title.rendered}
-width={600}
-height={350}
-onError={(e:any)=>{e.target.src=FALLBACK_IMAGE}}
-className="object-cover w-full h-[200px]"
-/>
+        {/* ── Recent Blog Posts section ── */}
+        <div>
+          {/* Section header — matches reference */}
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-3">
+              <div className="h-6 w-1 rounded-full" style={{ background: "#F5A623" }} />
+              <h2 className="text-xl md:text-2xl font-bold" style={{ color: "#1A2D6B" }}>
+                Recent blog posts
+              </h2>
+            </div>
+            <Link href="/blogs"
+              className="flex items-center gap-1.5 text-xs font-semibold uppercase transition-colors hover:text-amber-500"
+              style={{ color: "#F5A623", letterSpacing: "0.1em" }}>
+              View all posts <ArrowRight style={{ width: 14, height: 14 }} />
+            </Link>
+          </div>
 
-<div className="p-5">
+          {/* Grid */}
+          {loading
+            ? <GridSkeleton />
+            : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
+                {paginated.map(post => (
+                  <BlogCard key={post.id} post={post} />
+                ))}
+              </div>
+            )
+          }
 
-<h3
-className="font-bold mb-2"
-dangerouslySetInnerHTML={{__html:post.title.rendered}}
-/>
+          {/* Load more — matches reference "Loading more…" */}
+          {!loading && hasMore && (
+            <div className="text-center mt-12">
+              <button
+                onClick={() => setPage(p => p + 1)}
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-sm font-bold uppercase transition-all hover:-translate-y-0.5 hover:shadow-lg"
+                style={{ background: "#1A2D6B", color: "#fff", letterSpacing: "0.1em" }}
+              >
+                Load more posts <ArrowRight style={{ width: 15, height: 15 }} />
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
 
-<p className="text-sm text-gray-500 mb-4">
-{stripHtml(post.excerpt.rendered).slice(0,120)}...
-</p>
+      {/* ── Newsletter CTA ── */}
+      {/* <div style={{ background: "#1A2D6B" }}>
+        <div className="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div>
+            <p className="text-[10px] font-bold uppercase mb-2"
+              style={{ color: "#F5A623", letterSpacing: "0.2em" }}>Stay Informed</p>
+            <h3 className="text-2xl font-bold text-white mb-1">Never Miss a Market Update</h3>
+            <p className="text-sm" style={{ color: "rgba(255,255,255,0.5)" }}>
+              Get the latest property insights delivered to your inbox every week.
+            </p>
+          </div>
+          <div className="flex w-full md:w-auto md:min-w-[360px]">
+            <input type="email" placeholder="Enter your email address"
+              className="flex-1 px-5 h-12 text-sm"
+              style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)",
+                borderRight: "none", color: "#fff", outline: "none", minWidth: 0, borderRadius: "8px 0 0 8px" }} />
+            <button className="h-12 px-7 text-sm font-bold uppercase flex-shrink-0"
+              style={{ background: "#F5A623", color: "#fff", letterSpacing: "0.1em", border: "none", borderRadius: "0 8px 8px 0", cursor: "pointer" }}>
+              Subscribe
+            </button>
+          </div>
+        </div>
+      </div> */}
 
-<div className="flex justify-between text-xs text-gray-400">
-
-<span className="flex items-center gap-1">
-<Calendar size={12}/>
-{formatDate(post.date)}
-</span>
-
-<span className="flex items-center gap-1">
-<Clock size={12}/>
-{readingTime(post.content.rendered)}
-</span>
-
-</div>
-
-</div>
-
-</Link>
-
-)
-
-})}
-
-</div>
-
-</div>
-
-<Footer/>
-
-</main>
-
-)
-
+      <Footer />
+    </main>
+  )
 }
