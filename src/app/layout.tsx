@@ -3,6 +3,7 @@ import "./globals.css";
 import VisualEditsMessenger from "../visual-edits/VisualEditsMessenger";
 import ErrorReporter from "@/components/ErrorReporter";
 import Script from "next/script";
+import { WhatsAppButton } from "@/components/ui/whatsappbutton";
 
 export const metadata: Metadata = {
   title: "Thomes Infra ",
@@ -35,7 +36,8 @@ export default function RootLayout({
           data-custom-data='{"appName": "YourApp", "version": "1.0.0", "greeting": "hi"}'
         />
         {children}
-       
+         <WhatsAppButton />
+
         <VisualEditsMessenger />
       </body>
     </html>
