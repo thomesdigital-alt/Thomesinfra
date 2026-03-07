@@ -32,16 +32,12 @@ interface Project {
 }
 
 function getImage(p: Project): string {
-  if (projectImages[p.slug]) return projectImages[p.slug];
-  if (p.gallery_images?.[0]) return p.gallery_images[0];
   if (p.hero_image) return p.hero_image;
   return defaultImage;
 }
-
 export function FeaturedProjects() {
   const [projects, setProjects] = React.useState<Project[]>([]);
   const [loading, setLoading]   = React.useState(true);
-
   React.useEffect(() => {
     const fetch_ = async () => {
       try {

@@ -43,8 +43,6 @@ interface Project {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function getImage(project: Project): string {
-  if (projectImages[project.slug]) return projectImages[project.slug];
-  if (project.gallery_images?.[0]) return project.gallery_images[0];
   if (project.hero_image) return project.hero_image;
   return defaultImage;
 }

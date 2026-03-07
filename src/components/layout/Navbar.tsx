@@ -153,7 +153,6 @@ export function Navbar() {
 
         {/* MAIN BAR */}
         <div className="flex items-center justify-between h-20">
-
           {/* LOGO */}
           <Link href="/">
             <div className="relative w-[180px] h-[60px]">
@@ -259,7 +258,6 @@ export function Navbar() {
                               <p className="text-sm text-gray-400 text-center py-8">No projects found.</p>
                             )}
                           </div>
-
                           {/* FOOTER — sticky at bottom */}
                           <div className="px-4 py-3 border-t border-gray-100 flex justify-end bg-gray-50/60">
                             <Link

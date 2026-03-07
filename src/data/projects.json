@@ -3,13 +3,13 @@
     "Telangana": [
       {"name": "Trio Gold", "slug": "trio-gold-", "status": "Ongoing", "location": "Hyderabad, Telangana", "image": "https://thomesinfra.com/wp-content/uploads/2026/02/brochure-3-scaled.png"},
       {"name": "Tri Disha", "slug": "tri-disha", "status": "Ongoing", "location": "Hyderabad, Telangana", "image": "https://images.pexels.com/photos/7031607/pexels-photo-7031607.jpeg"},
-      {"name": "Nature County", "slug": "-nature-county", "status": "Ongoing", "location": "Peddakandukur, Telangana", "image": "https://thomesinfra.com/wp-content/uploads/2024/12/DJI_0083-copy-scaled.jpg"},
-      {"name": "Spark Vision", "slug": "spark-vision", "status": "Ongoing", "location": "Hyderabad, Telangana", "image": "https://thomesinfra.com/wp-content/uploads/2025/11/DJI_0258-1024x683.jpg"},
+      {"name": "Nature County", "slug": "-nature-county", "status": "Ongoing", "location": "Peddakandukur, Telangana", "image": "https://mediumpurple-sandpiper-111248.hostingersite.com/wp-content/uploads/2024/06/WhatsApp-Image-2024-06-07-at-3.18.57-PM-1.jpeg"},
+      {"name": "Spark Vision", "slug": "spark-vision", "status": "Ongoing", "location": "Hyderabad, Telangana", "image": "https://mediumpurple-sandpiper-111248.hostingersite.com/wp-content/uploads/2023/11/thomes-resize.jpg"},
       {"name": "Bahupeta", "slug": "th-10-avp-bahupeta-dtcp", "status": "Ongoing", "location": "Bahupeta, Telangana", "image": "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=200&q=80"},
-      {"name": "Cholleru", "slug": "avp-cholleru", "status": "Ongoing", "location": "Cholleru, Telangana", "image": "https://thomesinfra.com/wp-content/uploads/2023/11/DSC02217.jpg"},
-      {"name": "Village Vibe Resort", "slug": "avp-village-vibe-resort", "status": "Ongoing", "location": "Cholleru, Telangana", "image": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=200&q=80"},
-      {"name": "Valley View", "slug": "valley-view", "status": "Ongoing", "location": "Hyderabad, Telangana", "image": "https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=200&q=80"},
-      {"name": "Spark City", "slug": "spark-city", "status": "Ongoing", "location": "Hyderabad, Telangana", "image": "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=200&q=80"},
+      {"name": "Cholleru", "slug": "avp-cholleru", "status": "Ongoing", "location": "Cholleru, Telangana", "image": "https://mediumpurple-sandpiper-111248.hostingersite.com/wp-content/uploads/2025/11/DSC02234-scaled.jpg"},
+      {"name": "Village Vibe Resort", "slug": "avp-village-vibe-resort", "status": "Ongoing", "location": "Cholleru, Telangana", "image": "https://mediumpurple-sandpiper-111248.hostingersite.com/wp-content/uploads/2025/11/DJI_0414-scaled.jpg"},
+      {"name": "Valley View", "slug": "valley-view", "status": "Ongoing", "location": "Hyderabad, Telangana", "image": "https://mediumpurple-sandpiper-111248.hostingersite.com/wp-content/uploads/2025/11/DJI_0935-scaled.jpg"},
+      {"name": "Spark City", "slug": "spark-city", "status": "Ongoing", "location": "Hyderabad, Telangana", "image": "https://mediumpurple-sandpiper-111248.hostingersite.com/wp-content/uploads/2023/11/DJI_0952-scaled.jpg"},
 
       {"name": "Star City", "slug": "th-01.-hmda--star-city-–-bhongir-dtcp", "status": "Completed", "location": "Bhongir, Telangana", "image": "https://images.unsplash.com/photo-1494526585095-c41746248156?w=200&q=80"},
       {"name": "Star City ", "slug": "-th-02.-dtcp-chinnakandukuru-–-star-city-–-4", "status": "Completed", "location": "Chinnakandukuru, Telangana", "image": "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=200&q=80"},
@@ -25,7 +25,7 @@
       {"name": "Ala Vaikuntapuram", "slug": "th-13-avp-@-kondurg", "status": "Completed", "location": "Kondurg, Telangana", "image": "https://thomesinfra.com/wp-content/uploads/2023/11/Kondurg-1-964-X-545.jpg"}
     ],
     "Gujarat": [
-      {"name": "Visionary Vista", "slug":"visionaryvista-smart-city", "status": "Ongoing", "location": "Dholera, Gujarat", "image": "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=200&q=80"}
+      {"name": "Visionary Vista", "slug":"visionaryvista-smart-city", "status": "Ongoing", "location": "Dholera, Gujarat", "image": "https://mediumpurple-sandpiper-111248.hostingersite.com/wp-content/uploads/2025/03/DJI_0942-copy-scaled.jpg"}
     ]
   },
   "Dubai": {
