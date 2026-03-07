@@ -367,26 +367,37 @@ export function Footer() {
 
               <div>
                 <SectionHeading text="Contact" />
-                <div className="space-y-3">
-                  {[
-                    {
-                      Icon: MapPin,
-                      text: "Flat No: 8-2-120/77/4B, 3rd Floor, NVR Towers, Road No. 2, Banjara Hills, Hyderabad – 500034",
-                    },
-                    { Icon: Phone, text: "+919032939753" },
-                    { Icon: Mail,  text: "info@thomesinfra.com" },
-                  ].map(({ Icon, text }) => (
-                    <div key={text} className="flex items-start gap-3 text-sm" style={{ color: "#6B7A9F" }}>
-                      <div
-                        className="h-7 w-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
-                        style={{ background: "#F0F3FA" }}
-                      >
-                        <Icon className="h-3.5 w-3.5" style={{ color: "#1A2D6B" }} />
-                      </div>
-                      <span className="leading-relaxed">{text}</span>
-                    </div>
-                  ))}
-                </div>
+               <div className="space-y-3">
+  {[
+    {
+      Icon: MapPin,
+      text: "Flat No: 8-2-120/77/4B, 3rd Floor, NVR Towers, Road No. 2, Banjara Hills, Hyderabad – 500034",
+    },
+    { Icon: Phone, text: "+919032939753", link: "tel:+919032939753" },
+    { Icon: Mail, text: "info@thomesinfra.com", link: "mailto:info@thomesinfra.com" },
+  ].map(({ Icon, text, link }) => (
+    <div
+      key={text}
+      className="flex items-start gap-3 text-sm"
+      style={{ color: "#6B7A9F" }}
+    >
+      <div
+        className="h-7 w-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+        style={{ background: "#F0F3FA" }}
+      >
+        <Icon className="h-3.5 w-3.5" style={{ color: "#1A2D6B" }} />
+      </div>
+
+      {link ? (
+        <a href={link} className="leading-relaxed hover:underline">
+          {text}
+        </a>
+      ) : (
+        <span className="leading-relaxed">{text}</span>
+      )}
+    </div>
+  ))}
+</div>
               </div>
             </div>
 
