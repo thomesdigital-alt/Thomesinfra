@@ -19,10 +19,10 @@
       {"name": "Farm Land", "slug": "-th-06.-farm-land-@kunoor", "status": "Completed", "location": "Kunoor, Telangana", "image": "https://thomesinfra.com/wp-content/uploads/2023/11/WhatsApp-Image-2023-11-03-at-3.50.22-PM.jpeg"},
       {"name": "Raigiri PH-I", "slug": "th-07.-raigiri-phase-i-–-ytda", "status": "Completed", "location": "Raigiri, Telangana", "image": "https://thomesinfra.com/wp-content/uploads/2023/11/TH-07-LOCATION-350x420.jpeg"},
       {"name": "Yadadri Icon", "slug": "yadadri", "status": "Completed", "location": "Yadadri, Telangana", "image": "https://images.unsplash.com/photo-1504615755583-2916b52192a3?w=200&q=80"},
-      {"name": "Wangapalli PH-I", "slug": "TH-09. WANGAPALLY DTCP PHASE I", "status": "Completed", "location": "Wangapally, Telangana", "image": "https://thomesinfra.com/wp-content/uploads/2023/11/WhatsApp-Image-2023-11-03-at-4.31.45-PM.jpeg"},
-      {"name": "Buddha Hills", "slug": "TH-11. HMDA – BUDDHA HILLS", "status": "Completed", "location": "Hyderabad, Telangana", "image": "https://images.pexels.com/photos/164522/pexels-photo-164522.jpeg"},
-      {"name": "Ala Vaikuntapuram", "slug": "TH-12 ALA VAIKUNTHAPURAM – YELLAKONDA-DTCP", "status": "Completed", "location": "Yellakonda, Telangana", "image": "https://thomesinfra.com/wp-content/uploads/2023/11/DJI_0413.jpg"},
-      {"name": "Ala Vaikuntapuram", "slug": "TH-13 AVP @ KONDURG", "status": "Completed", "location": "Kondurg, Telangana", "image": "https://thomesinfra.com/wp-content/uploads/2023/11/Kondurg-1-964-X-545.jpg"}
+      {"name": "Wangapalli PH-I", "slug": "-th-09.-wangapally-dtcp-phase-i", "status": "Completed", "location": "Wangapally, Telangana", "image": "https://thomesinfra.com/wp-content/uploads/2023/11/WhatsApp-Image-2023-11-03-at-4.31.45-PM.jpeg"},
+      {"name": "Buddha Hills", "slug": "th-11.-hmda-–-buddha-hills", "status": "Completed", "location": "Hyderabad, Telangana", "image": "https://mediumpurple-sandpiper-111248.hostingersite.com/wp-content/uploads/2023/10/buddha-hills.png"},
+      {"name": "Ala Vaikuntapuram", "slug": "-th-12-ala-vaikunthapuram-–-yellakonda-dtcp", "status": "Completed", "location": "Yellakonda, Telangana", "image": "https://thomesinfra.com/wp-content/uploads/2023/11/DJI_0413.jpg"},
+      {"name": "Ala Vaikuntapuram", "slug": "th-13-avp-@-kondurg", "status": "Completed", "location": "Kondurg, Telangana", "image": "https://thomesinfra.com/wp-content/uploads/2023/11/Kondurg-1-964-X-545.jpg"}
     ],
     "Gujarat": [
       {"name": "Visionary Vista", "slug":"visionaryvista-smart-city", "status": "Ongoing", "location": "Dholera, Gujarat", "image": "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=200&q=80"}
@@ -39,4 +39,4 @@
       {"name": "Binghatti", "location": "Downtown, Dubai", "externalLink": "https://www.binghatti.com/", "image": "https://instagram.fhyd2-3.fna.fbcdn.net/v/t51.2885-19/449743788_2361385880734357_448418739740510922_n.jpg?efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.fhyd2-3.fna.fbcdn.net&_nc_cat=1&_nc_oc=Q6cZ2QGWazdVYdc5y5_ImA90u3wbgEmNFPp8tO8YDu2bAPN8CR2LwWxwFo2ospwPRviTYoAadg3cLtEaQfrXhG_1jlbF&_nc_ohc=-i1TJzb5esYQ7kNvwGGhnfK&_nc_gid=xF4RIbo570VX34c0VLgteA&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AftrKNjagbKssZzEI3l8PiibAyRX3M_NJMP2qA-HJuyQHA&oe=69A759F6&_nc_sid=7a9f4b?w=200&q=80"}
     ]
   }
-}
+} 
