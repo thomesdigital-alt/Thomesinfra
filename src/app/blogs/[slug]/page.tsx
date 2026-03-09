@@ -28,8 +28,34 @@ type TocItem = { id: string; text: string; level: number };
 const WP_API       = "https://mediumpurple-sandpiper-111248.hostingersite.com/wp-json/wp/v2";
 const DEFAULT_IMG  = "https://thomestowers.com/wp-content/uploads/2026/02/Entrance-Gate-Area-Day-NEW-1.webp";
 
+// ─── Domain fix config ────────────────────────────────────────────────────────
+// WordPress is hosted on hostinger — strip its domain from all content links
+const WP_HOST   = "https://mediumpurple-sandpiper-111248.hostingersite.com";
+const SITE_HOST = "https://www.thomestowers.com"; // ← your real domain (Vercel/Vessel)
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const stripHtml = (h: string) => h.replace(/<[^>]+>/g, "").trim();
+
+// Rewrite all hostinger URLs inside rendered WordPress HTML:
+//   /blogs/[slug]  for post links  (Next.js internal routing)
+//   real domain    for media/assets (images stay working)
+function fixLinks(html: string): string {
+  if (!html) return html;
+  return (
+    html
+      // Internal post links → /blogs/[slug]
+      .replace(
+        /href="https?:\/\/mediumpurple-sandpiper-111248\.hostingersite\.com\/([^"/?#]+)\/?"/gi,
+        (match, path) => {
+          // Skip wp-content / wp-admin / wp-json — those are asset/API paths
+          if (/^wp-/.test(path)) return match;
+          return `href="/blogs/${path}"`;
+        }
+      )
+      // All remaining hostinger URLs (images, CSS, etc.) → real domain
+      .replace(/https?:\/\/mediumpurple-sandpiper-111248\.hostingersite\.com/gi, SITE_HOST)
+  );
+}
 
 function formatDate(d: string) {
   return new Date(d).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
@@ -235,7 +261,7 @@ export default function BlogPostPage() {
 
   const tags     = getTags(post);
   const category = getCat(post);
-  const content  = injectHeadingIds(post.content.rendered);
+  const content  = fixLinks(injectHeadingIds(post.content.rendered));
 
   return (
     <main style={{ background: "#F8F9FC", fontFamily: "'Outfit',sans-serif", minHeight: "100vh" }}>
