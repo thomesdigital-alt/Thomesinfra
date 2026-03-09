@@ -214,14 +214,23 @@ export default function AdminProjectsPage() {
       : [];
 
     const payload = { ...formData, slug, gallery_images, proximity };
-
+   const token = process.env.NEXT_PUBLIC_zinghichi ;
     try {
       const id = editingProject ? getId(editingProject) : null;
-      const res = await fetch(id ? `/api/projects/${id}` : "/api/projects", {
-        method: id ? "PATCH" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload), // ✅ JSON.stringify keeps objects intact
-      });
+      const res = await fetch(`/api/projects/${id}`, {
+  method: "PATCH",
+  headers: {
+    "Content-Type": "application/json",
+    "x-requested-with": "XMLHttpRequest",
+    "x-api-token": token?? " "   // ✅ Send secret token
+  },
+  body: JSON.stringify(payload)
+});
+      // await fetch(id ? `/api/projects/${id}` : "/api/projects", {
+      //   method: id ? "PATCH" : "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(payload), // ✅ JSON.stringify keeps objects intact
+      // });
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.error || "Failed to save project");
@@ -235,20 +244,33 @@ export default function AdminProjectsPage() {
   };
 
   // ── delete ────────────────────────────────────────────────────────────────
-  const handleDelete = async (project: any) => {
-    if (!confirm("Are you sure you want to delete this project?")) return;
-    const id = getId(project);
-    if (!id) { toast.error("Invalid project ID"); return; }
-    try {
-      const res = await fetch(`/api/projects/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error("Failed to delete project");
-      toast.success("Project deleted");
-      fetchProjects();
-    } catch (err: any) {
-      toast.error(err.message);
-    }
-  };
+const handleDelete = async (project: any) => {
+  if (!confirm("Are you sure you want to delete this project?")) return;
+  
+  const id = getId(project);
+  if (!id) { toast.error("Invalid project ID"); return; }
+  
+  const token = process.env.NEXT_PUBLIC_zinghichi;
 
+  try {
+    const res = await fetch(`/api/projects/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "x-requested-with": "XMLHttpRequest",
+        "x-api-token": token ?? "",  // ✅ Auth token added
+      },
+    });
+
+    if (!res.ok) throw new Error("Failed to delete project");
+    
+    toast.success("Project deleted");
+    fetchProjects();
+
+  } catch (err: any) {
+    toast.error(err.message);
+  }
+};
   // ── open edit ─────────────────────────────────────────────────────────────
   const openEditModal = (project: any) => {
     setEditingProject(project);
