@@ -1811,46 +1811,123 @@ export default function ProjectDetailPage() {
     const vids = normaliseVideos(project.youtube_videos);
     return vids.length > 0 ? vids : defaultVideos;
   })();
-
+ const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://thomesinfra.com/"
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Projects",
+      item: "https://thomesinfra.com/projects"
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: project.name,
+      item: `https://thomesinfra.com/projects/${project.slug}`
+    }
+  ]
+};
   const whychooseus      = project.WhychooseUs || defaultWhychooseUs;
   const whychooseuspoints = project.WhychooseUspoints?.length > 0
     ? project.WhychooseUspoints
     : defaultWhychooseUspoints;
 
   return (
-    <main className="min-h-screen bg-white">
-      <Toaster position="top-center" />
+    <><script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(breadcrumbSchema)
+      }} /><Head>
+        <title>{project.name} | T Homes Infra</title>
 
-      <HeroCarousel images={heroImages} project={project} onScrollToMap={scrollToMap} onBrochureClick={handleBrochureClick} />
-      <StatsSection project={project} onScrollToMap={scrollToMap} />
-      {project.amenities?.length > 0 && <AmenitiesSection amenities={project.amenities} />}
-      <ProjectHighlights highlights={project.Highlights} />
-      <WhyChooseUsSection title={whychooseus} points={whychooseuspoints} />
-      {normalisedProximity.length > 0 && <ProximitiesSection proximity={normalisedProximity} />}
-      <ExploreLayoutSection project={project} />
-      <YouTubeCarousel videos={sampleVideos} />
+        <meta name="description" content={project.description} />
 
-      {/* CTA Gallery */}
-      <section className="py-14 md:py-24 bg-[#0a1628] relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-1 bg-amber-500" />
-        <div className="max-w-[1280px] mx-auto px-4 md:px-8 text-center relative z-10">
-          <p className="text-base md:text-xl text-white/50 mb-10 md:mb-16 max-w-2xl mx-auto">
-            Join hundreds of happy families who have found their dream home with {project.name}. Schedule your site visit today.
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
-            {heroImages.map((img, i) => (
-              <div key={i} className="relative group rounded-2xl overflow-hidden border border-white/10 hover:border-amber-400/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-amber-500/10">
-                <div className="relative aspect-[4/3]">
-                  <NextImage src={img} alt={`Gallery ${i + 1}`} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+        <meta
+          name="keywords"
+          content={`HMDA plots ${project.location}, plots in ${project.location}, land investment ${project.location}`} />
+
+        <meta property="og:title" content={project.name} />
+        <meta property="og:description" content={project.description} />
+        <meta property="og:type" content="website" />
+
+        {project.hero_image && (
+          <meta property="og:image" content={project.hero_image} />
+        )}
+
+        <link
+          rel="canonical"
+          href={`https://thomesinfra.com/projects/${project.slug}`} />
+
+        {/* Real Estate Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Product",
+              name: project.name,
+              description: project.description,
+              image: project.hero_image,
+              brand: {
+                "@type": "Organization",
+                name: "T Homes Infra",
+              },
+              offers: {
+                "@type": "Offer",
+                priceCurrency: "INR",
+                price: project.price_per_sqyd,
+                availability: project.available_plots > 0
+                  ? "https://schema.org/InStock"
+                  : "https://schema.org/SoldOut",
+              },
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: project.location,
+                addressCountry: "India",
+              },
+            }),
+          }} />
+      </Head><main className="min-h-screen bg-white">
+        <Toaster position="top-center" />
+
+        <HeroCarousel images={heroImages} project={project} onScrollToMap={scrollToMap} onBrochureClick={handleBrochureClick} />
+        <StatsSection project={project} onScrollToMap={scrollToMap} />
+        {project.amenities?.length > 0 && <AmenitiesSection amenities={project.amenities} />}
+        <ProjectHighlights highlights={project.Highlights} />
+        <WhyChooseUsSection title={whychooseus} points={whychooseuspoints} />
+        {normalisedProximity.length > 0 && <ProximitiesSection proximity={normalisedProximity} />}
+        <ExploreLayoutSection project={project} />
+        <YouTubeCarousel videos={sampleVideos} />
+
+        {/* CTA Gallery */}
+        <section className="py-14 md:py-24 bg-[#0a1628] relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-amber-500" />
+          <div className="max-w-[1280px] mx-auto px-4 md:px-8 text-center relative z-10">
+            <p className="text-base md:text-xl text-white/50 mb-10 md:mb-16 max-w-2xl mx-auto">
+              Join hundreds of happy families who have found their dream home with {project.name}. Schedule your site visit today.
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
+              {heroImages.map((img, i) => (
+                <div key={i} className="relative group rounded-2xl overflow-hidden border border-white/10 hover:border-amber-400/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-amber-500/10">
+                  <div className="relative aspect-[4/3]">
+                    <NextImage src={img} alt={`Gallery ${i + 1}`} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <Footer />
-    </main>
+        <Footer />
+      </main></>
   );
 }
