@@ -1026,6 +1026,7 @@ import {
   Stethoscope, Plane, Train, Navigation, Send, User,
   Star, TrendingUp,
 } from "lucide-react";
+import Head from "next/head";
 import { ProjectHighlights } from "@/components/sections/ProjectHighlights";
 
 declare global {
@@ -1160,6 +1161,30 @@ function HeroCarousel({ images, project, onScrollToMap, onBrochureClick }: {
   const goTo = useCallback((idx: number) => {
     setActiveIdx((idx + images.length) % images.length);
   }, [images.length]);
+  const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://thomesinfra.com/"
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Projects",
+      item: "https://thomesinfra.com/projects"
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: project.name,
+      item: `https://thomesinfra.com/projects/${project.slug}`
+    }
+  ]
+};
 
   useEffect(() => {
     timerRef.current = setInterval(() => goTo(activeIdx + 1), 3000);
@@ -1167,68 +1192,125 @@ function HeroCarousel({ images, project, onScrollToMap, onBrochureClick }: {
   }, [activeIdx, goTo]);
 
   return (
-    <div className="bg-[#0a0a0a]">
-      <section className="relative w-full h-screen min-h-[680px] overflow-hidden">
-        {images.map((src, i) => (
-          <div key={i} className="absolute inset-0 transition-opacity duration-1000" style={{ opacity: i === activeIdx ? 1 : 0 }}>
-            <NextImage src={src} alt={project.name} fill className="object-cover" priority={i === 0} />
-            <div className="absolute inset-0 bg-black/40" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-          </div>
-        ))}
+     <>
+      <script
+       type="application/ld+json"
+        dangerouslySetInnerHTML={{
+        __html: JSON.stringify(breadcrumbSchema)
+         }}
+          />
+     <Head>
+      <title>{project.name} | T Homes Infra</title>
 
-        <div className="absolute top-0 inset-x-0 z-30"><Navbar /></div>
+      <meta name="description" content={project.description} />
 
-        <div className="relative z-20 h-full flex flex-col justify-center items-center text-center px-4 md:px-6 pt-10">
-          <Link href="/projects" className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-6 transition-colors text-sm">
-            <ArrowLeft className="h-4 w-4" /> Back to Projects
-          </Link>
-          <div className="flex flex-wrap items-center justify-center gap-3 mb-5">
-            <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ${project.status === "ongoing" ? "bg-emerald-500 text-white" : "bg-blue-500 text-white"}`}>
-              {project.status}
-            </span>
-            <span className="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm text-white text-xs font-semibold flex items-center gap-2 border border-white/20">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" /> {project.approval_type}
-            </span>
-          </div>
-          <h1 className="text-2xl md:text-3xl lg:text-5xl font-black text-white tracking-tighter mb-4 italic leading-none drop-shadow-lg">
-            {project.name}
-          </h1>
-          <p className="text-sm md:text-lg text-white/70 max-w-2xl mb-10 font-light italic leading-relaxed px-2">
-            {project.description}
-          </p>
-          <Button onClick={onBrochureClick} className="h-12 md:h-14 px-7 md:px-10 rounded-xl bg-[#3b3b98] hover:bg-[#2e2e7a] text-white font-bold text-sm md:text-base transition-all hover:scale-105 shadow-[0_20px_40px_-10px_rgba(59,59,152,0.5)]">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 16v-8m0 8l-3-3m3 3l3-3M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" />
-            </svg>
-            Download Brochure
-          </Button>
-          <button onClick={onScrollToMap} className="absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-2 text-white/80 hover:text-amber-400 transition-colors group">
-            <MapPin className="h-5 w-5 text-amber-500 group-hover:scale-110 transition-transform" />
-            <span className="text-sm font-medium underline underline-offset-4">{project.location}</span>
-          </button>
-        </div>
-      </section>
+      <meta
+        name="keywords"
+        content={`HMDA plots ${project.location}, plots in ${project.location}, land investment ${project.location}`} />
 
-      {/* Thumbnail strip */}
-      <div className="bg-[#0a0a0a] px-4 md:px-6 py-4 md:py-5">
-        <div className="max-w-[1280px] mx-auto flex items-center gap-2 md:gap-3 overflow-x-auto" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+      <meta property="og:title" content={project.name} />
+      <meta property="og:description" content={project.description} />
+      <meta property="og:type" content="website" />
+
+      {project.hero_image && (
+        <meta property="og:image" content={project.hero_image} />
+      )}
+
+      <link
+        rel="canonical"
+        href={`https://thomesinfra.com/projects/${project.slug}`} />
+
+      {/* Real Estate Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: project.name,
+            description: project.description,
+            image: project.hero_image,
+            brand: {
+              "@type": "Organization",
+              name: "T Homes Infra",
+            },
+            offers: {
+              "@type": "Offer",
+              priceCurrency: "INR",
+              price: project.price_per_sqyd,
+              availability: project.available_plots > 0
+                ? "https://schema.org/InStock"
+                : "https://schema.org/SoldOut",
+            },
+            address: {
+              "@type": "PostalAddress",
+              addressLocality: project.location,
+              addressCountry: "India",
+            },
+          }),
+        }} />
+        </Head><div className="bg-[#0a0a0a]">
+        <section className="relative w-full h-screen min-h-[680px] overflow-hidden">
           {images.map((src, i) => (
-            <button key={i} onClick={() => { goTo(i); if (timerRef.current) clearInterval(timerRef.current); }}
-              className={`relative flex-shrink-0 rounded-xl overflow-hidden transition-all duration-300 border-2 ${i === activeIdx ? "border-amber-400 opacity-100 scale-105 shadow-lg shadow-amber-500/30" : "border-white/10 opacity-50 hover:opacity-80 hover:border-white/30"}`}
-              style={{ width: 80, height: 52 }}>
-              <NextImage src={src} alt={`Preview ${i + 1}`} fill className="object-cover" />
-              {i === activeIdx && <div className="absolute bottom-0 inset-x-0 h-1 bg-amber-400 rounded-b-xl" />}
-            </button>
+            <div key={i} className="absolute inset-0 transition-opacity duration-1000" style={{ opacity: i === activeIdx ? 1 : 0 }}>
+              <NextImage src={src} alt={project.name} fill className="object-cover" priority={i === 0} />
+              <div className="absolute inset-0 bg-black/40" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+            </div>
           ))}
-          <div className="ml-auto flex items-center gap-1.5 pl-3 flex-shrink-0">
-            {images.map((_, i) => (
-              <button key={i} onClick={() => goTo(i)} className={`block rounded-full transition-all duration-300 ${i === activeIdx ? "w-5 h-1.5 bg-amber-400" : "w-1.5 h-1.5 bg-white/30 hover:bg-white/60"}`} />
+
+          <div className="absolute top-0 inset-x-0 z-30"><Navbar /></div>
+
+          <div className="relative z-20 h-full flex flex-col justify-center items-center text-center px-4 md:px-6 pt-10">
+            <Link href="/projects" className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-6 transition-colors text-sm">
+              <ArrowLeft className="h-4 w-4" /> Back to Projects
+            </Link>
+            <div className="flex flex-wrap items-center justify-center gap-3 mb-5">
+              <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ${project.status === "ongoing" ? "bg-emerald-500 text-white" : "bg-blue-500 text-white"}`}>
+                {project.status}
+              </span>
+              <span className="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm text-white text-xs font-semibold flex items-center gap-2 border border-white/20">
+                <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" /> {project.approval_type}
+              </span>
+            </div>
+            <h1 className="text-2xl md:text-3xl lg:text-5xl font-black text-white tracking-tighter mb-4 italic leading-none drop-shadow-lg">
+              {project.name}
+            </h1>
+            <p className="text-sm md:text-lg text-white/70 max-w-2xl mb-10 font-light italic leading-relaxed px-2">
+              {project.description}
+            </p>
+            <Button onClick={onBrochureClick} className="h-12 md:h-14 px-7 md:px-10 rounded-xl bg-[#3b3b98] hover:bg-[#2e2e7a] text-white font-bold text-sm md:text-base transition-all hover:scale-105 shadow-[0_20px_40px_-10px_rgba(59,59,152,0.5)]">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 16v-8m0 8l-3-3m3 3l3-3M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" />
+              </svg>
+              Download Brochure
+            </Button>
+            <button onClick={onScrollToMap} className="absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-2 text-white/80 hover:text-amber-400 transition-colors group">
+              <MapPin className="h-5 w-5 text-amber-500 group-hover:scale-110 transition-transform" />
+              <span className="text-sm font-medium underline underline-offset-4">{project.location}</span>
+            </button>
+          </div>
+        </section>
+
+        {/* Thumbnail strip */}
+        <div className="bg-[#0a0a0a] px-4 md:px-6 py-4 md:py-5">
+          <div className="max-w-[1280px] mx-auto flex items-center gap-2 md:gap-3 overflow-x-auto" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+            {images.map((src, i) => (
+              <button key={i} onClick={() => { goTo(i); if (timerRef.current) clearInterval(timerRef.current); } }
+                className={`relative flex-shrink-0 rounded-xl overflow-hidden transition-all duration-300 border-2 ${i === activeIdx ? "border-amber-400 opacity-100 scale-105 shadow-lg shadow-amber-500/30" : "border-white/10 opacity-50 hover:opacity-80 hover:border-white/30"}`}
+                style={{ width: 80, height: 52 }}>
+                <NextImage src={src} alt={`Preview ${i + 1}`} fill className="object-cover" />
+                {i === activeIdx && <div className="absolute bottom-0 inset-x-0 h-1 bg-amber-400 rounded-b-xl" />}
+              </button>
             ))}
+            <div className="ml-auto flex items-center gap-1.5 pl-3 flex-shrink-0">
+              {images.map((_, i) => (
+                <button key={i} onClick={() => goTo(i)} className={`block rounded-full transition-all duration-300 ${i === activeIdx ? "w-5 h-1.5 bg-amber-400" : "w-1.5 h-1.5 bg-white/30 hover:bg-white/60"}`} />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </div></>
   );
 }
 
