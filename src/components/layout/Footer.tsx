@@ -153,10 +153,11 @@ function AccordionItem({
           {links.map(({ label, href, live, external }) =>
             external ? (
               <a
-                key={label + href}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
+                 key={label + href}
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+  
                 className="flex items-center gap-2 py-1.5 text-sm"
                 style={{ color: "#6B7A9F", transition: "color 0.15s" }}
                 onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#F5A623")}
@@ -169,8 +170,11 @@ function AccordionItem({
               </a>
             ) : (
               <Link
-                key={label + href}
-                href={href}
+                 key={label + href}
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+
                 className="flex items-center gap-2 py-1.5 text-sm"
                 style={{ color: "#6B7A9F", transition: "color 0.15s" }}
                 onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#F5A623")}
@@ -246,6 +250,7 @@ export function Footer() {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      
       className="th-social h-9 w-9 flex items-center justify-center rounded-full transition-all"
       style={{ background: "#F0F3FA", border: "1.5px solid #E4E9F4", color }}
     >
@@ -339,6 +344,8 @@ export function Footer() {
                   <li key={label} style={{ borderBottom: "1px solid #F0F3FA" }}>
                     <Link
                       href={href}
+                       target="_blank"
+  rel="noopener noreferrer"
                       className="th-qlink flex items-center gap-2.5 py-3 text-sm transition-all"
                       style={{ color: "#6B7A9F" }}
                     >
@@ -371,8 +378,7 @@ export function Footer() {
   {[
     {
       Icon: MapPin,
-      text: "Flat No: 8-2-120/77/4B, 3rd Floor, NVR Towers, Road No. 2, Banjara Hills, Hyderabad – 500034",
-    },
+      text: "Flat No: 8-2-120/77/4B, 3rd Floor, NVR Towers, Road No. 2, Banjara Hills, Hyderabad – 500034" ,link:"https://www.google.com/maps/dir/?api=1&destination=17.424236183469244,78.42295627494836" ,},
     { Icon: Phone, text: "+919032939753", link: "tel:+919032939753" },
     { Icon: Mail, text: "info@thomesinfra.com", link: "mailto:info@thomesinfra.com" },
   ].map(({ Icon, text, link }) => (
@@ -389,7 +395,9 @@ export function Footer() {
       </div>
 
       {link ? (
-        <a href={link} className="leading-relaxed hover:underline">
+        <a href={link} className="leading-relaxed hover:underline"
+          target="_blank"
+  rel="noopener noreferrer">
           {text}
         </a>
       ) : (
@@ -428,6 +436,8 @@ export function Footer() {
     <React.Fragment key={label}>
       <a
         href={href}
+          target="_blank"
+  rel="noopener noreferrer"
         onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
           e.currentTarget.style.color = "#F5A623";
         }}
