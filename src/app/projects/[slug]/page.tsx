@@ -1028,6 +1028,7 @@ import {
 } from "lucide-react";
 import Head from "next/head";
 import { ProjectHighlights } from "@/components/sections/ProjectHighlights";
+import { AnimatePresence, motion } from "framer-motion";
 
 declare global {
   interface Window { initSendOTP: any; }
@@ -1043,51 +1044,46 @@ interface IProject {
   price_per_sqyd: number;
   total_plots: number;
   available_plots: number;
-  Totalacres?: number | string;        // DB stores as string "150"
-  commercial_plots?: number | string;  // DB stores as string "10"
-  residential_plots?: number | string; // DB stores as string "175"
+  Totalacres?: number | string;
+  commercial_plots?: number | string;
+  residential_plots?: number | string;
   status: "ongoing" | "completed";
   approval_type: string;
   is_featured: boolean;
   hero_image?: string;
-  gallery_images?: any;           
+  gallery_images?: any;
   amenities: string[];
   proximity: { label: string; value: string; icon?: string }[];
   layout_image?: string;
   google_embed_url?: string;
   Highlights: string[];
   brochure_url?: string;
-  youtube_videos?: any;               
+  youtube_videos?: any;
   WhychooseUs: string;
   WhychooseUspoints: string[];
 }
+
 const extractLatLng = (iframeHtml: string) => {
   const match = iframeHtml.match(/!2d([-.\d]+)!3d([-.\d]+)/);
   if (!match) return null;
-  
   const lng = match[1];
   const lat = match[2];
-
   return { lat, lng };
 };
 
-// ── Normalise helpers — handle every possible DB shape ────────────────────────
+// ── Normalise helpers ─────────────────────────────────────────────────────────
 function normaliseGallery(raw: any): string[] {
   console.log("[normaliseGallery] raw input:", JSON.stringify(raw));
   if (!raw) { console.log("[normaliseGallery] → null/undefined, return []"); return []; }
   if (!Array.isArray(raw)) { console.log("[normaliseGallery] → not an array, return []"); return []; }
   if (raw.length === 0) { console.log("[normaliseGallery] → empty array, return []"); return []; }
- 
   const first = raw[0];
   console.log("[normaliseGallery] first element type:", typeof first, "value:", first);
-
   if (typeof first === "string") {
     const result = (raw as string[]).filter(Boolean);
     console.log("[normaliseGallery] → plain strings, result:", result);
     return result;
   }
-
-  // {label, value} shape
   const result = (raw as { label?: string; value?: string }[])
     .map(g => g.value ?? "")
     .filter(Boolean);
@@ -1104,7 +1100,6 @@ function normaliseProximity(raw: any): { label: string; value: string }[] {
 function normaliseVideos(raw: any): string[] {
   console.log("[normaliseVideos] raw:", JSON.stringify(raw));
   if (!raw) return [];
-  // DB stores as "" (empty string) — treat as no videos
   if (typeof raw === "string") return raw.trim() ? [raw.trim()] : [];
   if (!Array.isArray(raw)) return [];
   return (raw as string[]).filter(s => typeof s === "string" && s.trim().length > 0);
@@ -1133,7 +1128,6 @@ const defaultVideos = [
   "https://www.youtube.com/watch?v=2GBiSc2XpeY",
 ];
 const projectImages: Record<string, string[]> = {
-
   default: [
     "https://thomesinfra.com/wp-content/uploads/2024/05/DJI_0732-2-1-scaled.jpg",
     "https://thomesinfra.com/wp-content/uploads/2024/05/DJI_0674-2-1-scaled.jpg",
@@ -1161,30 +1155,16 @@ function HeroCarousel({ images, project, onScrollToMap, onBrochureClick }: {
   const goTo = useCallback((idx: number) => {
     setActiveIdx((idx + images.length) % images.length);
   }, [images.length]);
+
   const breadcrumbSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Home",
-      item: "https://thomesinfra.com/"
-    },
-    {
-      "@type": "ListItem",
-      position: 2,
-      name: "Projects",
-      item: "https://thomesinfra.com/projects"
-    },
-    {
-      "@type": "ListItem",
-      position: 3,
-      name: project.name,
-      item: `https://thomesinfra.com/projects/${project.slug}`
-    }
-  ]
-};
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://thomesinfra.com/" },
+      { "@type": "ListItem", position: 2, name: "Projects", item: "https://thomesinfra.com/projects" },
+      { "@type": "ListItem", position: 3, name: project.name, item: `https://thomesinfra.com/projects/${project.slug}` },
+    ],
+  };
 
   useEffect(() => {
     timerRef.current = setInterval(() => goTo(activeIdx + 1), 3000);
@@ -1192,64 +1172,36 @@ function HeroCarousel({ images, project, onScrollToMap, onBrochureClick }: {
   }, [activeIdx, goTo]);
 
   return (
-     <>
-      <script
-       type="application/ld+json"
-        dangerouslySetInnerHTML={{
-        __html: JSON.stringify(breadcrumbSchema)
-         }}
-          />
-     <Head>
-      <title>{project.name} | T Homes Infra</title>
-
-      <meta name="description" content={project.description} />
-
-      <meta
-        name="keywords"
-        content={`HMDA plots ${project.location}, plots in ${project.location}, land investment ${project.location}`} />
-
-      <meta property="og:title" content={project.name} />
-      <meta property="og:description" content={project.description} />
-      <meta property="og:type" content="website" />
-
-      {project.hero_image && (
-        <meta property="og:image" content={project.hero_image} />
-      )}
-
-      <link
-        rel="canonical"
-        href={`https://thomesinfra.com/projects/${project.slug}`} />
-
-      {/* Real Estate Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <Head>
+        <title>{project.name} | T Homes Infra</title>
+        <meta name="description" content={project.description} />
+        <meta name="keywords" content={`HMDA plots ${project.location}, plots in ${project.location}, land investment ${project.location}`} />
+        <meta property="og:title" content={project.name} />
+        <meta property="og:description" content={project.description} />
+        <meta property="og:type" content="website" />
+        {project.hero_image && <meta property="og:image" content={project.hero_image} />}
+        <link rel="canonical" href={`https://thomesinfra.com/projects/${project.slug}`} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Product",
             name: project.name,
             description: project.description,
             image: project.hero_image,
-            brand: {
-              "@type": "Organization",
-              name: "T Homes Infra",
-            },
+            brand: { "@type": "Organization", name: "T Homes Infra" },
             offers: {
               "@type": "Offer",
               priceCurrency: "INR",
               price: project.price_per_sqyd,
-              availability: project.available_plots > 0
-                ? "https://schema.org/InStock"
-                : "https://schema.org/SoldOut",
+              availability: project.available_plots > 0 ? "https://schema.org/InStock" : "https://schema.org/SoldOut",
             },
-            address: {
-              "@type": "PostalAddress",
-              addressLocality: project.location,
-              addressCountry: "India",
-            },
+            address: { "@type": "PostalAddress", addressLocality: project.location, addressCountry: "India" },
           }),
         }} />
-        </Head><div className="bg-[#0a0a0a]">
+      </Head>
+      <div className="bg-[#0a0a0a]">
         <section className="relative w-full h-screen min-h-[680px] overflow-hidden">
           {images.map((src, i) => (
             <div key={i} className="absolute inset-0 transition-opacity duration-1000" style={{ opacity: i === activeIdx ? 1 : 0 }}>
@@ -1258,9 +1210,7 @@ function HeroCarousel({ images, project, onScrollToMap, onBrochureClick }: {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             </div>
           ))}
-
           <div className="absolute top-0 inset-x-0 z-30"><Navbar /></div>
-
           <div className="relative z-20 h-full flex flex-col justify-center items-center text-center px-4 md:px-6 pt-10">
             <Link href="/projects" className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-6 transition-colors text-sm">
               <ArrowLeft className="h-4 w-4" /> Back to Projects
@@ -1296,7 +1246,7 @@ function HeroCarousel({ images, project, onScrollToMap, onBrochureClick }: {
         <div className="bg-[#0a0a0a] px-4 md:px-6 py-4 md:py-5">
           <div className="max-w-[1280px] mx-auto flex items-center gap-2 md:gap-3 overflow-x-auto" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
             {images.map((src, i) => (
-              <button key={i} onClick={() => { goTo(i); if (timerRef.current) clearInterval(timerRef.current); } }
+              <button key={i} onClick={() => { goTo(i); if (timerRef.current) clearInterval(timerRef.current); }}
                 className={`relative flex-shrink-0 rounded-xl overflow-hidden transition-all duration-300 border-2 ${i === activeIdx ? "border-amber-400 opacity-100 scale-105 shadow-lg shadow-amber-500/30" : "border-white/10 opacity-50 hover:opacity-80 hover:border-white/30"}`}
                 style={{ width: 80, height: 52 }}>
                 <NextImage src={src} alt={`Preview ${i + 1}`} fill className="object-cover" />
@@ -1310,7 +1260,8 @@ function HeroCarousel({ images, project, onScrollToMap, onBrochureClick }: {
             </div>
           </div>
         </div>
-      </div></>
+      </div>
+    </>
   );
 }
 
@@ -1322,10 +1273,10 @@ function StatsSection({ project, onScrollToMap }: { project: IProject; onScrollT
   const residentialPlots = normaliseNumber(project.residential_plots);
 
   const stats = [
-    { label: "Total Acres",       value: totalAcres        ? `${totalAcres} Acres` : "—", sub: "Premium land area"    },
-    { label: "Total Plots",       value: project.total_plots  || "—",                      sub: "Carefully planned"   },
-    { label: "Commercial Plots",  value: commercialPlots   ?? "—",                          sub: "150–300 sq yards"   },
-    { label: "Residential Plots", value: residentialPlots  ?? project.available_plots ?? "—", sub: "200–400 sq yards" },
+    { label: "Total Acres",       value: totalAcres       ? `${totalAcres} Acres` : "—", sub: "Premium land area"      },
+    { label: "Total Plots",       value: project.total_plots  || "—",                     sub: "Carefully planned"     },
+    { label: "Commercial Plots",  value: commercialPlots  ?? "—",                          sub: "150–300 sq yards"     },
+    { label: "Residential Plots", value: residentialPlots ?? project.available_plots ?? "—", sub: "200–400 sq yards"   },
   ];
 
   useEffect(() => {
@@ -1357,16 +1308,16 @@ function StatsSection({ project, onScrollToMap }: { project: IProject; onScrollT
             ))}
           </div>
           <div className="relative mt-6 lg:mt-0">
-           <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
-  <NextImage
-    src={project.layout_image || "https://thomesinfra.com/wp-content/uploads/2023/11/DJI_0474.jpg"}
-    alt="Layout"
-    width={0}
-    height={0}
-    sizes="100vw"
-    className="w-full h-auto"
-  />
-</div>
+            <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+              <NextImage
+                src={project.layout_image || "https://thomesinfra.com/wp-content/uploads/2023/11/DJI_0474.jpg"}
+                alt="Layout"
+                width={0}
+                height={0}
+                sizes="100vw"
+                className="w-full h-auto"
+              />
+            </div>
             <div className="absolute -bottom-4 -right-2 md:-bottom-5 md:-right-5 bg-white rounded-2xl px-4 md:px-5 py-2 md:py-3 shadow-[0_10px_30px_rgba(0,0,0,0.2)] border border-gray-100 flex items-center gap-2 md:gap-3 z-10">
               <ShieldCheck className="h-6 w-6 md:h-8 md:w-8 text-emerald-500" />
               <div>
@@ -1452,7 +1403,7 @@ function ProximitiesSection({ proximity }: { proximity: { label: string; value: 
             <div className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#3b3b98] to-amber-400 rounded-full" style={{ animation: "slideRight 2s ease-in-out infinite", width: "40%" }} />
           </div>
           <MapPin className="h-4 w-4 md:h-5 md:w-5 text-[#3b3b98] flex-shrink-0" />
-          <style jsx>{`@keyframes slideRight { 0% { left: -40%; } 100% { left: 100%; } }`}</style>
+          <style>{`@keyframes slideRight { 0% { left: -40%; } 100% { left: 100%; } }`}</style>
         </div>
       </div>
     </section>
@@ -1466,11 +1417,11 @@ function ExploreLayoutSection({ project }: { project: IProject }) {
     message: `interested in ${project.name} located at ${project.location}. Please provide more details.`,
   });
   const [submitting, setSubmitting] = useState(false);
-const coords = extractLatLng(project.google_embed_url);
+  const coords = extractLatLng(project.google_embed_url ?? "");
+  const directionsUrl = coords
+    ? `https://www.google.com/maps/dir/?api=1&destination=${coords.lat},${coords.lng}`
+    : "https://www.google.com/maps/dir//T+HOMES+INFRA+PRIVATE+LIMITED,+Flat+No+:+8-2-120%2F77%2F4B,+3rd+floor,+NVR+Towers,+Road+No.+2,+opp.+NTR+Memorial+Trust+Blood+Bank,+Banjara+Hills,+Hyderabad,+Telangana+500034/@17.4242362,78.4255312,669m/data=!3m1!1e3!4m8!4m7!1m0!1m5!1m1!1s0x3bcb9737e4038e9f:0xcb609b5821acadb1!2m2!1d78.4255312!2d17.4242362?entry=ttu&g_ep=EgoyMDI2MDIyMy4wIKXMDSoASAFQAw%3D%3D";
 
-const directionsUrl = coords
-  ? `https://www.google.com/maps/dir/?api=1&destination=${coords.lat},${coords.lng}`
-  : "https://www.google.com/maps/dir//T+HOMES+INFRA+PRIVATE+LIMITED,+Flat+No+:+8-2-120%2F77%2F4B,+3rd+floor,+NVR+Towers,+Road+No.+2,+opp.+NTR+Memorial+Trust+Blood+Bank,+Banjara+Hills,+Hyderabad,+Telangana+500034/@17.4242362,78.4255312,669m/data=!3m1!1e3!4m8!4m7!1m0!1m5!1m1!1s0x3bcb9737e4038e9f:0xcb609b5821acadb1!2m2!1d78.4255312!2d17.4242362?entry=ttu&g_ep=EgoyMDI2MDIyMy4wIKXMDSoASAFQAw%3D%3D";
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
@@ -1507,27 +1458,18 @@ const directionsUrl = coords
               {project.google_embed_url ? (
                 <div className="w-full h-full [&_iframe]:w-full [&_iframe]:h-full [&_iframe]:border-0" dangerouslySetInnerHTML={{ __html: project.google_embed_url }} />
               ) : (
-               <div
-  className="w-full h-full [&_iframe]:w-full [&_iframe]:h-full [&_iframe]:border-0"
-  dangerouslySetInnerHTML={{
-    __html: `
-      <iframe 
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2731.138050523078!2d78.4255312!3d17.4242362!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb9737e4038e9f%3A0xcb609b5821acadb1!2sT%20HOMES%20INFRA%20PRIVATE%20LIMITED!5e1!3m2!1sen!2sin!4v1772110980620!5m2!1sen!2sin"
-        allowfullscreen=""
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-      ></iframe>
-    `,
-  }}
-/>          )}
+                <div className="w-full h-full [&_iframe]:w-full [&_iframe]:h-full [&_iframe]:border-0" dangerouslySetInnerHTML={{
+                  __html: `<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2731.138050523078!2d78.4255312!3d17.4242362!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb9737e4038e9f%3A0xcb609b5821acadb1!2sT%20HOMES%20INFRA%20PRIVATE%20LIMITED!5e1!3m2!1sen!2sin!4v1772110980620!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
+                }} />
+              )}
             </div>
             <div className="mt-4 flex justify-end">
-             <Link href={directionsUrl} target="_blank">
-  <Button className="rounded-full bg-[#3b3b98] hover:bg-[#2e2e7a] text-white font-bold px-6 h-11 shadow-lg">
-    <Navigation className="h-4 w-4 mr-2" />
-    Navigate to Site
-  </Button>
-</Link>
+              <Link href={directionsUrl} target="_blank">
+                <Button className="rounded-full bg-[#3b3b98] hover:bg-[#2e2e7a] text-white font-bold px-6 h-11 shadow-lg">
+                  <Navigation className="h-4 w-4 mr-2" />
+                  Navigate to Site
+                </Button>
+              </Link>
             </div>
           </div>
           <div className="bg-white rounded-3xl p-6 md:p-7 shadow-xl border border-gray-100 order-1 lg:order-2">
@@ -1536,11 +1478,11 @@ const directionsUrl = coords
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <input required  value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))} className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#3b3b98] text-sm font-medium placeholder:text-gray-400 transition-colors" />
-              </div> 
+                <input required value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))} className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#3b3b98] text-sm font-medium placeholder:text-gray-400 transition-colors" />
+              </div>
               <div className="relative">
                 <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <input required type="tel"  value={formData.phone} onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))} className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#3b3b98] text-sm font-medium placeholder:text-gray-400 transition-colors" />
+                <input required type="tel" value={formData.phone} onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))} className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#3b3b98] text-sm font-medium placeholder:text-gray-400 transition-colors" />
               </div>
               <div className="relative">
                 <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -1643,15 +1585,33 @@ function WhyChooseUsSection({ title, points = [] }: { title?: string; points?: s
 
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 export default function ProjectDetailPage() {
-  const params = useParams();
-  const slug   = params.slug as string;
-  const router = useRouter();
+  const params  = useParams();
+  const slug    = params.slug as string;
+  const router  = useRouter();
 
-  const [project, setProject] = useState<IProject | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [project,           setProject]           = useState<IProject | null>(null);
+  const [loading,           setLoading]           = useState(true);
+  // ✅ ALL hooks at top level — never after early returns
+  const [galleryOpen,       setGalleryOpen]       = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const scrollToMap = () =>
     document.getElementById("location-map")?.scrollIntoView({ behavior: "smooth" });
+
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    if (!galleryOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setGalleryOpen(false);
+      if (e.key === "ArrowLeft")  setCurrentImageIndex(p => p === 0 ? (project ? (normaliseGallery(project.gallery_images).length || projectImages[project.slug]?.length || projectImages.default.length) - 1 : 0) : p - 1);
+      if (e.key === "ArrowRight") setCurrentImageIndex(p => {
+        const len = project ? (normaliseGallery(project.gallery_images).length || projectImages[project.slug]?.length || projectImages.default.length) : 0;
+        return p === len - 1 ? 0 : p + 1;
+      });
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [galleryOpen, project]);
 
   // MSG91 OTP widget
   useEffect(() => {
@@ -1679,22 +1639,16 @@ export default function ProjectDetailPage() {
         console.log("[page] fetching /api/projects/slug/" + slug);
         const res = await fetch(`/api/projects/slug/${slug}`);
         console.log("[page] response status:", res.status);
-
         if (res.ok) {
           const data = await res.json();
           console.log("[page] raw API response:", JSON.stringify(data, null, 2));
           console.log("[page] gallery_images from API:", JSON.stringify(data?.gallery_images));
           console.log("[page] gallery_images type:", typeof data?.gallery_images);
           console.log("[page] gallery_images isArray:", Array.isArray(data?.gallery_images));
-
-          if (data && !data.error) {
-            setProject(data);
-            return;
-          }
+          if (data && !data.error) { setProject(data); return; }
         }
-
         // fallback
-        const res2 = await fetch(`/api/projects?slug=${slug}`);
+        const res2  = await fetch(`/api/projects?slug=${slug}`);
         const data2 = await res2.json();
         console.log("[page] fallback API response gallery_images:", JSON.stringify(data2?.gallery_images));
         if (data2 && !data2.error) setProject(data2);
@@ -1751,19 +1705,9 @@ export default function ProjectDetailPage() {
     });
   };
 
-  // const handleBrochureClick = () => {
-  //   if (localStorage.getItem("verifiedPhone")) {
-  //     if (project?.brochure_url) router.push(project.brochure_url);
-  //     else if (project?.slug) router.push(`/brochures/${project.slug}`);
-  //   } else {
-  //     startOTPVerification();
-  //   }
-  // };
-   const handleBrochureClick = () => {
-   if (project?.brochure_url){ 
-    router.push(project.brochure_url);}
-      else if (project?.slug) router.push(`/brochures/${project.slug}`);
-    
+  const handleBrochureClick = () => {
+    if (project?.brochure_url) router.push(project.brochure_url);
+    else if (project?.slug) router.push(`/brochures/${project.slug}`);
   };
 
   if (loading) {
@@ -1811,91 +1755,59 @@ export default function ProjectDetailPage() {
     const vids = normaliseVideos(project.youtube_videos);
     return vids.length > 0 ? vids : defaultVideos;
   })();
- const breadcrumbSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Home",
-      item: "https://thomesinfra.com/"
-    },
-    {
-      "@type": "ListItem",
-      position: 2,
-      name: "Projects",
-      item: "https://thomesinfra.com/projects"
-    },
-    {
-      "@type": "ListItem",
-      position: 3,
-      name: project.name,
-      item: `https://thomesinfra.com/projects/${project.slug}`
-    }
-  ]
-};
-  const whychooseus      = project.WhychooseUs || defaultWhychooseUs;
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home",     item: "https://thomesinfra.com/" },
+      { "@type": "ListItem", position: 2, name: "Projects", item: "https://thomesinfra.com/projects" },
+      { "@type": "ListItem", position: 3, name: project.name, item: `https://thomesinfra.com/projects/${project.slug}` },
+    ],
+  };
+
+  const whychooseus       = project.WhychooseUs || defaultWhychooseUs;
   const whychooseuspoints = project.WhychooseUspoints?.length > 0
     ? project.WhychooseUspoints
     : defaultWhychooseUspoints;
 
+  // Lightbox helpers
+  const openLightbox = (i: number) => { setCurrentImageIndex(i); setGalleryOpen(true); };
+  const goPrev = () => setCurrentImageIndex(p => p === 0 ? heroImages.length - 1 : p - 1);
+  const goNext = () => setCurrentImageIndex(p => p === heroImages.length - 1 ? 0 : p + 1);
+
   return (
-    <><script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{
-        __html: JSON.stringify(breadcrumbSchema)
-      }} /><Head>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <Head>
         <title>{project.name} | T Homes Infra</title>
-
         <meta name="description" content={project.description} />
-
-        <meta
-          name="keywords"
-          content={`HMDA plots ${project.location}, plots in ${project.location}, land investment ${project.location}`} />
-
+        <meta name="keywords" content={`HMDA plots ${project.location}, plots in ${project.location}, land investment ${project.location}`} />
         <meta property="og:title" content={project.name} />
         <meta property="og:description" content={project.description} />
         <meta property="og:type" content="website" />
+        {project.hero_image && <meta property="og:image" content={project.hero_image} />}
+        <link rel="canonical" href={`https://thomesinfra.com/projects/${project.slug}`} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: project.name,
+            description: project.description,
+            image: project.hero_image,
+            brand: { "@type": "Organization", name: "T Homes Infra" },
+            offers: {
+              "@type": "Offer",
+              priceCurrency: "INR",
+              price: project.price_per_sqyd,
+              availability: project.available_plots > 0 ? "https://schema.org/InStock" : "https://schema.org/SoldOut",
+            },
+            address: { "@type": "PostalAddress", addressLocality: project.location, addressCountry: "India" },
+          }),
+        }} />
+      </Head>
 
-        {project.hero_image && (
-          <meta property="og:image" content={project.hero_image} />
-        )}
-
-        <link
-          rel="canonical"
-          href={`https://thomesinfra.com/projects/${project.slug}`} />
-
-        {/* Real Estate Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Product",
-              name: project.name,
-              description: project.description,
-              image: project.hero_image,
-              brand: {
-                "@type": "Organization",
-                name: "T Homes Infra",
-              },
-              offers: {
-                "@type": "Offer",
-                priceCurrency: "INR",
-                price: project.price_per_sqyd,
-                availability: project.available_plots > 0
-                  ? "https://schema.org/InStock"
-                  : "https://schema.org/SoldOut",
-              },
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: project.location,
-                addressCountry: "India",
-              },
-            }),
-          }} />
-      </Head><main className="min-h-screen bg-white">
+      <main className="min-h-screen bg-white">
         <Toaster position="top-center" />
 
         <HeroCarousel images={heroImages} project={project} onScrollToMap={scrollToMap} onBrochureClick={handleBrochureClick} />
@@ -1916,9 +1828,18 @@ export default function ProjectDetailPage() {
             </p>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
               {heroImages.map((img, i) => (
-                <div key={i} className="relative group rounded-2xl overflow-hidden border border-white/10 hover:border-amber-400/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-amber-500/10">
+                <div
+                  key={i}
+                  className="relative group rounded-2xl overflow-hidden border border-white/10 hover:border-amber-400/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-amber-500/10 cursor-pointer"
+                  onClick={() => openLightbox(i)}
+                >
                   <div className="relative aspect-[4/3]">
-                    <NextImage src={img} alt={`Gallery ${i + 1}`} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+                    <NextImage
+                      src={img}
+                      alt={`Gallery ${i + 1}`}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
@@ -1927,7 +1848,68 @@ export default function ProjectDetailPage() {
           </div>
         </section>
 
+        {/* Lightbox */}
+        <AnimatePresence>
+          {galleryOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[200] bg-black/90 flex items-center justify-center p-6"
+              onClick={() => setGalleryOpen(false)}
+            >
+              <motion.div
+                initial={{ scale: 0.9 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.9 }}
+                className="relative max-w-6xl w-full"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Close button */}
+                <button
+                  onClick={() => setGalleryOpen(false)}
+                  className="absolute -top-12 right-0 text-white text-3xl hover:text-amber-400"
+                >
+                  ✕
+                </button>
+
+                {/* Main Image */}
+                <div className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-black">
+                  <NextImage
+                    src={heroImages[currentImageIndex]}
+                    alt="Gallery"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+
+                {/* Left Arrow */}
+                <button
+                  onClick={(e) => { e.stopPropagation(); goPrev(); }}
+                  className="absolute left-6 top-1/2 -translate-y-1/2 bg-white/10 text-white rounded-full p-4 hover:bg-white/20 text-2xl leading-none"
+                >
+                  ‹
+                </button>
+
+                {/* Right Arrow */}
+                <button
+                  onClick={(e) => { e.stopPropagation(); goNext(); }}
+                  className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/10 text-white rounded-full p-4 hover:bg-white/20 text-2xl leading-none"
+                >
+                  ›
+                </button>
+
+                {/* Image Counter */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/60 text-white px-4 py-2 rounded-full text-sm">
+                  {currentImageIndex + 1} / {heroImages.length}
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <Footer />
-      </main></>
+      </main>
+    </>
   );
 }
