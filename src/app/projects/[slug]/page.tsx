@@ -1494,10 +1494,10 @@ function ExploreLayoutSection({ project }: { project: IProject }) {
                 {submitting ? "Submitting..." : <><Send className="h-4 w-4 mr-2" />Submit Enquiry</>}
               </Button>
             </form>
-            <div className="mt-6 pt-5 border-t border-gray-100 text-center">
+            {/* <div className="mt-6 pt-5 border-t border-gray-100 text-center">
               <p className="text-xs text-gray-400 mb-2">Or call us directly</p>
               <a href="tel:+919121212121" className="text-[#3b3b98] font-black text-sm hover:underline">+91 91212 12121</a>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
