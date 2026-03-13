@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, Plus, Minus } from "lucide-react";
+import { Menu, X, ChevronDown, Plus, Minus } from "lucide-react";INDI
 import { Button } from "@/components/ui/button";
 import rawProjectsData from "@/data/projects.json";
 
@@ -28,8 +28,8 @@ const projectsData = rawProjectsData as ProjectsData;
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "About Us", href: "/about" },
-  { name: "India", hasDropdown: true },
-  { name: "Dubai", href:"https://globalthomesrealty.com/" },
+  { name: "Projects in India", hasDropdown: true },
+  { name: "Projects in Dubai", href:"https://globalthomesrealty.com/" },
   { name: "Jumeirah Towers", href: "https://thomestowers.com/" },
   {name: "Blogs", href: "/blogs"},
   { name: "Contact", href: "/contact" },
