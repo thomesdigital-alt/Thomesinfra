@@ -1,980 +1,783 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { 
-  Building2, Shield, Home, Sparkles, Phone, Mail, MapPin, 
-  ChevronRight, Play, ArrowRight, CheckCircle2, Users, 
-  TreeDeciduous, Dumbbell, Car, Wifi, Baby, Coffee, 
-  Sun, Moon, Heart, Star, Send, Menu, X, RotateCcw, ZoomIn, ZoomOut, ArrowLeft
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
-import { supabase } from "@/lib/supabase";
+import React from "react";
+import { motion } from "framer-motion";
 
-const amenities = [
-  { icon: Building2, title: "Clubhouse", desc: "Premium social & event space" },
-  { icon: Dumbbell, title: "Fitness Center", desc: "State-of-the-art gym equipment" },
-  { icon: Sun, title: "Terrace Lounge", desc: "Skyline views & relaxation" },
-  { icon: TreeDeciduous, title: "Green Spaces", desc: "Landscaped gardens & parks" },
-  { icon: Baby, title: "Play Area", desc: "Safe children's playground" },
-  { icon: Car, title: "Covered Parking", desc: "Secure multi-level parking" },
-  { icon: Shield, title: "24/7 Security", desc: "CCTV & gated access" },
-  { icon: Wifi, title: "Smart Living", desc: "High-speed connectivity" },
+// ─── Image URLs ───────────────────────────────────────────────────────────────
+const LOGO             = "https://thomestowers.com/wp-content/uploads/2026/03/T-Homes-Logo-1.png";
+const BUILDING         = "https://thomestowers.com/wp-content/uploads/2026/03/South-East-View-1-scaled-removebg-preview.png";
+const SCALE_IMG        = "https://thomestowers.com/wp-content/uploads/2026/02/Night-Areal-Vie-scaled-1.webp";
+const HMDA_LOGO        = "https://thomestowers.com/wp-content/uploads/2026/03/HMDA_logo1.jpg";
+const RERA_LOGO        = "https://thomestowers.com/wp-content/uploads/2026/03/1923609-10.jpg";
+const ASSURANCE_BUILDING = "https://thomestowers.com/wp-content/uploads/2025/12/srenj4-scaled.jpg";
+
+const LUXURY_IMAGES = [
+  { src: "https://thomestowers.com/wp-content/uploads/2026/02/happy-family-portrait-roof-with-kids-real-estate-moving-new-home-together-excited-mother-father-children-with-smile-shelter-property-apartment-house-insurance-start_590464-422994.webp", alt: "Family" },
+  { src: "https://thomestowers.com/wp-content/uploads/2026/02/Vanity-scaled-2.webp",   alt: "Vanity"   },
+  { src: "https://thomestowers.com/wp-content/uploads/2026/02/Toilet-scaled-1.webp",   alt: "Toilet"   },
+  { src: "https://thomestowers.com/wp-content/uploads/2026/02/8-1.webp",               alt: "Room 1"   },
+  { src: "https://thomestowers.com/wp-content/uploads/2026/02/7-1.webp",               alt: "Room 2"   },
 ];
 
-const galleryImages = [
-  { src: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80", alt: "Tower Exterior" },
-  { src: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80", alt: "Living Room" },
-  { src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80", alt: "Modern Kitchen" },
-  { src: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=800&q=80", alt: "Master Bedroom" },
-  { src: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80", alt: "Swimming Pool" },
-  { src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&q=80", alt: "Fitness Center" },
+const AMENITY_IMAGES = [
+  { src: "https://thomestowers.com/wp-content/uploads/2025/12/unnamed-13.jpg",                                                              alt: "Swimming Pool", featured: true  },
+  { src: "https://thomestowers.com/wp-content/uploads/2025/12/5-3.png",                                                                     alt: "Amenity 2",     featured: false },
+  { src: "https://thomestowers.com/wp-content/uploads/2025/12/3-2.png",                                                                     alt: "Amenity 3",     featured: false },
+  { src: "https://thomestowers.com/wp-content/uploads/2025/12/T-Homes-_-Jumeirah-Towers-Floor-Plan-2_page-0001-scaled.jpg",                 alt: "Floor Plan",    featured: false },
 ];
 
-function AnimatedSection({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-  
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 60 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
+const CONNECTIVITY = [
+  { name: "Exist IA",                   time: "12 min", image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=200&q=80" },
+  { name: "RGIA",                       time: "35 min", image: "https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=200&q=80" },
+  { name: "ICFAI",                      time: "5 min",  image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=200&q=80" },
+  { name: "Neopolis",                   time: "10 min", image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=200&q=80" },
+  { name: "Gaudium School",             time: "15 min", image: "https://images.unsplash.com/photo-1564399579883-451a5d44e5f0?w=200&q=80" },
+  { name: "Indus International School", time: "5 min",  image: "https://images.unsplash.com/photo-1588072432836-e10032774350?w=200&q=80" },
+  { name: "Continental Hospital",       time: "20 min", image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=200&q=80" },
+];
+
+const AMENITIES = [
+  "15,000 Sq. ft. Clubhouse", "Squash Court",               "Meeting Rooms",
+  "Swimming Pool and Deck",   "Basket Ball Court",           "Banquet Hall",
+  "Indoor Gym Sauna",         "Children's Play Zone",        "Yoga Studio",
+  "Cricketing Net",           "Relaxation Park for Elders",  "Reading Room",
+];
+
+const STATS = [
+  { value: "1.93",  label: "Acres"     },
+  { value: "68%",   label: "Open Space"},
+  { value: "3 BHK", label: "Community" },
+  { value: "17",    label: "Levels"    },
+  { value: "159",   label: "Units"     },
+];
+
+interface FormState {
+  name: string; email: string; occupation: string; code: string; phone: string;
+  checks: { mokila: boolean; hyderabad: boolean; months: boolean };
 }
 
-function StickyNav() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+const BG    = "#e8e5df";
+const NAVY  = "#1a2e5a";
+const GREEN = "#4caf3a";
+const WHITE = "#ffffff";
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 100);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+// ═══════════════════════════════════════════════════════════════════════════════
+export default function XXLPage() {
+  const [form, setForm] = React.useState<FormState>({
+    name: "", email: "", occupation: "", code: "", phone: "",
+    checks: { mokila: false, hyderabad: false, months: false },
+  });
+  const [scrolled,    setScrolled]    = React.useState(false);
+  const [menuOpen,    setMenuOpen]    = React.useState(false);
+  const [toast,       setToast]       = React.useState(false);
+
+  React.useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    setMobileOpen(false);
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    if (type === "checkbox") {
+      setForm(p => ({ ...p, checks: { ...p.checks, [name]: checked } }));
+    } else {
+      setForm(p => ({ ...p, [name]: value }));
+    }
   };
 
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setToast(true);
+    setMenuOpen(false);
+    setForm({ name: "", email: "", occupation: "", code: "", phone: "", checks: { mokila: false, hyderabad: false, months: false } });
+    setTimeout(() => setToast(false), 4000);
+  };
+
+  const navLinks: [string, string][] = [
+    ["#amenities", "Amenities"],
+    ["#layout",    "Layout plan"],
+    ["#location",  "Location"],
+    ["#contact",   "Call for site visit"],
+  ];
+
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "bg-[#0a0f1a]/95 backdrop-blur-xl shadow-2xl" : "bg-transparent"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          <div className="flex items-center gap-3">
-            <Link 
-              href="/" 
-              className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-500/50 transition-all text-white/70 hover:text-amber-400"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span className="text-sm font-medium hidden sm:inline">Back to Home</span>
-            </Link>
-            <div className="hidden sm:flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center">
-                <Building2 className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <div className="text-white font-bold text-lg tracking-tight">Jumeirah Towers</div>
-                <div className="text-amber-400/80 text-xs font-medium -mt-0.5">Premium Living</div>
-              </div>
-            </div>
-          </div>
+    <div style={{ fontFamily: "'Montserrat',sans-serif", background: BG, overflowX: "hidden" }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        a { text-decoration: none; color: inherit; cursor: pointer; }
+        input, button { font-family: 'Montserrat', sans-serif; }
+        input:focus { outline: none !important; border-color: ${NAVY} !important; }
 
-          <div className="hidden md:flex items-center gap-1">
-            {["about", "3d-view", "amenities", "lifestyle", "gallery", "contact"].map((item) => (
-              <button
-                key={item}
-                onClick={() => scrollTo(item)}
-                className="px-4 py-2 text-sm font-medium text-white/70 hover:text-amber-400 transition-colors capitalize"
-              >
-                {item === "3d-view" ? "3D View" : item}
-              </button>
-            ))}
-          </div>
+        /* ── noise texture ── */
+        .tex {
+          background-color: ${BG};
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.045'/%3E%3C/svg%3E");
+        }
 
-          {/* <div className="flex items-center gap-3">
-            <a href="tel:+919000080980" className="hidden sm:flex items-center gap-2 text-amber-400 font-semibold">
-              <Phone className="w-4 h-4" />
-              +91 900 008 0980
-            </a>
-            <Button 
-              onClick={() => scrollTo("contact")}
-              className="bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-full px-6"
-            >
-              Contact Sales
-            </Button>
-            <button 
-              className="md:hidden text-white p-2"
-              onClick={() => setMobileOpen(!mobileOpen)}
-            >
-              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div> */}
-        </div>
+        /* ── hamburger button ── */
+        .hamburger {
+          display: none;
+          flex-direction: column;
+          justify-content: center;
+          gap: 5px;
+          width: 36px;
+          height: 36px;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 4px;
+          z-index: 300;
+        }
+        .hamburger span {
+          display: block;
+          width: 100%;
+          height: 2px;
+          background: #444;
+          border-radius: 2px;
+          transition: all .3s;
+        }
+
+        /* ── mobile nav overlay ── */
+        .mobile-nav {
+          display: none;
+          position: fixed;
+          inset: 0;
+          background: rgba(26,46,90,.97);
+          z-index: 250;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 32px;
+        }
+        .mobile-nav.open { display: flex; }
+        .mobile-nav a {
+          font-size: 20px;
+          font-weight: 600;
+          color: rgba(255,255,255,.85);
+          letter-spacing: .08em;
+          text-transform: uppercase;
+          transition: color .2s;
+        }
+        .mobile-nav a:hover { color: #FCD34D; }
+        .mobile-nav-close {
+          position: absolute;
+          top: 24px;
+          right: 24px;
+          background: none;
+          border: none;
+          color: #fff;
+          font-size: 32px;
+          cursor: pointer;
+          line-height: 1;
+        }
+
+        /* ── NAVBAR ── */
+        .navbar { padding: 14px 60px; }
+        .desktop-nav { display: flex; gap: 40px; }
+
+        /* ── HERO ── */
+        .hero-section { min-height: 100vh; padding-top: 88px; }
+        .hero-building {
+          position: absolute;
+          top: 70px;
+          left: 50%;
+          transform: translateX(-58%);
+          max-height: 620px;
+          object-fit: contain;
+          object-position: bottom center;
+        }
+        .hero-xxl {
+          font-size: clamp(80px, 14vw, 140px);
+          position: absolute;
+          bottom: 18%;
+          left: 35%;
+          transform: translateX(-56%);
+        }
+        .hero-right {
+          position: absolute;
+          right: 5%;
+          left: 65%;
+          bottom: 16%;
+          top: 70%;
+        }
+
+        /* ── FORM ── */
+        .form-wrap { width: 90%; max-width: 1100px; margin: 0 auto; padding: 18px 48px; background: #d9d5ce; }
+        .form-grid {
+          display: grid;
+          grid-template-columns: auto auto 1fr auto;
+          gap: 12px 28px;
+          align-items: center;
+        }
+
+        /* ── SCALE section ── */
+        .scale-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 48px;
+          align-items: center;
+        }
+        .stats-grid {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 24px;
+          padding-top: 24px;
+        }
+
+        /* ── CONNECTIVITY ── */
+        .conn-grid {
+          display: grid;
+          grid-template-columns: repeat(7, 1fr);
+          gap: 32px;
+          justify-items: center;
+        }
+
+        /* ── LUXURY ── */
+        .lux-grid {
+          display: grid;
+          grid-template-columns: 1.4fr 1fr;
+          gap: 24px;
+          align-items: start;
+          margin-bottom: 20px;
+        }
+        .lux-photos {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 5px;
+          height: 320px;
+        }
+
+        /* ── APPROVALS ── */
+        .approvals-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        /* ── AMENITIES LIST ── */
+        .amenities-list {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 4px 36px;
+        }
+
+        /* ── AMENITY PHOTOS ── */
+        .amenity-photos {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr) repeat(2, 1fr);
+          grid-template-rows: 1fr 1fr;
+          height: 360px;
+          gap: 4px;
+        }
+
+        /* ── FOOTER ── */
+        .footer-top {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 20px;
+          margin-bottom: 16px;
+        }
+        .footer-credits {
+          display: flex;
+          gap: 40px;
+          flex-wrap: wrap;
+        }
+        .footer-bottom {
+          border-top: 1px solid #eee;
+          padding-top: 14px;
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
+        /* ═══════════════════════════
+           TABLET  ≤ 1024px
+        ═══════════════════════════ */
+        @media (max-width: 1024px) {
+          .navbar { padding: 14px 32px; }
+          .desktop-nav { gap: 24px; }
+          .desktop-nav a { font-size: 13px; }
+
+          .hero-building { max-height: 480px; }
+          .hero-right { display: none; }
+
+          .form-wrap { padding: 18px 28px; }
+          .form-grid {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+          }
+          .form-grid > *:nth-child(3) { grid-column: 1 / 3; }
+          .form-grid > *:nth-child(4) { grid-column: 1 / 3; text-align: center; }
+          .form-grid > *:nth-child(4) button { width: 100%; }
+
+          .scale-grid { grid-template-columns: 1fr; gap: 32px; }
+          .stats-grid { grid-template-columns: repeat(5, 1fr); gap: 16px; }
+
+          .conn-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+
+          .lux-grid { grid-template-columns: 1fr; }
+          .lux-photos { height: 260px; }
+
+          .amenity-photos { height: 280px; }
+
+          section { padding-left: 32px !important; padding-right: 32px !important; }
+          .section-inner { padding: 0 32px !important; }
+        }
+
+        /* ═══════════════════════════
+           MOBILE  ≤ 640px
+        ═══════════════════════════ */
+        @media (max-width: 640px) {
+          .navbar { padding: 12px 20px; }
+          .desktop-nav { display: none; }
+          .hamburger { display: flex; }
+
+          /* Hero */
+          .hero-section { min-height: 100svh; padding-top: 72px; }
+          .hero-building {
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            max-height: 55vw;
+            min-height: 220px;
+            width: 90%;
+          }
+          .hero-xxl {
+            font-size: clamp(56px, 18vw, 90px);
+            bottom: 14%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            white-space: nowrap;
+          }
+          .hero-tagline { text-align: center; left: 50% !important; transform: translateX(-50%); right: auto !important; }
+
+          /* Form */
+          .form-wrap { width: 100%; padding: 16px 16px; }
+          .form-grid {
+            grid-template-columns: 1fr;
+            grid-template-rows: none;
+          }
+          .form-grid > * { grid-column: 1 !important; }
+          .form-grid > *:nth-child(4) button { width: 100%; }
+          .contact-input-name,
+          .contact-input-email,
+          .contact-input-occupation { width: 100% !important; }
+          .contact-row { flex-direction: column !important; align-items: flex-start !important; gap: 4px !important; }
+          .contact-label { min-width: unset !important; }
+
+          /* Scale */
+          .scale-grid { grid-template-columns: 1fr; gap: 24px; }
+          .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+          /* Connectivity */
+          .conn-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+
+          /* Luxury */
+          .lux-grid { grid-template-columns: 1fr; gap: 16px; }
+          .lux-photos { height: 200px; }
+
+          /* Approvals */
+          .approvals-grid { grid-template-columns: 1fr; }
+          .approvals-grid > * { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,.25); }
+          .approvals-grid > *:last-child { border-bottom: none; }
+
+          /* Amenities */
+          .amenities-list { grid-template-columns: 1fr 1fr; gap: 4px 20px; }
+
+          /* Amenity photos */
+          .amenity-photos {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto auto;
+            height: auto;
+          }
+          .amenity-featured { grid-column: 1 / 3; height: 220px; }
+          .amenity-small { height: 140px; }
+
+          /* Sections inner padding */
+          .section-inner { padding: 0 20px !important; }
+          section { padding-left: 0 !important; padding-right: 0 !important; }
+
+          /* Footer */
+          .footer-wrap { padding: 20px !important; }
+          .footer-top { flex-direction: column; align-items: flex-start; }
+          .footer-credits { gap: 20px; }
+          .footer-bottom { flex-direction: column; }
+        }
+
+        /* ═══════════════════════════
+           VERY SMALL  ≤ 380px
+        ═══════════════════════════ */
+        @media (max-width: 380px) {
+          .amenities-list { grid-template-columns: 1fr; }
+          .stats-grid { grid-template-columns: repeat(2, 1fr); }
+          .conn-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+        }
+      `}</style>
+
+      {/* ─── Mobile Nav Overlay ─── */}
+      <div className={`mobile-nav ${menuOpen ? "open" : ""}`}>
+        <button className="mobile-nav-close" onClick={() => setMenuOpen(false)} aria-label="Close menu">✕</button>
+        {navLinks.map(([h, l]) => (
+          <a key={h} href={h} onClick={() => setMenuOpen(false)}>{l}</a>
+        ))}
       </div>
 
-      {mobileOpen && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          className="md:hidden bg-[#0a0f1a]/98 backdrop-blur-xl border-t border-white/10"
-        >
-          <div className="px-4 py-6 flex flex-col gap-2">
-              {["about", "3d-view", "amenities", "lifestyle", "gallery", "contact"].map((item) => (
-                <button
-                  key={item}
-                  onClick={() => scrollTo(item)}
-                  className="px-4 py-3 text-left text-white/80 hover:text-amber-400 hover:bg-white/5 rounded-xl transition-colors capitalize font-medium"
-                >
-                  {item === "3d-view" ? "3D View" : item}
-                </button>
+      {/* ══════════════════════════════ NAVBAR ══════════════════════════════ */}
+      <header className="navbar" style={{
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 200,
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        backdropFilter: scrolled ? "blur(30px)" : "none",
+        boxShadow: scrolled ? "0 2px 14px rgba(0,0,0,.08)" : "none",
+        transition: "all .3s",
+        background: scrolled ? "rgba(232,229,223,0.85)" : "transparent",
+      }}>
+        <img src={LOGO} alt="T Homes Infra" style={{ height: 60, objectFit: "contain" }} />
+
+        <nav className="desktop-nav">
+          {navLinks.map(([h, l]) => (
+            <a key={h} href={h} style={{ fontSize: 14, color: "#444", fontWeight: 400, letterSpacing: ".01em", transition: "color .2s" }}
+              onMouseEnter={e => (e.currentTarget.style.color = NAVY)}
+              onMouseLeave={e => (e.currentTarget.style.color = "#444")}>
+              {l}
+            </a>
+          ))}
+        </nav>
+
+        <button className="hamburger" onClick={() => setMenuOpen(true)} aria-label="Open menu">
+          <span /><span /><span />
+        </button>
+      </header>
+
+      {/* ══════════════════════════════ HERO ══════════════════════════════ */}
+      <section className="tex hero-section" style={{
+        position: "relative", overflow: "hidden",
+        display: "flex", alignItems: "stretch",
+      }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 45% 35%, rgba(255,255,255,0.55) 0%, transparent 70%)", pointerEvents: "none" }} />
+
+        <img src={BUILDING} alt="J Cosmopolis Building" className="hero-building" style={{
+          position: "absolute", zIndex: 1, pointerEvents: "none",
+          filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.08))",
+        }} />
+
+        {/* XXL + tagline */}
+        <div className="hero-xxl" style={{
+          zIndex: 3, display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 0,
+        }}>
+          <span style={{ fontSize: "clamp(9px, 1.5vw, 12px)", fontWeight: 600, letterSpacing: ".25em", textTransform: "uppercase", color: "#888", marginBottom: 0, marginLeft: 2 }}>
+            EXPERIENCE LIVING
+          </span>
+          <div style={{
+            fontWeight: 900, lineHeight: 0.88, letterSpacing: "-4px",
+            background: "linear-gradient(105deg,#c084fc 0%,#a78bfa 15%,#60a5fa 30%,#34d399 45%,#fbbf24 60%,#f87171 75%,#c084fc 90%)",
+            WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+          }}>
+            XXL
+          </div>
+          <span style={{ fontSize: "clamp(8px, 1.4vw, 11px)", fontWeight: 700, letterSpacing: ".32em", textTransform: "uppercase", color: "#888", marginTop: 6, marginLeft: 4 }}>
+            COSMOPOLIS | MOKILA
+          </span>
+        </div>
+
+        {/* Right headline — hidden on mobile via CSS */}
+        <div className="hero-right" style={{ zIndex: 4, textAlign: "left" }}>
+          <h2 style={{
+            fontWeight: 500, fontSize: "clamp(1.5rem,3.5vw,3rem)", lineHeight: 1.0,
+            color: "#aaa", textTransform: "uppercase", letterSpacing: ".01em", margin: 0,
+          }}>
+            WELCOME TO<br />J COSMOPOLIS.<br />SIGN UP TO YOUR XXL LIFE.
+          </h2>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════ GIFT BANNER + FORM ══════════════════════════════ */}
+      <section className="tex" id="contact" style={{ paddingBottom: 40 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "12px 0", fontSize: 14, fontWeight: 600, color: "#555" }}>
+          <span style={{ fontSize: 20 }}>🎁</span>
+          First 50 site visits get assured gift
+        </div>
+
+        <form onSubmit={onSubmit} className="form-wrap">
+          <div className="form-grid">
+
+            {/* Col 1: Name + Occupation */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <div className="contact-row" style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <label htmlFor="c-name" className="contact-label" style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", color: "#666", minWidth: 80 }}>Name</label>
+                <input id="c-name" name="name" value={form.name} onChange={onChange} required placeholder="Your name"
+                  style={{ padding: "8px 10px", border: "1px solid #bbb", background: WHITE, fontSize: 12, width: "100%", outline: "none" }} />
+              </div>
+              <div className="contact-row" style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <span className="contact-label" style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", color: "#666", minWidth: 80 }}>Occupation</span>
+                <input name="occupation" value={form.occupation} onChange={onChange} placeholder="Your occupation"
+                  style={{ padding: "8px 10px", border: "1px solid #bbb", background: WHITE, fontSize: 12, width: "100%", outline: "none" }} />
+              </div>
+            </div>
+
+            {/* Col 2: Email + Phone */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <div className="contact-row" style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <span className="contact-label" style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", color: "#666", minWidth: 100, flexShrink: 0 }}>E-mail address:</span>
+                <input name="email" type="email" value={form.email} onChange={onChange} required placeholder="Email address"
+                  style={{ padding: "8px 10px", border: "1px solid #bbb", background: WHITE, fontSize: 12, width: "100%", outline: "none" }} />
+              </div>
+              <div className="contact-row" style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <span className="contact-label" style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", color: "#666", minWidth: 100, flexShrink: 0 }}>Code &amp; Phone:</span>
+                <input name="code" value={form.code} onChange={onChange} placeholder="+91"
+                  style={{ padding: "8px 10px", border: "1px solid #bbb", background: WHITE, fontSize: 12, width: 52, outline: "none", flexShrink: 0 }} />
+                <input name="phone" type="tel" value={form.phone} onChange={onChange} required placeholder="Phone number"
+                  style={{ padding: "8px 10px", border: "1px solid #bbb", background: WHITE, fontSize: 12, width: "100%", outline: "none" }} />
+              </div>
+            </div>
+
+            {/* Col 3: Checkboxes */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, paddingLeft: 12 }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: "#666", letterSpacing: ".06em", textTransform: "uppercase", marginBottom: 2 }}>
+                Tick what's applicable
+              </div>
+              {([
+                ["mokila",    "Yes I am actively looking for Site in Mokila"],
+                ["hyderabad", "I am looking for Site in Hyderabad"],
+                ["months",    "Not immediately but in 3–6 months"],
+              ] as const).map(([n, l]) => (
+                <label key={n} style={{ display: "flex", alignItems: "flex-start", gap: 7, cursor: "pointer", fontSize: 11, color: "#555", lineHeight: 1.4 }}>
+                  <input type="checkbox" name={n} checked={form.checks[n]} onChange={onChange} style={{ marginTop: 2, accentColor: NAVY }} />
+                  {l}
+                </label>
               ))}
             </div>
-        </motion.div>
-      )}
-    </motion.nav>
-  );
-}
 
-function HeroSection() {
-  const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], [0, 300]);
-  const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-
-  return (
-    <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
-      <motion.div style={{ y }} className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f1a]/60 via-[#0a0f1a]/40 to-[#0a0f1a] z-10" />
-        <Image
-          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2000&q=80"
-          alt="Jumeirah Towers"
-          fill
-          className="object-cover"
-          priority
-        />
-      </motion.div>
-
-      <motion.div style={{ opacity }} className="relative z-20 text-center px-4 max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="mb-6"
-        >
-          <span className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/20 backdrop-blur-sm rounded-full text-amber-400 text-sm font-semibold border border-amber-500/30">
-            <Sparkles className="w-4 h-4" />
-            Premium Residential High-Rise in Mokila
-          </span>
-        </motion.div>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4 }}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white mb-6 tracking-tight"
-          style={{ fontFamily: "'Playfair Display', serif" }}
-        >
-          Jumeirah
-          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500">
-            Towers
-          </span>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.6 }}
-          className="text-lg sm:text-xl md:text-2xl text-white/80 mb-10 max-w-3xl mx-auto font-light leading-relaxed"
-        >
-          Elegant residences in a gated community with world-class lifestyle amenities.
-          Experience luxury living redefined.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.8 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <Button 
-            onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
-            size="lg"
-            className="bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-full px-10 py-7 text-lg shadow-[0_20px_50px_-12px_rgba(245,158,11,0.5)] hover:shadow-[0_25px_60px_-12px_rgba(245,158,11,0.6)] transition-all hover:scale-105"
-          >
-            Explore Project
-            <ArrowRight className="ml-2 w-5 h-5" />
-          </Button>
-          {/* <Button 
-            onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-            size="lg"
-            variant="outline"
-            className="border-2 border-white/30 text-black hover:bg-white/10 rounded-full px-10 py-7 text-lg backdrop-blur-sm"
-          >
-            Contact Sales
-            <Phone className="ml-2 w-5 h-5" />
-          </Button> */}
-        </motion.div>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20"
-      >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-2"
-        >
-          <motion.div className="w-1.5 h-3 bg-amber-400 rounded-full" />
-        </motion.div>
-      </motion.div>
-    </section>
-  );
-}
-
-function AboutSection() {
-  const highlights = [
-    { icon: Shield, title: "Gated Community", desc: "24/7 security & controlled access" },
-    { icon: Sparkles, title: "Premium Finishes", desc: "Luxury interiors & fixtures" },
-    { icon: Home, title: "Spacious Apartments", desc: "Thoughtfully designed layouts" },
-    { icon: Building2, title: "Quality Construction", desc: "Built to last with premium materials" },
-  ];
-
-  return (
-    <section id="about" className="py-24 md:py-32 bg-[#0a0f1a] relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-900/10 via-transparent to-transparent" />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <AnimatedSection>
-          <div className="text-center mb-16">
-            <span className="text-amber-400 font-semibold text-sm tracking-widest uppercase mb-4 block">About The Project</span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Where Luxury Meets
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600"> Community</span>
-            </h2>
-            <p className="text-lg text-white/60 max-w-3xl mx-auto leading-relaxed">
-              Jumeirah Towers is a premium residential high-rise that blends modern architecture, 
-              lifestyle comforts, and community living in Mokila. Designed for comfort, security, 
-              and modern family living.
-            </p>
+            {/* Col 4: Submit */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <button type="submit" style={{
+                background: "#777", color: WHITE, border: "none",
+                padding: "12px 28px", fontSize: 12, fontWeight: 600,
+                letterSpacing: ".08em", textTransform: "uppercase",
+                cursor: "pointer", transition: "background .2s", whiteSpace: "nowrap", width: "100%",
+              }}
+                onMouseEnter={e => (e.currentTarget.style.background = NAVY)}
+                onMouseLeave={e => (e.currentTarget.style.background = "#777")}>
+                Submit
+              </button>
+            </div>
           </div>
-        </AnimatedSection>
+        </form>
+      </section>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-          {highlights.map((item, index) => (
-            <AnimatedSection key={item.title}>
-              <motion.div
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="group p-8 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm rounded-3xl border border-white/10 hover:border-amber-500/50 transition-all duration-500"
-                style={{ transitionDelay: `${index * 100}ms` }}
-              >
-                <div className="w-14 h-14 bg-gradient-to-br from-amber-400 to-amber-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <item.icon className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
-                <p className="text-white/50 text-sm">{item.desc}</p>
-              </motion.div>
-            </AnimatedSection>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+      {/* ══════════════════════════════ XXL IN SCALE ══════════════════════════════ */}
+      <section id="scale" style={{ background: "linear-gradient(to right,#001f3f,#003d7a,#001f3f)", padding: "80px 0", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 4, background: "linear-gradient(to right,#001f3f,#FCD34D,#001f3f)" }} />
+        <div className="section-inner" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 60px" }}>
+          <div className="scale-grid">
+            <motion.div initial={{ opacity: 0, x: -60 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
+              <img src={SCALE_IMG} alt="J Cosmopolis Scale" style={{ width: "100%", height: "auto", objectFit: "contain", filter: "drop-shadow(0 20px 30px rgba(0,0,0,0.3))" }} />
+            </motion.div>
 
-function AmenitiesSection() {
-  return (
-    <section id="amenities" className="py-24 md:py-32 bg-[#080c14] relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent" />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedSection>
-          <div className="text-center mb-16">
-            <span className="text-amber-400 font-semibold text-sm tracking-widest uppercase mb-4 block">World-Class Amenities</span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Everything You
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600"> Desire</span>
-            </h2>
-            <p className="text-lg text-white/60 max-w-2xl mx-auto">
-              From fitness to relaxation, we've curated premium amenities for an elevated lifestyle.
-            </p>
-          </div>
-        </AnimatedSection>
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {amenities.map((amenity, index) => (
-            <AnimatedSection key={amenity.title}>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="group relative p-6 bg-gradient-to-br from-white/[0.08] to-transparent rounded-2xl border border-white/10 hover:border-amber-500/40 transition-all overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative">
-                  <div className="w-12 h-12 bg-amber-500/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-amber-500/30 transition-colors">
-                    <amenity.icon className="w-6 h-6 text-amber-400" />
-                  </div>
-                  <h3 className="text-lg font-bold text-white mb-1">{amenity.title}</h3>
-                  <p className="text-sm text-white/50">{amenity.desc}</p>
-                </div>
-              </motion.div>
-            </AnimatedSection>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function LifestyleSection() {
-  const benefits = [
-    { icon: Users, title: "Sense of Community", desc: "Connect with like-minded neighbors in a vibrant residential community." },
-    { icon: Shield, title: "Safety & Security", desc: "Round-the-clock surveillance and gated entry for peace of mind." },
-    { icon: MapPin, title: "Prime Connectivity", desc: "Easy access to schools, hospitals, shopping centers, and transport hubs." },
-  ];
-
-  return (
-    <section id="lifestyle" className="py-24 md:py-32 bg-[#0a0f1a] relative overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber-500/5 rounded-full blur-3xl" />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <AnimatedSection>
-            <div>
-              <span className="text-amber-400 font-semibold text-sm tracking-widest uppercase mb-4 block">Lifestyle & Benefits</span>
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-                Elevate Your
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600"> Everyday</span>
-              </h2>
-              <p className="text-lg text-white/60 mb-10 leading-relaxed">
-                At Jumeirah Towers, every detail is designed to enhance your quality of life. 
-                From seamless connectivity to a thriving community spirit, discover a lifestyle 
-                that truly complements your aspirations.
+            <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}
+              style={{ color: WHITE, display: "flex", flexDirection: "column", gap: 28 }}>
+              <h2 style={{ fontSize: "clamp(2rem,4vw,3.5rem)", fontWeight: 700, lineHeight: 1.2 }}>XXL in Scale</h2>
+              <p style={{ fontSize: 15, lineHeight: 1.75, color: "rgba(255,255,255,.75)", fontWeight: 300 }}>
+                From the very first sight, J Cosmopolis stands tall with composure, drawing admiration to its unmissable neo-modern curved edges. Register openness as you walk through a pergola-framed entry. The reception lobby's double height ceiling establishes grandness without announcing it. With scale and space defining its presence, the singular tower spells exclusivity in an extra-large format.
               </p>
-
-              <div className="space-y-6">
-                {benefits.map((benefit, index) => (
-                  <motion.div
-                    key={benefit.title}
-                    initial={{ opacity: 0, x: -30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.2 }}
-                    viewport={{ once: true }}
-                    className="flex gap-4"
-                  >
-                    <div className="w-12 h-12 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <benefit.icon className="w-6 h-6 text-amber-400" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-white mb-1">{benefit.title}</h3>
-                      <p className="text-white/50 text-sm">{benefit.desc}</p>
-                    </div>
-                  </motion.div>
+              <div className="stats-grid">
+                {STATS.map(s => (
+                  <div key={s.label} style={{ borderBottom: "2px solid rgba(252,211,77,.3)", paddingBottom: 12 }}>
+                    <div style={{ fontSize: "clamp(18px,3vw,28px)", fontWeight: 800, color: "#FCD34D", letterSpacing: "-.02em" }}>{s.value}</div>
+                    <div style={{ fontSize: 10, fontWeight: 500, letterSpacing: ".08em", textTransform: "uppercase", color: "#9ca3af", marginTop: 4 }}>{s.label}</div>
+                  </div>
                 ))}
               </div>
-            </div>
-          </AnimatedSection>
-
-          <AnimatedSection>
-            <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-amber-500/20 to-amber-600/20 rounded-3xl blur-2xl" />
-              <div className="relative rounded-3xl overflow-hidden">
-                <Image
-                  src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"
-                  alt="Luxury Living"
-                  width={600}
-                  height={500}
-                  className="w-full h-auto object-cover"
-                />
-              </div>
-            </div>
-          </AnimatedSection>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function WhyChooseSection() {
-  const features = [
-    { icon: Sparkles, title: "Luxury Comfort", desc: "Experience unparalleled luxury with premium finishes, spacious layouts, and attention to every detail." },
-    { icon: Building2, title: "Modern Design", desc: "Contemporary architecture that stands out, with sustainable features and smart home integration." },
-    { icon: Heart, title: "Community Living", desc: "A vibrant neighborhood where families thrive, with events, activities, and shared spaces." },
-  ];
-
-  return (
-    <section className="py-24 md:py-32 bg-[#080c14] relative overflow-hidden">
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMiI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyek0zNiAyNHYySDI0di0yaDEyeiIvPjwvZz48L2c+PC9zdmc+')] opacity-50" />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <AnimatedSection>
-          <div className="text-center mb-16">
-            <span className="text-amber-400 font-semibold text-sm tracking-widest uppercase mb-4 block">Why Choose Us</span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-              The Jumeirah
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600"> Difference</span>
-            </h2>
-          </div>
-        </AnimatedSection>
-
-        <div className="grid md:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
-            <AnimatedSection key={feature.title}>
-              <motion.div
-                whileHover={{ y: -10 }}
-                className="group relative p-10 bg-gradient-to-br from-white/[0.06] to-transparent rounded-3xl border border-white/10 hover:border-amber-500/40 transition-all text-center"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative">
-                  <div className="w-20 h-20 mx-auto bg-gradient-to-br from-amber-400 to-amber-600 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform shadow-[0_20px_40px_-12px_rgba(245,158,11,0.4)]">
-                    <feature.icon className="w-10 h-10 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-white mb-4">{feature.title}</h3>
-                  <p className="text-white/50 leading-relaxed">{feature.desc}</p>
-                </div>
-              </motion.div>
-            </AnimatedSection>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Building3DSection() {
-  const [building3DImage, setBuilding3DImage] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [rotation, setRotation] = useState({ x: 0, y: 0 });
-  const [isAnimating, setIsAnimating] = useState(true);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    const fetchImage = async () => {
-      const { data } = await supabase
-        .from("jumeirah_settings")
-        .select("value")
-        .eq("key", "building_3d_image")
-        .single();
-      
-      if (data?.value) {
-        setBuilding3DImage(data.value);
-      }
-      setLoading(false);
-    };
-    fetchImage();
-  }, []);
-
-  useEffect(() => {
-    if (!isAnimating) return;
-    
-    let angle = 0;
-    const animate = () => {
-      angle += 0.3;
-      setRotation({
-        x: Math.sin(angle * 0.01) * 5,
-        y: Math.sin(angle * 0.02) * 15,
-      });
-      animationRef.current = requestAnimationFrame(animate);
-    };
-    
-    animationRef.current = requestAnimationFrame(animate);
-    return () => {
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    };
-  }, [isAnimating]);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!containerRef.current || isAnimating) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setRotation({ x: -y * 20, y: x * 25 });
-  };
-
-  const handleMouseLeave = () => {
-    if (!isAnimating) {
-      setRotation({ x: 0, y: 0 });
-    }
-  };
-
-  const toggleAnimation = () => {
-    setIsAnimating(!isAnimating);
-    if (isAnimating) {
-      setRotation({ x: 0, y: 0 });
-    }
-  };
-
-  if (loading) {
-    return (
-      <section id="3d-view" className="py-24 md:py-32 bg-[#0a0f1a] relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center h-[500px]">
-            <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
+            </motion.div>
           </div>
         </div>
       </section>
-    );
-  }
 
-  if (!building3DImage) return null;
-
-  return (
-    <section id="3d-view" className="py-24 md:py-32 bg-[#0a0f1a] relative overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-amber-500/5 rounded-full blur-3xl" />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <AnimatedSection>
-          <div className="text-center mb-12">
-            <span className="text-amber-400 font-semibold text-sm tracking-widest uppercase mb-4 block">3D Interactive View</span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Explore The
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600"> Towers</span>
-            </h2>
-            <p className="text-lg text-white/60 max-w-2xl mx-auto">
-              {isAnimating ? "Auto-rotating 3D view" : "Move your cursor to rotate the building"}
+      {/* ══════════════════════════════ XXL CONNECTIVITY ══════════════════════════════ */}
+      <section id="location" style={{ background: "#e8e8e8", padding: "80px 0" }}>
+        <div className="section-inner" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 60px" }}>
+          <motion.div initial={{ opacity: 0, y: -30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
+            <h2 style={{ fontSize: "clamp(1.6rem,4vw,3rem)", fontWeight: 300, color: "#666", letterSpacing: 1, marginBottom: 16 }}>XXL Connectivity</h2>
+            <p style={{ fontSize: 15, lineHeight: 1.8, color: "#555", fontWeight: 300, maxWidth: "min(70%,600px)", marginBottom: 48 }}>
+              From J Cosmopolis, everything remains within direct reach. Commercial corridors, schools, entertainment &amp; lifestyle spaces etc., connect here with efficiency.
             </p>
-          </div>
-        </AnimatedSection>
-
-        <AnimatedSection>
-          <div className="relative" style={{ perspective: "1500px" }}>
-            <div className="absolute -inset-4 bg-gradient-to-r from-amber-500/30 via-amber-400/20 to-amber-500/30 rounded-[2rem] blur-3xl animate-pulse" />
-            
-            <div 
-              ref={containerRef}
-              className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#0d1320] to-[#080c14] border border-white/10"
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              style={{ transformStyle: "preserve-3d" }}
-            >
-              <div 
-                className="relative aspect-video md:aspect-[16/9] transition-transform duration-300 ease-out"
-                style={{
-                  transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) scale(1.05)`,
-                  transformStyle: "preserve-3d",
-                }}
-              >
-                <Image
-                  src={building3DImage}
-                  alt="Jumeirah Towers 3D View"
-                  fill
-                  className="object-cover select-none pointer-events-none"
-                  draggable={false}
-                />
-                
-                <div 
-                  className="absolute inset-0 bg-gradient-to-tr from-amber-500/10 via-transparent to-cyan-500/10 mix-blend-overlay"
-                  style={{ transform: "translateZ(20px)" }}
-                />
-                
-                <div 
-                  className="absolute inset-0"
-                  style={{
-                    background: `linear-gradient(${90 + rotation.y * 2}deg, rgba(245,158,11,0.15) 0%, transparent 50%, rgba(6,182,212,0.1) 100%)`,
-                    transform: "translateZ(30px)",
-                  }}
-                />
-              </div>
-
-              <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#0a0f1a] via-[#0a0f1a]/80 to-transparent pointer-events-none" />
-              
-              <div className="absolute top-4 left-4 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full border border-amber-500/30">
-                <span className="text-amber-400 text-sm font-semibold flex items-center gap-2">
-                  <span className="w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
-                  3D Interactive
-                </span>
-              </div>
-
-              <div className="absolute bottom-4 right-4 flex items-center gap-2">
-                <button
-                  onClick={toggleAnimation}
-                  className={`px-4 py-3 backdrop-blur-md rounded-xl border transition-all flex items-center gap-2 ${
-                    isAnimating 
-                      ? "bg-amber-500/20 border-amber-500/50 text-amber-400" 
-                      : "bg-black/50 border-white/10 text-white/70 hover:text-amber-400 hover:border-amber-500/50"
-                  }`}
-                >
-                  {isAnimating ? (
-                    <>
-                      <span className="w-3 h-3 border-2 border-amber-400 border-t-transparent rounded-full animate-spin" />
-                      <span className="text-sm font-medium">Auto Rotate</span>
-                    </>
-                  ) : (
-                    <>
-                      <RotateCcw className="w-4 h-4" />
-                      <span className="text-sm font-medium">Manual Mode</span>
-                    </>
-                  )}
-                </button>
-              </div>
-
-              <div className="absolute bottom-4 left-4 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full border border-white/10">
-                <span className="text-white/60 text-sm">
-                  X: {rotation.x.toFixed(1)}° Y: {rotation.y.toFixed(1)}°
-                </span>
-              </div>
-            </div>
-
-            <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-gradient-to-br from-white/[0.08] to-transparent rounded-2xl p-6 border border-white/10 text-center">
-                <div className="text-3xl font-bold text-amber-400 mb-1">G+14</div>
-                <div className="text-white/50 text-sm">Floors</div>
-              </div>
-              <div className="bg-gradient-to-br from-white/[0.08] to-transparent rounded-2xl p-6 border border-white/10 text-center">
-                <div className="text-3xl font-bold text-amber-400 mb-1">3 BHK</div>
-                <div className="text-white/50 text-sm">Premium Units</div>
-              </div>
-              <div className="bg-gradient-to-br from-white/[0.08] to-transparent rounded-2xl p-6 border border-white/10 text-center">
-                <div className="text-3xl font-bold text-amber-400 mb-1">360°</div>
-                <div className="text-white/50 text-sm">View</div>
-              </div>
-            </div>
-
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-white/50 text-sm">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-amber-500/20 rounded-lg flex items-center justify-center">
-                  <span className="text-amber-400 text-xs">Move</span>
+          </motion.div>
+          <div className="conn-grid">
+            {CONNECTIVITY.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, scale: .8, y: 20 }} whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * .07 }} viewport={{ once: true }}
+                style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
+                <div style={{ width: 80, height: 80, borderRadius: "50%", overflow: "hidden", border: "3px solid #f0f0f0", boxShadow: "0 4px 14px rgba(0,0,0,.1)", flexShrink: 0 }}>
+                  <img src={item.image} alt={item.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                 </div>
-                <span>Hover to rotate</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-amber-500/20 rounded-lg flex items-center justify-center">
-                  <span className="text-amber-400 text-xs">Click</span>
-                </div>
-                <span>Toggle auto-rotate</span>
-              </div>
-            </div>
-          </div>
-        </AnimatedSection>
-      </div>
-    </section>
-  );
-}
-
-function GallerySection() {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % galleryImages.length);
-    }, 4000);
-    return () => clearInterval(timer);
-  }, []);
-
-  return (
-    <section id="gallery" className="py-24 md:py-32 bg-[#0a0f1a] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedSection>
-          <div className="text-center mb-16">
-            <span className="text-amber-400 font-semibold text-sm tracking-widest uppercase mb-4 block">Visual Gallery</span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-              A Glimpse of
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600"> Luxury</span>
-            </h2>
-          </div>
-        </AnimatedSection>
-
-        <div className="relative">
-          <div className="aspect-[16/9] md:aspect-[21/9] rounded-3xl overflow-hidden relative">
-            {galleryImages.map((img, index) => (
-              <motion.div
-                key={img.src}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: index === activeIndex ? 1 : 0 }}
-                transition={{ duration: 0.8 }}
-                className="absolute inset-0"
-              >
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1a] via-transparent to-transparent" />
+                <div style={{ fontSize: 12, fontWeight: 600, color: "#333", textAlign: "center", lineHeight: 1.3 }}>{item.name}</div>
+                <div style={{ fontSize: 11, color: "#888", fontWeight: 300 }}>{item.time}</div>
               </motion.div>
             ))}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-              {galleryImages.map((_, index) => (
-                <Button
-                  key={index}
-                  onClick={() => setActiveIndex(index)}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    index === activeIndex ? "bg-amber-400 w-8" : "bg-white/30 hover:bg-white/50"
-                  }`}
-                />
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════ ASSURED XXL LUXURY ══════════════════════════════ */}
+      <section id="layout" style={{ background: "#f5f5f5", padding: "80px 0" }}>
+        <div className="section-inner" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 60px" }}>
+          <motion.h2 initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}
+            style={{ fontSize: "clamp(1.4rem,3vw,2.4rem)", fontWeight: 300, color: "#999", letterSpacing: 1, marginBottom: 40, fontStyle: "italic" }}>
+            Assured XXL Luxury
+          </motion.h2>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} style={{ marginBottom: 28 }}>
+            <img src={LUXURY_IMAGES[0].src} alt="Luxury Interior" style={{ width: "100%", height: "min(380px, 50vw)", objectFit: "cover", display: "block" }} />
+          </motion.div>
+
+          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.7, delay: .1 }} viewport={{ once: true }}
+            style={{ fontSize: 15, lineHeight: 1.85, color: "#555", fontWeight: 300, maxWidth: 860, marginBottom: 36 }}>
+            Experience seamless continuity and movement in your 3-bedroom configuration. At the entry, you got a clear visual axis of your home. Movement across feels intuitive and uninterrupted. The living space extends beyond a curved balcony with multiple seating arrangements. Every space and dimension, from the living room to the kitchen or bedrooms, contribute to a quiet grandeur and assured XXL luxury.
+          </motion.p>
+
+          <div className="lux-grid">
+            <div className="lux-photos">
+              {LUXURY_IMAGES.slice(1, 5).map((img, i) => (
+                <motion.div key={i} initial={{ opacity: 0, scale: .95 }} whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: i * .08 }} viewport={{ once: true }} style={{ overflow: "hidden" }}>
+                  <img src={img.src} alt={img.alt} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform .6s" }}
+                    onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.05)")}
+                    onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")} />
+                </motion.div>
+              ))}
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              {[
+                { val: "1837 to 2713 SFT",          lbl: "Area Range" },
+                { val: "10 ft.\nwide corridors",     lbl: "" },
+                { val: "East, West, & North\norientations", lbl: "" },
+              ].map((s, i) => (
+                <div key={i} style={{ padding: "20px 22px", background: "#e8e4dc", borderLeft: "4px solid transparent", transition: "border-color .2s, background .2s", cursor: "default" }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderLeftColor = NAVY; (e.currentTarget as HTMLDivElement).style.background = "#dedad4"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderLeftColor = "transparent"; (e.currentTarget as HTMLDivElement).style.background = "#e8e4dc"; }}>
+                  {s.val.split("\n").map((line, j) => (
+                    <div key={j} style={{ fontSize: j === 0 ? 18 : 15, fontWeight: 700, color: NAVY, lineHeight: 1.3 }}>{line}</div>
+                  ))}
+                </div>
               ))}
             </div>
           </div>
 
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mt-4">
-            {galleryImages.map((img, index) => (
-              <motion.button
-                key={img.src}
-                onClick={() => setActiveIndex(index)}
-                whileHover={{ scale: 1.05 }}
-                className={`relative aspect-square rounded-xl overflow-hidden ${
-                  index === activeIndex ? "ring-2 ring-amber-400" : "opacity-60 hover:opacity-100"
-                } transition-all`}
-              >
-                <Image src={img.src} alt={img.alt} fill className="object-cover" />
-              </motion.button>
+          <div className="approvals-grid">
+            {["Completion in 2027", "HMDA & RERA\nApproved", "UDS Share\n42 & 62 Sq yards"].map((txt, i) => (
+              <div key={i} style={{ background: GREEN, padding: "16px 20px", textAlign: "center", borderRight: i < 2 ? "1px solid rgba(255,255,255,.25)" : "none" }}>
+                {txt.split("\n").map((line, j) => (
+                  <span key={j} style={{ display: "block", fontSize: 13, fontWeight: 700, color: WHITE, lineHeight: 1.45 }}>{line}</span>
+                ))}
+              </div>
             ))}
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
+      </section>
 
-function ContactSection() {
-  const [formData, setFormData] = useState({ name: "", phone: "", email: "", message: "" });
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const response = await fetch("/api/inquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          message: formData.message,
-          source: "Jumeirah Towers Page",
-        }),
-      });
-
-      if (response.ok) {
-        toast.success("Thank you! Our team will contact you shortly.");
-        setFormData({ name: "", phone: "", email: "", message: "" });
-      } else {
-        toast.error("Something went wrong. Please try again.");
-      }
-    } catch (error) {
-      toast.error("Failed to submit. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <section id="contact" className="py-24 md:py-32 bg-[#080c14] relative overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-amber-500/10 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2" />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="grid lg:grid-cols-2 gap-16">
-          <AnimatedSection>
-            <div>
-              <span className="text-amber-400 font-semibold text-sm tracking-widest uppercase mb-4 block">Get In Touch</span>
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-                Start Your Journey
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600"> Today</span>
-              </h2>
-              <p className="text-lg text-white/60 mb-10">
-                Ready to experience luxury living? Contact our sales team for exclusive offers, 
-                site visits, and detailed project information.
-              </p>
-
-              <div className="space-y-6">
-                {/* <a href="tel:+919000080980" className="flex items-center gap-4 group">
-                  <div className="w-14 h-14 bg-amber-500/20 rounded-2xl flex items-center justify-center group-hover:bg-amber-500/30 transition-colors">
-                    <Phone className="w-6 h-6 text-amber-400" />
-                  </div>
-                  <div>
-                    <div className="text-white/50 text-sm">Call Us</div>
-                    <div className="text-white text-xl font-bold">+91 900 008 0980</div>
-                  </div>
-                </a> */}
-
-                {/* <a href="mailto:info@jumeirahtowers.in" className="flex items-center gap-4 group">
-                  <div className="w-14 h-14 bg-amber-500/20 rounded-2xl flex items-center justify-center group-hover:bg-amber-500/30 transition-colors">
-                    <Mail className="w-6 h-6 text-amber-400" />
-                  </div>
-                  <div>
-                    <div className="text-white/50 text-sm">Email Us</div>
-                    <div className="text-white text-xl font-bold">info@jumeirahtowers.in</div>
-                  </div>
-                </a> */}
-
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 bg-amber-500/20 rounded-2xl flex items-center justify-center">
-                    <MapPin className="w-6 h-6 text-amber-400" />
-                  </div>
-                  <div>
-                    <div className="text-white/50 text-sm">Location</div>
-                    <div className="text-white text-xl font-bold">Mokila, Hyderabad</div>
-                  </div>
+      {/* ══════════════════════════════ XXL AMENITIES ══════════════════════════════ */}
+      <section id="amenities">
+        <div style={{ background: "linear-gradient(to bottom,#66cc33,#5ab832)", padding: "56px 60px 48px" }}>
+          <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+            <h2 style={{ fontSize: "clamp(1.6rem,4vw,3rem)", fontWeight: 300, color: WHITE, letterSpacing: 1, marginBottom: 14 }}>XXL Amenities</h2>
+            <p style={{ fontSize: 15, lineHeight: 1.8, color: "rgba(255,255,255,.9)", fontWeight: 300, maxWidth: "min(70%,600px)", marginBottom: 32 }}>
+              Community forms differently when space supports it. J Cosmopolis comes with a host of amenities intended for celebrations and social interactions.
+            </p>
+            <div className="amenities-list">
+              {AMENITIES.map(a => (
+                <div key={a} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, fontWeight: 300, color: WHITE, padding: "6px 0", borderBottom: "1px solid rgba(255,255,255,.2)" }}>
+                  <span style={{ fontSize: 18, flexShrink: 0 }}>•</span>
+                  {a}
                 </div>
-              </div>
+              ))}
             </div>
-          </AnimatedSection>
-
-          <AnimatedSection>
-            <form onSubmit={handleSubmit} className="bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-sm p-8 md:p-10 rounded-3xl border border-white/10">
-              <h3 className="text-2xl font-bold text-white mb-6">Request a Callback</h3>
-              
-              <div className="space-y-5">
-                <div>
-                  <Input
-                  
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    required
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/40 h-14 rounded-xl focus:border-amber-500"
-                  />
-                </div>
-                <div>
-                  <Input
-                    type="tel"
-                  
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    required
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/40 h-14 rounded-xl focus:border-amber-500"
-                  />
-                </div>
-                <div>
-                  <Input
-                    type="email"
-                    
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/40 h-14 rounded-xl focus:border-amber-500"
-                  />
-                </div>
-                <div>
-                  <Textarea
-                   
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    rows={4}
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/40 rounded-xl focus:border-amber-500 resize-none"
-                  />
-                </div>
-                <Button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full h-14 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-bold rounded-xl text-lg shadow-[0_20px_40px_-12px_rgba(245,158,11,0.4)] transition-all hover:scale-[1.02]"
-                >
-                  {loading ? (
-                    <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-                      Submitting...
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      Request Brochure
-                      <Send className="w-5 h-5" />
-                    </div>
-                  )}
-                </Button>
-              </div>
-            </form>
-          </AnimatedSection>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function FooterSection() {
-  return (
-    <footer className="py-12 bg-[#050810] border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center">
-              <Building2 className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <div className="text-white font-bold">Jumeirah Towers</div>
-              <div className="text-white/40 text-xs">by T-Homes Infra</div>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-6 text-white/50 text-sm">
-            <Link href="/" className="hover:text-amber-400 transition-colors">Home</Link>
-            <Link href="/projects" className="hover:text-amber-400 transition-colors">Projects</Link>
-            <Link href="/about" className="hover:text-amber-400 transition-colors">About</Link>
-            <Link href="/contact" className="hover:text-amber-400 transition-colors">Contact</Link>
-          </div>
-
-          <div className="text-white/30 text-sm">
-            © 2025 T-Homes Infra. All rights reserved.
           </div>
         </div>
+
+        {/* Photo grid */}
+        <div className="amenity-photos" style={{ background: BG }}>
+          <div className="amenity-featured" style={{ gridColumn: "1/3", gridRow: "1/3", overflow: "hidden", position: "relative" }}>
+            <img src={AMENITY_IMAGES[0].src} alt={AMENITY_IMAGES[0].alt} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform .6s" }}
+              onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.04)")}
+              onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")} />
+            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "rgba(0,0,0,.5)", color: WHITE, padding: "8px 12px", fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}>
+              SWIMMING POOL
+            </div>
+          </div>
+          {AMENITY_IMAGES.slice(1).map((img, i) => (
+            <div key={i} className="amenity-small" style={{ overflow: "hidden" }}>
+              <img src={img.src} alt={img.alt} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform .6s" }}
+                onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.05)")}
+                onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")} />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ══════════════════════════════ XXL ASSURANCE ══════════════════════════════ */}
+      <section style={{ background: "#f5f5f5", padding: "80px 0" }}>
+        <div className="section-inner" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 60px" }}>
+          <motion.h2 initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}
+            style={{ fontSize: "clamp(1.6rem,4vw,3rem)", fontWeight: 300, color: "#999", letterSpacing: 1, marginBottom: 24 }}>
+            XXL Assurance
+          </motion.h2>
+          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.7, delay: .1 }} viewport={{ once: true }}
+            style={{ fontSize: 15, lineHeight: 1.85, color: "#555", fontWeight: 300, maxWidth: "85%", marginBottom: 56 }}>
+            Built with intent and promoted with discipline, T Homes Infra brings a considered understanding of land value and delivery integrity. J Cosmopolis too, comes with the promise where execution sustains design.
+          </motion.p>
+          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} style={{ position: "relative" }}>
+            <img src={ASSURANCE_BUILDING} alt="J Cosmopolis Elevation" style={{ width: "100%", maxHeight: 440, objectFit: "cover", display: "block" }} />
+            <div style={{ position: "absolute", bottom: 28, left: 36 }}>
+              <img src={LOGO} alt="T Homes Infra" style={{ height: 56, objectFit: "contain", filter: "drop-shadow(0 2px 8px rgba(0,0,0,.3))" }} />
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════ FOOTER ══════════════════════════════ */}
+      <footer className="footer-wrap" style={{ background: WHITE, padding: "24px 60px", borderTop: "1px solid #ddd" }}>
+        <div className="footer-top">
+          <div style={{ display: "flex", alignItems: "center", gap: 20, flexWrap: "wrap" }}>
+            <img src={HMDA_LOGO} alt="HMDA" style={{ height: 40, objectFit: "contain" }} />
+            <img src={RERA_LOGO} alt="TG RERA" style={{ height: 40, objectFit: "contain" }} />
+          </div>
+          <div className="footer-credits">
+            {[["Consultant Architect","Add Name"],["Landscaping Partner","Add Name"],["Playarea Design by","Pool"]].map(([s,v]) => (
+              <div key={s}>
+                <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: ".12em", textTransform: "uppercase", color: "#aaa" }}>{s}</div>
+                <div style={{ fontSize: 11, fontWeight: 600, color: NAVY }}>{v}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <div style={{ fontSize: 9, color: "#aaa", lineHeight: 1.65, maxWidth: 620 }}>
+            0651194/5K9/91/U6/HMDA/1408/2022 and P02400005375 | {"{Add remaining RERA details}"}<br />
+            <strong>Disclaimer:</strong> All images, dimensions and details are indicative only and subject to change without notice.
+          </div>
+          <div style={{ fontSize: 10, color: "#ccc", fontWeight: 500 }}>© 2025 T Homes Infra Pvt. Ltd.</div>
+        </div>
+      </footer>
+
+      {/* ─── Toast ─── */}
+      <div style={{
+        position: "fixed", bottom: 28, right: 28, zIndex: 999,
+        background: NAVY, color: WHITE, padding: "14px 22px",
+        fontSize: 12, fontWeight: 600, letterSpacing: ".06em",
+        boxShadow: "0 8px 28px rgba(0,0,0,.2)",
+        transform: toast ? "translateY(0)" : "translateY(100px)",
+        opacity: toast ? 1 : 0,
+        transition: "all .4s ease", pointerEvents: "none",
+        maxWidth: "calc(100vw - 40px)",
+      }}>
+        ✓ Thank you! We'll contact you within 24 hours.
       </div>
-    </footer>
-  );
-}
-
-function MobileCTA() {
-  return (
-    <motion.div
-      initial={{ y: 100 }}
-      animate={{ y: 0 }}
-      className="fixed bottom-0 left-0 right-0 z-40 p-4 bg-gradient-to-t from-[#0a0f1a] via-[#0a0f1a]/95 to-transparent md:hidden"
-    >
-      {/* <div className="flex gap-3">
-        <a href="tel:+919000080980" className="flex-1">
-          <Button variant="outline" className="w-full h-14 border-amber-500/50 text-amber-400 rounded-xl font-bold">
-            <Phone className="w-5 h-5 mr-2" />
-            Call Now
-          </Button>
-        </a>
-        <Button 
-          onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-          className="flex-1 h-14 bg-amber-500 hover:bg-amber-400 text-black rounded-xl font-bold"
-        >
-          Enquire Now
-        </Button>
-      </div> */}
-    </motion.div>
-  );
-}
-
-export default function JumeirahTowersPage() {
-  return (
-    <main className="min-h-screen bg-[#0a0f1a] selection:bg-amber-500 selection:text-black">
-      <StickyNav />
-      <HeroSection />
-      <AboutSection />
-      <Building3DSection />
-      <AmenitiesSection />
-      <LifestyleSection />
-      <WhyChooseSection />
-      <GallerySection />
-      <ContactSection />
-      <FooterSection />
-      <MobileCTA />
-    </main>
+    </div>
   );
 }

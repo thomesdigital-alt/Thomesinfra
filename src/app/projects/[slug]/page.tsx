@@ -1194,7 +1194,7 @@ function HeroCarousel({ images, project, onScrollToMap, onBrochureClick }: {
             offers: {
               "@type": "Offer",
               priceCurrency: "INR",
-              price: project.price_per_sqyd,
+         
               availability: project.available_plots > 0 ? "https://schema.org/InStock" : "https://schema.org/SoldOut",
             },
             address: { "@type": "PostalAddress", addressLocality: project.location, addressCountry: "India" },
@@ -1222,7 +1222,7 @@ function HeroCarousel({ images, project, onScrollToMap, onBrochureClick }: {
               <span className="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm text-white text-xs font-semibold flex items-center gap-2 border border-white/20">
                 <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" /> {project.approval_type}
               </span>
-            </div>
+            </div>  
             <h1 className="text-2xl md:text-3xl lg:text-5xl font-black text-white tracking-tighter mb-4 italic leading-none drop-shadow-lg">
               {project.name}
             </h1>
@@ -1799,7 +1799,7 @@ export default function ProjectDetailPage() {
             offers: {
               "@type": "Offer",
               priceCurrency: "INR",
-              price: project.price_per_sqyd,
+            
               availability: project.available_plots > 0 ? "https://schema.org/InStock" : "https://schema.org/SoldOut",
             },
             address: { "@type": "PostalAddress", addressLocality: project.location, addressCountry: "India" },
