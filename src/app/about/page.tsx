@@ -94,7 +94,16 @@ const stats = [
   { label: "Happy Clients", value: "10000+", icon: Users },
   { label: "Projects Delivered", value: "25+", icon: Building2 },
 ];
+const [autoplay, setAutoplay] = useState<any>(null);
 
+useEffect(() => {
+  setAutoplay(
+    Autoplay({
+      delay: 2000,
+      stopOnInteraction: true,
+    })
+  );
+}, []);
 
 
 const values = [
@@ -501,19 +510,14 @@ who feel secure and confident in their investment.
 
           <div className="relative px-12">
             <Carousel
-              setApi={setApi}
-              opts={{
-                align: "start",
-                loop: true,
-              }}
-              plugins={[
-                Autoplay({
-                  delay: 2000,
-                  stopOnInteraction: true,
-                }),
-              ]}
-              className="w-full"
-            >
+  setApi={setApi}
+  opts={{
+    align: "start",
+    loop: true,
+  }}
+  plugins={autoplay ? [autoplay] : []}
+  className="w-full"
+>
               <CarouselContent>
                 {team.map((member, index) => (
                   <CarouselItem key={member.name} className="md:basis-1/2 lg:basis-1/3 pl-6">
