@@ -37,7 +37,7 @@ const CONNECTIVITY = [
 ];
 
 const AMENITIES = [
-  "15,000 Sq. ft. Clubhouse", "Squash Court",               "Meeting Rooms",
+  "15,000 Sq. ft. Clubhouse",              "Meeting Rooms",
   "Swimming Pool and Deck",   "Basket Ball Court",           "Banquet Hall",
   "Indoor Gym Sauna",         "Children's Play Zone",        "Yoga Studio",
   "Cricketing Net",           "Relaxation Park for Elders",  "Reading Room",
