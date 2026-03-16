@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -94,18 +93,6 @@ const stats = [
   { label: "Happy Clients", value: "10000+", icon: Users },
   { label: "Projects Delivered", value: "25+", icon: Building2 },
 ];
-const [autoplay, setAutoplay] = useState<any>(null);
-
-useEffect(() => {
-  setAutoplay(
-    Autoplay({
-      delay: 2000,
-      stopOnInteraction: true,
-    })
-  );
-}, []);
-
-
 const values = [
   {
     icon: HeartHandshake,
@@ -156,6 +143,16 @@ export default function AboutPage() {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
   const [count, setCount] = React.useState(0);
+  const [autoplay, setAutoplay] = useState<any>(null);
+
+useEffect(() => {
+  setAutoplay(
+    Autoplay({
+      delay: 2000,
+      stopOnInteraction: true,
+    })
+  );
+}, []);
 
   React.useEffect(() => {
     if (!api) return;
