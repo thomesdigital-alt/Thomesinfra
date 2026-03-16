@@ -195,13 +195,14 @@ export default function XXLPage() {
           bottom: 18%;
           left: 35%;
           transform: translateX(-56%);
+          
         }
         .hero-right {
           position: absolute;
-          right: 5%;
-          left: 65%;
+          right: 3%;
+          left: 62%;
           bottom: 16%;
-          top: 70%;
+          top: 75%;
         }
 
         /* ── FORM ── */
@@ -350,9 +351,11 @@ export default function XXLPage() {
           .hero-xxl {
             font-size: clamp(56px, 18vw, 90px);
             bottom: 14%;
-            left: 50%;
+            left: 45%;
             transform: translateX(-50%);
             text-align: center;
+            top:60
+            marginTop:40
             white-space: nowrap;
           }
           .hero-tagline { text-align: center; left: 50% !important; transform: translateX(-50%); right: auto !important; }
@@ -464,11 +467,14 @@ export default function XXLPage() {
         <img src={BUILDING} alt="J Cosmopolis Building" className="hero-building" style={{
           position: "absolute", zIndex: 1, pointerEvents: "none",
           filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.08))",
+          height: "75vh",
+          marginBottom: 10
+
         }} />
 
         {/* XXL + tagline */}
         <div className="hero-xxl" style={{
-          zIndex: 3, display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 0,
+          zIndex: 3, display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 0,marginTop : 170
         }}>
           <span style={{ fontSize: "clamp(9px, 1.5vw, 12px)", fontWeight: 600, letterSpacing: ".25em", textTransform: "uppercase", color: "#888", marginBottom: 0, marginLeft: 2 }}>
             EXPERIENCE LIVING
@@ -480,7 +486,7 @@ export default function XXLPage() {
           }}>
             XXL
           </div>
-          <span style={{ fontSize: "clamp(8px, 1.4vw, 11px)", fontWeight: 700, letterSpacing: ".32em", textTransform: "uppercase", color: "#888", marginTop: 6, marginLeft: 4 }}>
+          <span style={{ fontSize: "clamp(10px, 1.6vw, 12px)", fontWeight: 700, letterSpacing: ".32em", textTransform: "uppercase", color: "#888", marginTop: 6, marginLeft: 4 }}>
             COSMOPOLIS | MOKILA
           </span>
         </div>
@@ -491,9 +497,19 @@ export default function XXLPage() {
             fontWeight: 500, fontSize: "clamp(1.5rem,3.5vw,3rem)", lineHeight: 1.0,
             color: "#aaa", textTransform: "uppercase", letterSpacing: ".01em", margin: 0,
           }}>
-            WELCOME TO<br />J COSMOPOLIS.<br />SIGN UP TO YOUR XXL LIFE.
+            WELCOME TO<br />J COSMOPOLIS.<br />
+             <span style={{
+            fontWeight: 500, fontSize: "clamp(1.5rem,3.5vw,3rem)", lineHeight: 1.0,
+            color: "#aaa", textTransform: "uppercase", letterSpacing: ".01em", margin: 0,
+            marginLeft : -280,
+
+          }}>
+            SIGN UP TO YOUR XXL LIFE.
+          </span>
           </h2>
+        
         </div>
+        
       </section>
 
       {/* ══════════════════════════════ GIFT BANNER + FORM ══════════════════════════════ */}
@@ -603,7 +619,7 @@ export default function XXLPage() {
         <div className="section-inner" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 60px" }}>
           <motion.div initial={{ opacity: 0, y: -30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
             <h2 style={{ fontSize: "clamp(1.6rem,4vw,3rem)", fontWeight: 300, color: "#666", letterSpacing: 1, marginBottom: 16 }}>XXL Connectivity</h2>
-            <p style={{ fontSize: 15, lineHeight: 1.8, color: "#555", fontWeight: 300, maxWidth: "min(70%,600px)", marginBottom: 48 }}>
+            <p style={{ fontSize: 20, lineHeight: 1.8, color: "#555", fontWeight: 300, marginBottom: 48 }}>
               From J Cosmopolis, everything remains within direct reach. Commercial corridors, schools, entertainment &amp; lifestyle spaces etc., connect here with efficiency.
             </p>
           </motion.div>
@@ -636,7 +652,7 @@ export default function XXLPage() {
           </motion.div>
 
           <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.7, delay: .1 }} viewport={{ once: true }}
-            style={{ fontSize: 15, lineHeight: 1.85, color: "#555", fontWeight: 300, maxWidth: 860, marginBottom: 36 }}>
+            style={{ fontSize: 20, lineHeight: 1.85, color: "#555", fontWeight: 300, marginBottom: 36 }}>
             Experience seamless continuity and movement in your 3-bedroom configuration. At the entry, you got a clear visual axis of your home. Movement across feels intuitive and uninterrupted. The living space extends beyond a curved balcony with multiple seating arrangements. Every space and dimension, from the living room to the kitchen or bedrooms, contribute to a quiet grandeur and assured XXL luxury.
           </motion.p>
 
@@ -728,7 +744,7 @@ export default function XXLPage() {
             XXL Assurance
           </motion.h2>
           <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.7, delay: .1 }} viewport={{ once: true }}
-            style={{ fontSize: 15, lineHeight: 1.85, color: "#555", fontWeight: 300, maxWidth: "85%", marginBottom: 56 }}>
+            style={{ fontSize: 20, lineHeight: 1.85, color: "#555", fontWeight: 300, marginBottom: 56 }}>
             Built with intent and promoted with discipline, T Homes Infra brings a considered understanding of land value and delivery integrity. J Cosmopolis too, comes with the promise where execution sustains design.
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} style={{ position: "relative" }}>
@@ -744,11 +760,11 @@ export default function XXLPage() {
       <footer className="footer-wrap" style={{ background: WHITE, padding: "24px 60px", borderTop: "1px solid #ddd" }}>
         <div className="footer-top">
           <div style={{ display: "flex", alignItems: "center", gap: 20, flexWrap: "wrap" }}>
-            <img src={HMDA_LOGO} alt="HMDA" style={{ height: 40, objectFit: "contain" }} />
-            <img src={RERA_LOGO} alt="TG RERA" style={{ height: 40, objectFit: "contain" }} />
+            <img src={HMDA_LOGO} alt="HMDA" style={{ height: 70, objectFit: "contain" }} />
+            <img src={RERA_LOGO} alt="TG RERA" style={{ height: 70, objectFit: "contain" }} />
           </div>
           <div className="footer-credits">
-            {[["Consultant Architect","Add Name"],["Landscaping Partner","Add Name"],["Playarea Design by","Pool"]].map(([s,v]) => (
+            {[["Consultant Architect"],["Landscaping Partner"],["Playarea Design by"]].map(([s,v]) => (
               <div key={s}>
                 <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: ".12em", textTransform: "uppercase", color: "#aaa" }}>{s}</div>
                 <div style={{ fontSize: 11, fontWeight: 600, color: NAVY }}>{v}</div>
@@ -756,13 +772,7 @@ export default function XXLPage() {
             ))}
           </div>
         </div>
-        <div className="footer-bottom">
-          <div style={{ fontSize: 9, color: "#aaa", lineHeight: 1.65, maxWidth: 620 }}>
-            0651194/5K9/91/U6/HMDA/1408/2022 and P02400005375 | {"{Add remaining RERA details}"}<br />
-            <strong>Disclaimer:</strong> All images, dimensions and details are indicative only and subject to change without notice.
-          </div>
-          <div style={{ fontSize: 10, color: "#ccc", fontWeight: 500 }}>© 2025 T Homes Infra Pvt. Ltd.</div>
-        </div>
+       
       </footer>
 
       {/* ─── Toast ─── */}
