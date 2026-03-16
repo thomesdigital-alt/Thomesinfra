@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, Plus, Minus } from "lucide-react";INDI
+import { Menu, X, ChevronDown, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import rawProjectsData from "@/data/projects.json";
 
@@ -28,9 +28,10 @@ const projectsData = rawProjectsData as ProjectsData;
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "About Us", href: "/about" },
-  { name: "Projects in India", hasDropdown: true },
-  { name: "Projects in Dubai", href:"https://globalthomesrealty.com/" },
+  { name: "India", hasDropdown: true },
+  { name: "Dubai", href:"https://globalthomesrealty.com/" },
   { name: "Jumeirah Towers", href: "https://thomestowers.com/" },
+
   {name: "Blogs", href: "/blogs"},
   { name: "Contact", href: "/contact" },
 ];
@@ -281,7 +282,7 @@ export function Navbar() {
           {/* VIEW MAPS BUTTON */}
           <div className="hidden lg:block">
             <a
-              href="https://earth.google.com/earth/d/17GEvwTcuXVKNAbark1aqu8Waah0zeZoq?usp=sharinghttps://earth.google.com/earth/d/17GEvwTcuXVKNAbark1aqu8Waah0zeZoq?usp=sharing"
+              href="https://earth.google.com/earth/d/1MS-DYbZVeEuiRP8LbFLcjeS-nd0V7S2c?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
             >
