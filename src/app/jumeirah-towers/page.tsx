@@ -1,793 +1,591 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import ContactSection from "./contactsession";
 
-// ─── Image URLs ───────────────────────────────────────────────────────────────
-const LOGO             = "https://thomestowers.com/wp-content/uploads/2026/03/T-Homes-Logo-1.png";
-const BUILDING         = "https://thomestowers.com/wp-content/uploads/2026/03/South-East-View-1-scaled-removebg-preview.png";
-const SCALE_IMG        = "https://thomestowers.com/wp-content/uploads/2026/02/Night-Areal-Vie-scaled-1.webp";
-const HMDA_LOGO        = "https://thomestowers.com/wp-content/uploads/2026/03/HMDA_logo1.jpg";
-const RERA_LOGO        = "https://thomestowers.com/wp-content/uploads/2026/03/1923609-10.jpg";
-const ASSURANCE_BUILDING = "https://thomestowers.com/wp-content/uploads/2025/12/srenj4-scaled.jpg";
-
-const LUXURY_IMAGES = [
-  { src: "https://thomestowers.com/wp-content/uploads/2026/02/happy-family-portrait-roof-with-kids-real-estate-moving-new-home-together-excited-mother-father-children-with-smile-shelter-property-apartment-house-insurance-start_590464-422994.webp", alt: "Family" },
-  { src: "https://thomestowers.com/wp-content/uploads/2026/02/Vanity-scaled-2.webp",   alt: "Vanity"   },
-  { src: "https://thomestowers.com/wp-content/uploads/2026/02/Toilet-scaled-1.webp",   alt: "Toilet"   },
-  { src: "https://thomestowers.com/wp-content/uploads/2026/02/8-1.webp",               alt: "Room 1"   },
-  { src: "https://thomestowers.com/wp-content/uploads/2026/02/7-1.webp",               alt: "Room 2"   },
-];
-
-const AMENITY_IMAGES = [
-  { src: "https://thomestowers.com/wp-content/uploads/2025/12/unnamed-13.jpg",                                                              alt: "Swimming Pool", featured: true  },
-  { src: "https://thomestowers.com/wp-content/uploads/2025/12/5-3.png",                                                                     alt: "Amenity 2",     featured: false },
-  { src: "https://thomestowers.com/wp-content/uploads/2025/12/3-2.png",                                                                     alt: "Amenity 3",     featured: false },
-  { src: "https://thomestowers.com/wp-content/uploads/2025/12/T-Homes-_-Jumeirah-Towers-Floor-Plan-2_page-0001-scaled.jpg",                 alt: "Floor Plan",    featured: false },
-];
-
-const CONNECTIVITY = [
-  { name: "Exist IA",                   time: "12 min", image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=200&q=80" },
-  { name: "RGIA",                       time: "35 min", image: "https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=200&q=80" },
-  { name: "ICFAI",                      time: "5 min",  image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=200&q=80" },
-  { name: "Neopolis",                   time: "10 min", image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=200&q=80" },
-  { name: "Gaudium School",             time: "15 min", image: "https://images.unsplash.com/photo-1564399579883-451a5d44e5f0?w=200&q=80" },
-  { name: "Indus International School", time: "5 min",  image: "https://images.unsplash.com/photo-1588072432836-e10032774350?w=200&q=80" },
-  { name: "Continental Hospital",       time: "20 min", image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=200&q=80" },
-];
-
-const AMENITIES = [
-  "15,000 Sq. ft. Clubhouse",              "Meeting Rooms",
-  "Swimming Pool and Deck",   "Basket Ball Court",           "Banquet Hall",
-  "Indoor Gym Sauna",         "Children's Play Zone",        "Yoga Studio",
-  "Cricketing Net",           "Relaxation Park for Elders",  "Reading Room",
-];
-
-const STATS = [
-  { value: "1.93",  label: "Acres"     },
-  { value: "68%",   label: "Open Space"},
-  { value: "3 BHK", label: "Community" },
-  { value: "17",    label: "Levels"    },
-  { value: "159",   label: "Units"     },
-];
-
-interface FormState {
+export default function xxlpage(){
+  interface FormState {
   name: string; email: string; occupation: string; code: string; phone: string;
   checks: { mokila: boolean; hyderabad: boolean; months: boolean };
 }
-
-const BG    = "#e8e5df";
-const NAVY  = "#1a2e5a";
-const GREEN = "#4caf3a";
-const WHITE = "#ffffff";
-
-// ═══════════════════════════════════════════════════════════════════════════════
-export default function XXLPage() {
-  const [form, setForm] = React.useState<FormState>({
-    name: "", email: "", occupation: "", code: "", phone: "",
-    checks: { mokila: false, hyderabad: false, months: false },
-  });
-  const [scrolled,    setScrolled]    = React.useState(false);
-  const [menuOpen,    setMenuOpen]    = React.useState(false);
-  const [toast,       setToast]       = React.useState(false);
-
-  React.useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", fn);
-    return () => window.removeEventListener("scroll", fn);
-  }, []);
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    if (type === "checkbox") {
-      setForm(p => ({ ...p, checks: { ...p.checks, [name]: checked } }));
-    } else {
-      setForm(p => ({ ...p, [name]: value }));
-    }
-  };
-
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setToast(true);
-    setMenuOpen(false);
-    setForm({ name: "", email: "", occupation: "", code: "", phone: "", checks: { mokila: false, hyderabad: false, months: false } });
-    setTimeout(() => setToast(false), 4000);
-  };
-
-  const navLinks: [string, string][] = [
+const locations = [
+  { name: "Exit 1A", time: "12 min", img: "https://placehold.co/120x120/c8b89a/ffffff?text=Exit+1A" },
+  { name: "RGIA", time: "35 min", img: "https://placehold.co/120x120/c8b89a/ffffff?text=RGIA" },
+  { name: "Gachibowli", time: "20 min", img: "https://placehold.co/120x120/c8b89a/ffffff?text=Gachibowli" },
+  { name: "Neopolis", time: "10 min", img: "https://placehold.co/120x120/c8b89a/ffffff?text=Neopolis" },
+  { name: "Gaudium School", time: "15 min", img: "https://placehold.co/120x120/c8b89a/ffffff?text=Gaudium" },
+  { name: "Indus International School", time: "5 min", img: "https://placehold.co/120x120/c8b89a/ffffff?text=Indus" },
+  { name: "Continental Hospital", time: "20 min", img: "https://placehold.co/120x120/c8b89a/ffffff?text=Continental" },
+  { name: "ICFAI", time: "5 min", img: "https://placehold.co/120x120/c8b89a/ffffff?text=ICFAI" },
+];
+const navLinks: [string, string][] = [
     ["#amenities", "Amenities"],
     ["#layout",    "Layout plan"],
     ["#location",  "Location"],
     ["#contact",   "Call for site visit"],
   ];
+ const [scrolled, setScrolled] = React.useState(false);
+ const [menuOpen, setMenuOpen] = React.useState(false);
+ const [toast,    setToast]    = React.useState(false);
+ const LOGO  = "https://thomestowers.com/wp-content/uploads/2026/03/T-Homes-Logo-1.png";
+   const [form, setForm] = React.useState<FormState>({
+      name: "", email: "", occupation: "", code: "", phone: "",
+      checks: { mokila: false, hyderabad: false, months: false },
+    });
+const NAVY  = "#1a2e5a";
+ React.useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
+   return (
+   <div
+  style={{
+    minHeight: "100vh",
+    backgroundImage: `
+      url('https://thomestowers.com/wp-content/uploads/2026/03/background-1-scaled.png')
+    `,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    zIndex:0
+  }}
+>
+      <header
+  className="navbar"
+  style={{
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 200,
+    backdropFilter: scrolled ? "blur(30px)" : "none",
+    boxShadow: scrolled ? "0 2px 14px rgba(0,0,0,.08)" : "none",
+    transition: "all .3s",
+    background: scrolled ? "rgba(232,229,223,0.85)" : "transparent",
+  }}
+>
+  {/* INNER CONTAINER (IMPORTANT) */}
+  <div
+    style={{
+      maxWidth: "1200px",
+      margin: "0 auto",
+      padding: "12px 24px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+    }}
+  >
+    {/* LOGO */}
+    <img
+      src={LOGO}
+      alt="T Homes Infra"
+      style={{ height: 100, objectFit: "contain" }}
+    />
+  <div style={{ display: "flex", alignItems: "center", marginLeft: "auto" }}>
+    {/* NAV */}
+    <nav style={{ display: "flex", gap: "28px" }}>
+      {navLinks.map(([h, l]) => (
+        <a
+          key={h}
+          href={h}
+          style={{
+            fontSize: 14,
+            color: "#444",
+            fontWeight: 500,
+            letterSpacing: ".02em",
+            transition: "color .2s",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = NAVY)}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "#444")}
+        >
+          {l}
+        </a>
+      ))}
+    </nav>
 
-  return (
-    <div style={{ fontFamily: "'Montserrat',sans-serif", background: BG, overflowX: "hidden" }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
-        a { text-decoration: none; color: inherit; cursor: pointer; }
-        input, button { font-family: 'Montserrat', sans-serif; }
-        input:focus { outline: none !important; border-color: ${NAVY} !important; }
+    {/* HAMBURGER */}
+   
+    </div>
+  </div>
+</header>
+<section className="hero" style={{
+  height: '100vh',
+  overflow: 'hidden',
+  zIndex:1
+}}>
+ <div
+  className="Imagebuilding"
+  style={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow:'hidden',
+    height: "100vh",
+    zIndex:2
+  }}
+ >
+  <img
+    src="https://thomestowers.com/wp-content/uploads/2026/03/Image_-1.png"
+    alt="building"
+    style={{
+       height:"50vh",
+    width:"auto",
+    objectFit:"fill",
+    }}
+  />
+  
+</div>
+{/* <div className="XXLimage" 
+ style={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow:'hidden',
+    marginTop:"-65vh",
+    marginLeft:"-38vh",
+    height: "70vh",
+    zIndex:5
+  }}>
+  <img 
+  src="https://thomestowers.com/wp-content/uploads/2026/03/Path_-_Path_-_Compound-Path_-_Path_-_Compound-Path_-_Path_-_Path_-_Path_-_Path_-_Path_-_Path_-_Path_-_Path_-_Path_-_Path_-_Path_-2.png"
+  alt="xxl Living"
+  style={{
+    height:"30vh",
+    width:"auto"
+  }}
+  >
 
-        /* ── noise texture ── */
-        .tex {
-          background-color: ${BG};
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.045'/%3E%3C/svg%3E");
-        }
+  </img>
+  <div className="right-text">
+    
+  </div>
+ </div> */}
+<div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    height: "100vh",
+    padding: "0 5vw",
+    marginTop:"-83vh",
+    marginLeft:"47vh",
+  }}
+>
+  {/* LEFT SIDE - IMAGE */}
+  <div
+    style={{
+      flex: 1,
+      display: "flex",
+      justifyContent: "center",
+    }}
+  >
+    <img
+      src="https://thomestowers.com/wp-content/uploads/2026/03/Path_-_Path_-_Compound-Path_-_Path_-_Compound-Path_-_Path_-_Path_-_Path_-_Path_-_Path_-_Path_-_Path_-_Path_-_Path_-_Path_-_Path_-2.png"
+      alt="XXL Living"
+      style={{
+        width: "auto",
+        height:"26vh"
+      }}
+    />
+  </div>
 
-        /* ── hamburger button ── */
-        .hamburger {
-          display: none;
-          flex-direction: column;
-          justify-content: center;
-          gap: 5px;
-          width: 36px;
-          height: 36px;
-          background: none;
-          border: none;
-          cursor: pointer;
-          padding: 4px;
-          z-index: 300;
-        }
-        .hamburger span {
-          display: block;
-          width: 100%;
-          height: 2px;
-          background: #444;
-          border-radius: 2px;
-          transition: all .3s;
-        }
+  {/* RIGHT SIDE - TEXT */}
+  <div
+    style={{
+      flex: 1,
+      textAlign: "right",
+      paddingLeft: "20px",
+      marginRight:"5vh",
+      marginTop:"20vh"
+    }}
+  >
+  <h1
+  style={{
+    margin: 0,
+    fontFamily: "Montserrat, sans-serif",
+    fontWeight: 500, // slightly lighter = premium feel
+    fontSize: "clamp(1.8rem, 3.8vw, 3.4rem)", // smoother scaling
+    lineHeight: 1.1,
+    color: "#8f8f8f", // softer than #aaa (more elegant)
+    textTransform: "uppercase",
+    // letterSpacing: "0.09em",
+    marginBottom:'1px'
+  }}
+>
+  WELCOME TO
+</h1>
+    <h1  style={{
+    margin: 0,
+    fontFamily: "Montserrat, sans-serif",
+    fontWeight: 500, // slightly lighter = premium feel
+    fontSize: "clamp(2rem, 4vw, 3.6rem)", // smoother scaling
+    lineHeight: 1.5,
+    color: "#8f8f8f", // softer than #aaa (more elegant)
+    textTransform: "uppercase",
+    letterSpacing: "0.02em",
+    marginLeft:"-5vh"
+  }}>
+      J COSMOPOLIS.
+    </h1>
+    <p style={{
+    margin: 0,
+    fontFamily: "Montserrat, sans-serif",
+    fontWeight: 500,// slightly lighter = premium feel
+  fontSize: "clamp(1.5rem, 3.5vw, 3.0rem)", // smoother scaling
+    lineHeight: 1.5,
+    color: "#8f8f8f", // softer than #aaa (more elegant)
+    textTransform: "uppercase",
+    letterSpacing: "0.041em",
+    marginLeft:"-70vh"
+  }}>
+      SIGN UP TO YOUR XXL LIFE.
+    </p>
+  </div>
+</div>
 
-        /* ── mobile nav overlay ── */
-        .mobile-nav {
-          display: none;
-          position: fixed;
-          inset: 0;
-          background: rgba(26,46,90,.97);
-          z-index: 250;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          gap: 32px;
-        }
-        .mobile-nav.open { display: flex; }
-        .mobile-nav a {
-          font-size: 20px;
-          font-weight: 600;
-          color: rgba(255,255,255,.85);
-          letter-spacing: .08em;
-          text-transform: uppercase;
-          transition: color .2s;
-        }
-        .mobile-nav a:hover { color: #FCD34D; }
-        .mobile-nav-close {
-          position: absolute;
-          top: 24px;
-          right: 24px;
-          background: none;
-          border: none;
-          color: #fff;
-          font-size: 32px;
-          cursor: pointer;
-          line-height: 1;
-        }
+</section>
+<ContactSection />
+ <section className="w-full bg-[#0B3A75] text-white overflow-hidden">
+  <div className="w-full flex flex-col lg:flex-row items-stretch">
 
-        /* ── NAVBAR ── */
-        .navbar { padding: 14px 60px; }
-        .desktop-nav { display: flex; gap: 40px; }
+    {/* LEFT - SVG */}
+    <div className="w-full lg:w-1/2 flex items-end">
+      <img
+        src="/mokilabuilding.svg"
+        alt="Building"
+        className="w-full h-full max-w-none object-contain"
+      />
+    </div>
 
-        /* ── HERO ── */
-        .hero-section { min-height: 100vh; padding-top: 88px; }
-        .hero-building {
-          position: absolute;
-          top: 70px;
-          left: 50%;
-          transform: translateX(-58%);
-          max-height: 620px;
-          object-fit: contain;
-          object-position: bottom center;
-        }
-        .hero-xxl {
-          font-size: clamp(80px, 14vw, 140px);
-          position: absolute;
-          bottom: 18%;
-          left: 35%;
-          transform: translateX(-56%);
-          
-        }
-        .hero-right {
-          position: absolute;
-          right: 3%;
-          left: 62%;
-          bottom: 16%;
-          top: 75%;
-        }
+    {/* RIGHT - CONTENT */}
+    <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 lg:px-10 py-10 lg:py-16">
 
-        /* ── FORM ── */
-        .form-wrap { width: 90%; max-width: 1100px; margin: 0 auto; padding: 18px 48px; background: #d9d5ce; }
-        .form-grid {
-          display: grid;
-          grid-template-columns: auto auto 1fr auto;
-          gap: 12px 28px;
-          align-items: center;
-        }
+      {/* TITLE */}
+      <h2 className="text-3xl md:text-4xl lg:text-[42px] font-medium leading-tight mb-4">
+        XXL in Scale
+      </h2>
 
-        /* ── SCALE section ── */
-        .scale-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 48px;
-          align-items: center;
-        }
-        .stats-grid {
-          display: grid;
-          grid-template-columns: repeat(5, 1fr);
-          gap: 24px;
-          padding-top: 24px;
-        }
+      {/* DESCRIPTION */}
+      <p className="text-white/80 text-sm md:text-base leading-relaxed max-w-xl mb-8">
+        From the very first sight, J Cosmopolis stands tall with composure,
+        drawing admiration to its unmissable neo-modern curved edges.
+        Register openness as you walk through a pergola-framed entry.
+        The reception lobby’s double height ceiling establishes grandness
+        without announcing it. With scale and space defining its presence,
+        the singular tower spells exclusivity in an extra-large format.
+      </p>
 
-        /* ── CONNECTIVITY ── */
-        .conn-grid {
-          display: grid;
-          grid-template-columns: repeat(7, 1fr);
-          gap: 32px;
-          justify-items: center;
-        }
+      {/* STATS */}
+      <div className="flex flex-wrap items-center gap-6 md:gap-10">
 
-        /* ── LUXURY ── */
-        .lux-grid {
-          display: grid;
-          grid-template-columns: 1.4fr 1fr;
-          gap: 24px;
-          align-items: start;
-          margin-bottom: 20px;
-        }
-        .lux-photos {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 5px;
-          height: 320px;
-        }
+        {[
+          { value: "1.93", label: "Acres" },
+          { value: "68%", label: "Open Space" },
+          { value: "3 BHK", label: "Community" },
+          { value: "17", label: "Levels" },
+          { value: "159", label: "Units" },
+        ].map((item, index) => (
+          <div key={index} className="flex items-center gap-6">
 
-        /* ── APPROVALS ── */
-        .approvals-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr 1fr;
-        }
-
-        /* ── AMENITIES LIST ── */
-        .amenities-list {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 4px 36px;
-        }
-
-        /* ── AMENITY PHOTOS ── */
-        .amenity-photos {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr) repeat(2, 1fr);
-          grid-template-rows: 1fr 1fr;
-          height: 360px;
-          gap: 4px;
-        }
-
-        /* ── FOOTER ── */
-        .footer-top {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          flex-wrap: wrap;
-          gap: 20px;
-          margin-bottom: 16px;
-        }
-        .footer-credits {
-          display: flex;
-          gap: 40px;
-          flex-wrap: wrap;
-        }
-        .footer-bottom {
-          border-top: 1px solid #eee;
-          padding-top: 14px;
-          display: flex;
-          justify-content: space-between;
-          flex-wrap: wrap;
-          gap: 10px;
-        }
-
-        /* ═══════════════════════════
-           TABLET  ≤ 1024px
-        ═══════════════════════════ */
-        @media (max-width: 1024px) {
-          .navbar { padding: 14px 32px; }
-          .desktop-nav { gap: 24px; }
-          .desktop-nav a { font-size: 13px; }
-
-          .hero-building { max-height: 480px; }
-          .hero-right { display: none; }
-
-          .form-wrap { padding: 18px 28px; }
-          .form-grid {
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: auto auto;
-          }
-          .form-grid > *:nth-child(3) { grid-column: 1 / 3; }
-          .form-grid > *:nth-child(4) { grid-column: 1 / 3; text-align: center; }
-          .form-grid > *:nth-child(4) button { width: 100%; }
-
-          .scale-grid { grid-template-columns: 1fr; gap: 32px; }
-          .stats-grid { grid-template-columns: repeat(5, 1fr); gap: 16px; }
-
-          .conn-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; }
-
-          .lux-grid { grid-template-columns: 1fr; }
-          .lux-photos { height: 260px; }
-
-          .amenity-photos { height: 280px; }
-
-          section { padding-left: 32px !important; padding-right: 32px !important; }
-          .section-inner { padding: 0 32px !important; }
-        }
-
-        /* ═══════════════════════════
-           MOBILE  ≤ 640px
-        ═══════════════════════════ */
-        @media (max-width: 640px) {
-          .navbar { padding: 12px 20px; }
-          .desktop-nav { display: none; }
-          .hamburger { display: flex; }
-
-          /* Hero */
-          .hero-section { min-height: 100svh; padding-top: 72px; }
-          .hero-building {
-            top: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-            max-height: 55vw;
-            min-height: 220px;
-            width: 90%;
-          }
-          .hero-xxl {
-            font-size: clamp(56px, 18vw, 90px);
-            bottom: 14%;
-            left: 45%;
-            transform: translateX(-50%);
-            text-align: center;
-            top:60
-            marginTop:40
-            white-space: nowrap;
-          }
-          .hero-tagline { text-align: center; left: 50% !important; transform: translateX(-50%); right: auto !important; }
-
-          /* Form */
-          .form-wrap { width: 100%; padding: 16px 16px; }
-          .form-grid {
-            grid-template-columns: 1fr;
-            grid-template-rows: none;
-          }
-          .form-grid > * { grid-column: 1 !important; }
-          .form-grid > *:nth-child(4) button { width: 100%; }
-          .contact-input-name,
-          .contact-input-email,
-          .contact-input-occupation { width: 100% !important; }
-          .contact-row { flex-direction: column !important; align-items: flex-start !important; gap: 4px !important; }
-          .contact-label { min-width: unset !important; }
-
-          /* Scale */
-          .scale-grid { grid-template-columns: 1fr; gap: 24px; }
-          .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
-
-          /* Connectivity */
-          .conn-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-
-          /* Luxury */
-          .lux-grid { grid-template-columns: 1fr; gap: 16px; }
-          .lux-photos { height: 200px; }
-
-          /* Approvals */
-          .approvals-grid { grid-template-columns: 1fr; }
-          .approvals-grid > * { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,.25); }
-          .approvals-grid > *:last-child { border-bottom: none; }
-
-          /* Amenities */
-          .amenities-list { grid-template-columns: 1fr 1fr; gap: 4px 20px; }
-
-          /* Amenity photos */
-          .amenity-photos {
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: auto auto auto;
-            height: auto;
-          }
-          .amenity-featured { grid-column: 1 / 3; height: 220px; }
-          .amenity-small { height: 140px; }
-
-          /* Sections inner padding */
-          .section-inner { padding: 0 20px !important; }
-          section { padding-left: 0 !important; padding-right: 0 !important; }
-
-          /* Footer */
-          .footer-wrap { padding: 20px !important; }
-          .footer-top { flex-direction: column; align-items: flex-start; }
-          .footer-credits { gap: 20px; }
-          .footer-bottom { flex-direction: column; }
-        }
-
-        /* ═══════════════════════════
-           VERY SMALL  ≤ 380px
-        ═══════════════════════════ */
-        @media (max-width: 380px) {
-          .amenities-list { grid-template-columns: 1fr; }
-          .stats-grid { grid-template-columns: repeat(2, 1fr); }
-          .conn-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
-        }
-      `}</style>
-
-      {/* ─── Mobile Nav Overlay ─── */}
-      <div className={`mobile-nav ${menuOpen ? "open" : ""}`}>
-        <button className="mobile-nav-close" onClick={() => setMenuOpen(false)} aria-label="Close menu">✕</button>
-        {navLinks.map(([h, l]) => (
-          <a key={h} href={h} onClick={() => setMenuOpen(false)}>{l}</a>
-        ))}
-      </div>
-
-      {/* ══════════════════════════════ NAVBAR ══════════════════════════════ */}
-      <header className="navbar" style={{
-        position: "fixed", top: 0, left: 0, right: 0, zIndex: 200,
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        backdropFilter: scrolled ? "blur(30px)" : "none",
-        boxShadow: scrolled ? "0 2px 14px rgba(0,0,0,.08)" : "none",
-        transition: "all .3s",
-        background: scrolled ? "rgba(232,229,223,0.85)" : "transparent",
-      }}>
-        <img src={LOGO} alt="T Homes Infra" style={{ height: 60, objectFit: "contain" }} />
-
-        <nav className="desktop-nav">
-          {navLinks.map(([h, l]) => (
-            <a key={h} href={h} style={{ fontSize: 14, color: "#444", fontWeight: 400, letterSpacing: ".01em", transition: "color .2s" }}
-              onMouseEnter={e => (e.currentTarget.style.color = NAVY)}
-              onMouseLeave={e => (e.currentTarget.style.color = "#444")}>
-              {l}
-            </a>
-          ))}
-        </nav>
-
-        <button className="hamburger" onClick={() => setMenuOpen(true)} aria-label="Open menu">
-          <span /><span /><span />
-        </button>
-      </header>
-
-      {/* ══════════════════════════════ HERO ══════════════════════════════ */}
-      <section className="tex hero-section" style={{
-        position: "relative", overflow: "hidden",
-        display: "flex", alignItems: "stretch",
-      }}>
-        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 45% 35%, rgba(255,255,255,0.55) 0%, transparent 70%)", pointerEvents: "none" }} />
-
-        <img src={BUILDING} alt="J Cosmopolis Building" className="hero-building" style={{
-          position: "absolute", zIndex: 1, pointerEvents: "none",
-          filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.08))",
-          height: "75vh",
-          marginBottom: 10
-
-        }} />
-
-        {/* XXL + tagline */}
-        <div className="hero-xxl" style={{
-          zIndex: 3, display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 0,marginTop : 170
-        }}>
-          <span style={{ fontSize: "clamp(9px, 1.5vw, 12px)", fontWeight: 600, letterSpacing: ".25em", textTransform: "uppercase", color: "#888", marginBottom: 0, marginLeft: 2 }}>
-            EXPERIENCE LIVING
-          </span>
-          <div style={{
-            fontWeight: 900, lineHeight: 0.88, letterSpacing: "-4px",
-            background: "linear-gradient(105deg,#c084fc 0%,#a78bfa 15%,#60a5fa 30%,#34d399 45%,#fbbf24 60%,#f87171 75%,#c084fc 90%)",
-            WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-          }}>
-            XXL
-          </div>
-          <span style={{ fontSize: "clamp(10px, 1.6vw, 12px)", fontWeight: 700, letterSpacing: ".32em", textTransform: "uppercase", color: "#888", marginTop: 6, marginLeft: 4 }}>
-            COSMOPOLIS | MOKILA
-          </span>
-        </div>
-
-        {/* Right headline — hidden on mobile via CSS */}
-        <div className="hero-right" style={{ zIndex: 4, textAlign: "left" }}>
-          <h2 style={{
-            fontWeight: 500, fontSize: "clamp(1.5rem,3.5vw,3rem)", lineHeight: 1.0,
-            color: "#aaa", textTransform: "uppercase", letterSpacing: ".01em", margin: 0,
-          }}>
-            WELCOME TO<br />J COSMOPOLIS.<br />
-             <span style={{
-            fontWeight: 500, fontSize: "clamp(1.5rem,3.5vw,3rem)", lineHeight: 1.0,
-            color: "#aaa", textTransform: "uppercase", letterSpacing: ".01em", margin: 0,
-            marginLeft : -280,
-
-          }}>
-            SIGN UP TO YOUR XXL LIFE.
-          </span>
-          </h2>
-        
-        </div>
-        
-      </section>
-
-      {/* ══════════════════════════════ GIFT BANNER + FORM ══════════════════════════════ */}
-      <section className="tex" id="contact" style={{ paddingBottom: 40 }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "12px 0", fontSize: 14, fontWeight: 600, color: "#555" }}>
-          <span style={{ fontSize: 20 }}>🎁</span>
-          First 50 site visits get assured gift
-        </div>
-
-        <form onSubmit={onSubmit} className="form-wrap">
-          <div className="form-grid">
-
-            {/* Col 1: Name + Occupation */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <div className="contact-row" style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <label htmlFor="c-name" className="contact-label" style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", color: "#666", minWidth: 80 }}>Name</label>
-                <input id="c-name" name="name" value={form.name} onChange={onChange} required placeholder="Your name"
-                  style={{ padding: "8px 10px", border: "1px solid #bbb", background: WHITE, fontSize: 12, width: "100%", outline: "none" }} />
-              </div>
-              <div className="contact-row" style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <span className="contact-label" style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", color: "#666", minWidth: 80 }}>Occupation</span>
-                <input name="occupation" value={form.occupation} onChange={onChange} placeholder="Your occupation"
-                  style={{ padding: "8px 10px", border: "1px solid #bbb", background: WHITE, fontSize: 12, width: "100%", outline: "none" }} />
-              </div>
-            </div>
-
-            {/* Col 2: Email + Phone */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <div className="contact-row" style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <span className="contact-label" style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", color: "#666", minWidth: 100, flexShrink: 0 }}>E-mail address:</span>
-                <input name="email" type="email" value={form.email} onChange={onChange} required placeholder="Email address"
-                  style={{ padding: "8px 10px", border: "1px solid #bbb", background: WHITE, fontSize: 12, width: "100%", outline: "none" }} />
-              </div>
-              <div className="contact-row" style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <span className="contact-label" style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", color: "#666", minWidth: 100, flexShrink: 0 }}>Code &amp; Phone:</span>
-                <input name="code" value={form.code} onChange={onChange} placeholder="+91"
-                  style={{ padding: "8px 10px", border: "1px solid #bbb", background: WHITE, fontSize: 12, width: 52, outline: "none", flexShrink: 0 }} />
-                <input name="phone" type="tel" value={form.phone} onChange={onChange} required placeholder="Phone number"
-                  style={{ padding: "8px 10px", border: "1px solid #bbb", background: WHITE, fontSize: 12, width: "100%", outline: "none" }} />
-              </div>
-            </div>
-
-            {/* Col 3: Checkboxes */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 6, paddingLeft: 12 }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: "#666", letterSpacing: ".06em", textTransform: "uppercase", marginBottom: 2 }}>
-                Tick what's applicable
-              </div>
-              {([
-                ["mokila",    "Yes I am actively looking for Site in Mokila"],
-                ["hyderabad", "I am looking for Site in Hyderabad"],
-                ["months",    "Not immediately but in 3–6 months"],
-              ] as const).map(([n, l]) => (
-                <label key={n} style={{ display: "flex", alignItems: "flex-start", gap: 7, cursor: "pointer", fontSize: 11, color: "#555", lineHeight: 1.4 }}>
-                  <input type="checkbox" name={n} checked={form.checks[n]} onChange={onChange} style={{ marginTop: 2, accentColor: NAVY }} />
-                  {l}
-                </label>
-              ))}
-            </div>
-
-            {/* Col 4: Submit */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <button type="submit" style={{
-                background: "#777", color: WHITE, border: "none",
-                padding: "12px 28px", fontSize: 12, fontWeight: 600,
-                letterSpacing: ".08em", textTransform: "uppercase",
-                cursor: "pointer", transition: "background .2s", whiteSpace: "nowrap", width: "100%",
-              }}
-                onMouseEnter={e => (e.currentTarget.style.background = NAVY)}
-                onMouseLeave={e => (e.currentTarget.style.background = "#777")}>
-                Submit
-              </button>
-            </div>
-          </div>
-        </form>
-      </section>
-
-      {/* ══════════════════════════════ XXL IN SCALE ══════════════════════════════ */}
-      <section id="scale" style={{ background: "linear-gradient(to right,#001f3f,#003d7a,#001f3f)", padding: "80px 0", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 4, background: "linear-gradient(to right,#001f3f,#FCD34D,#001f3f)" }} />
-        <div className="section-inner" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 60px" }}>
-          <div className="scale-grid">
-            <motion.div initial={{ opacity: 0, x: -60 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-              <img src={SCALE_IMG} alt="J Cosmopolis Scale" style={{ width: "100%", height: "auto", objectFit: "contain", filter: "drop-shadow(0 20px 30px rgba(0,0,0,0.3))" }} />
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}
-              style={{ color: WHITE, display: "flex", flexDirection: "column", gap: 28 }}>
-              <h2 style={{ fontSize: "clamp(2rem,4vw,3.5rem)", fontWeight: 700, lineHeight: 1.2 }}>XXL in Scale</h2>
-              <p style={{ fontSize: 15, lineHeight: 1.75, color: "rgba(255,255,255,.75)", fontWeight: 300 }}>
-                From the very first sight, J Cosmopolis stands tall with composure, drawing admiration to its unmissable neo-modern curved edges. Register openness as you walk through a pergola-framed entry. The reception lobby's double height ceiling establishes grandness without announcing it. With scale and space defining its presence, the singular tower spells exclusivity in an extra-large format.
+            <div>
+              <p className="text-[#E6E600] text-xl md:text-2xl font-semibold">
+                {item.value}
               </p>
-              <div className="stats-grid">
-                {STATS.map(s => (
-                  <div key={s.label} style={{ borderBottom: "2px solid rgba(252,211,77,.3)", paddingBottom: 12 }}>
-                    <div style={{ fontSize: "clamp(18px,3vw,28px)", fontWeight: 800, color: "#FCD34D", letterSpacing: "-.02em" }}>{s.value}</div>
-                    <div style={{ fontSize: 10, fontWeight: 500, letterSpacing: ".08em", textTransform: "uppercase", color: "#9ca3af", marginTop: 4 }}>{s.label}</div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════ XXL CONNECTIVITY ══════════════════════════════ */}
-      <section id="location" style={{ background: "#e8e8e8", padding: "80px 0" }}>
-        <div className="section-inner" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 60px" }}>
-          <motion.div initial={{ opacity: 0, y: -30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-            <h2 style={{ fontSize: "clamp(1.6rem,4vw,3rem)", fontWeight: 300, color: "#666", letterSpacing: 1, marginBottom: 16 }}>XXL Connectivity</h2>
-            <p style={{ fontSize: 20, lineHeight: 1.8, color: "#555", fontWeight: 300, marginBottom: 48 }}>
-              From J Cosmopolis, everything remains within direct reach. Commercial corridors, schools, entertainment &amp; lifestyle spaces etc., connect here with efficiency.
-            </p>
-          </motion.div>
-          <div className="conn-grid">
-            {CONNECTIVITY.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, scale: .8, y: 20 }} whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * .07 }} viewport={{ once: true }}
-                style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
-                <div style={{ width: 80, height: 80, borderRadius: "50%", overflow: "hidden", border: "3px solid #f0f0f0", boxShadow: "0 4px 14px rgba(0,0,0,.1)", flexShrink: 0 }}>
-                  <img src={item.image} alt={item.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                </div>
-                <div style={{ fontSize: 12, fontWeight: 600, color: "#333", textAlign: "center", lineHeight: 1.3 }}>{item.name}</div>
-                <div style={{ fontSize: 11, color: "#888", fontWeight: 300 }}>{item.time}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════ ASSURED XXL LUXURY ══════════════════════════════ */}
-      <section id="layout" style={{ background: "#f5f5f5", padding: "80px 0" }}>
-        <div className="section-inner" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 60px" }}>
-          <motion.h2 initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}
-            style={{ fontSize: "clamp(1.4rem,3vw,2.4rem)", fontWeight: 300, color: "#999", letterSpacing: 1, marginBottom: 40, fontStyle: "italic" }}>
-            Assured XXL Luxury
-          </motion.h2>
-
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} style={{ marginBottom: 28 }}>
-            <img src={LUXURY_IMAGES[0].src} alt="Luxury Interior" style={{ width: "100%", height: "min(380px, 50vw)", objectFit: "cover", display: "block" }} />
-          </motion.div>
-
-          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.7, delay: .1 }} viewport={{ once: true }}
-            style={{ fontSize: 20, lineHeight: 1.85, color: "#555", fontWeight: 300, marginBottom: 36 }}>
-            Experience seamless continuity and movement in your 3-bedroom configuration. At the entry, you got a clear visual axis of your home. Movement across feels intuitive and uninterrupted. The living space extends beyond a curved balcony with multiple seating arrangements. Every space and dimension, from the living room to the kitchen or bedrooms, contribute to a quiet grandeur and assured XXL luxury.
-          </motion.p>
-
-          <div className="lux-grid">
-            <div className="lux-photos">
-              {LUXURY_IMAGES.slice(1, 5).map((img, i) => (
-                <motion.div key={i} initial={{ opacity: 0, scale: .95 }} whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: i * .08 }} viewport={{ once: true }} style={{ overflow: "hidden" }}>
-                  <img src={img.src} alt={img.alt} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform .6s" }}
-                    onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.05)")}
-                    onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")} />
-                </motion.div>
-              ))}
+              <p className="text-[#E6E600] text-xs md:text-sm tracking-wide">
+                {item.label}
+              </p>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              {[
-                { val: "1837 to 2713 SFT",          lbl: "Area Range" },
-                { val: "10 ft.\nwide corridors",     lbl: "" },
-                { val: "East, West, & North\norientations", lbl: "" },
-              ].map((s, i) => (
-                <div key={i} style={{ padding: "20px 22px", background: "#e8e4dc", borderLeft: "4px solid transparent", transition: "border-color .2s, background .2s", cursor: "default" }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderLeftColor = NAVY; (e.currentTarget as HTMLDivElement).style.background = "#dedad4"; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderLeftColor = "transparent"; (e.currentTarget as HTMLDivElement).style.background = "#e8e4dc"; }}>
-                  {s.val.split("\n").map((line, j) => (
-                    <div key={j} style={{ fontSize: j === 0 ? 18 : 15, fontWeight: 700, color: NAVY, lineHeight: 1.3 }}>{line}</div>
-                  ))}
-                </div>
-              ))}
-            </div>
+            {index !== 4 && (
+              <div className="hidden md:block w-px h-10 bg-white/30" />
+            )}
           </div>
+        ))}
 
-          <div className="approvals-grid">
-            {["Completion in 2027", "HMDA & RERA\nApproved", "UDS Share\n42 & 62 Sq yards"].map((txt, i) => (
-              <div key={i} style={{ background: GREEN, padding: "16px 20px", textAlign: "center", borderRight: i < 2 ? "1px solid rgba(255,255,255,.25)" : "none" }}>
-                {txt.split("\n").map((line, j) => (
-                  <span key={j} style={{ display: "block", fontSize: 13, fontWeight: 700, color: WHITE, lineHeight: 1.45 }}>{line}</span>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════ XXL AMENITIES ══════════════════════════════ */}
-      <section id="amenities">
-        <div style={{ background: "linear-gradient(to bottom,#66cc33,#5ab832)", padding: "56px 60px 48px" }}>
-          <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-            <h2 style={{ fontSize: "clamp(1.6rem,4vw,3rem)", fontWeight: 300, color: WHITE, letterSpacing: 1, marginBottom: 14 }}>XXL Amenities</h2>
-            <p style={{ fontSize: 15, lineHeight: 1.8, color: "rgba(255,255,255,.9)", fontWeight: 300, maxWidth: "min(70%,600px)", marginBottom: 32 }}>
-              Community forms differently when space supports it. J Cosmopolis comes with a host of amenities intended for celebrations and social interactions.
-            </p>
-            <div className="amenities-list">
-              {AMENITIES.map(a => (
-                <div key={a} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, fontWeight: 300, color: WHITE, padding: "6px 0", borderBottom: "1px solid rgba(255,255,255,.2)" }}>
-                  <span style={{ fontSize: 18, flexShrink: 0 }}>•</span>
-                  {a}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Photo grid */}
-        <div className="amenity-photos" style={{ background: BG }}>
-          <div className="amenity-featured" style={{ gridColumn: "1/3", gridRow: "1/3", overflow: "hidden", position: "relative" }}>
-            <img src={AMENITY_IMAGES[0].src} alt={AMENITY_IMAGES[0].alt} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform .6s" }}
-              onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.04)")}
-              onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")} />
-            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "rgba(0,0,0,.5)", color: WHITE, padding: "8px 12px", fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}>
-              SWIMMING POOL
-            </div>
-          </div>
-          {AMENITY_IMAGES.slice(1).map((img, i) => (
-            <div key={i} className="amenity-small" style={{ overflow: "hidden" }}>
-              <img src={img.src} alt={img.alt} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform .6s" }}
-                onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.05)")}
-                onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")} />
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ══════════════════════════════ XXL ASSURANCE ══════════════════════════════ */}
-      <section style={{ background: "#f5f5f5", padding: "80px 0" }}>
-        <div className="section-inner" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 60px" }}>
-          <motion.h2 initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}
-            style={{ fontSize: "clamp(1.6rem,4vw,3rem)", fontWeight: 300, color: "#999", letterSpacing: 1, marginBottom: 24 }}>
-            XXL Assurance
-          </motion.h2>
-          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.7, delay: .1 }} viewport={{ once: true }}
-            style={{ fontSize: 20, lineHeight: 1.85, color: "#555", fontWeight: 300, marginBottom: 56 }}>
-            Built with intent and promoted with discipline, T Homes Infra brings a considered understanding of land value and delivery integrity. J Cosmopolis too, comes with the promise where execution sustains design.
-          </motion.p>
-          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} style={{ position: "relative" }}>
-            <img src={ASSURANCE_BUILDING} alt="J Cosmopolis Elevation" style={{ width: "100%", maxHeight: 440, objectFit: "cover", display: "block" }} />
-            <div style={{ position: "absolute", bottom: 28, left: 36 }}>
-              <img src={LOGO} alt="T Homes Infra" style={{ height: 56, objectFit: "contain", filter: "drop-shadow(0 2px 8px rgba(0,0,0,.3))" }} />
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════ FOOTER ══════════════════════════════ */}
-      <footer className="footer-wrap" style={{ background: WHITE, padding: "24px 60px", borderTop: "1px solid #ddd" }}>
-        <div className="footer-top">
-          <div style={{ display: "flex", alignItems: "center", gap: 20, flexWrap: "wrap" }}>
-            <img src={HMDA_LOGO} alt="HMDA" style={{ height: 70, objectFit: "contain" }} />
-            <img src={RERA_LOGO} alt="TG RERA" style={{ height: 70, objectFit: "contain" }} />
-          </div>
-          <div className="footer-credits">
-            {[["Consultant Architect"],["Landscaping Partner"],["Playarea Design by"]].map(([s,v]) => (
-              <div key={s}>
-                <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: ".12em", textTransform: "uppercase", color: "#aaa" }}>{s}</div>
-                <div style={{ fontSize: 11, fontWeight: 600, color: NAVY }}>{v}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-       
-      </footer>
-
-      {/* ─── Toast ─── */}
-      <div style={{
-        position: "fixed", bottom: 28, right: 28, zIndex: 999,
-        background: NAVY, color: WHITE, padding: "14px 22px",
-        fontSize: 12, fontWeight: 600, letterSpacing: ".06em",
-        boxShadow: "0 8px 28px rgba(0,0,0,.2)",
-        transform: toast ? "translateY(0)" : "translateY(100px)",
-        opacity: toast ? 1 : 0,
-        transition: "all .4s ease", pointerEvents: "none",
-        maxWidth: "calc(100vw - 40px)",
-      }}>
-        ✓ Thank you! We'll contact you within 24 hours.
       </div>
     </div>
-  );
+  </div>
+</section>
+            <section
+                      style={{
+                        
+                        padding: "60px 48px",
+                        fontFamily: "'Georgia', 'Times New Roman', serif",
+                      }}
+                    >
+                      {/* Heading */}
+                      <h2
+                        style={{
+                          fontSize: "clamp(1.6rem, 3vw, 2.2rem)",
+                          fontWeight: 400,
+                          color: "#a09a91",
+                          marginBottom: "16px",
+                          letterSpacing: "0.01em",
+                        }}
+                      >
+                        XXL Connectivity
+                      </h2>
+                
+                      {/* Subtext */}
+                      <p
+                        style={{
+                          fontSize: "clamp(5 rem, 2 vw, 3.98rem)",
+                          color: "#6b6b6b",
+                          fontWeight: 300,
+                          
+                          marginRight: "30%",
+                          lineHeight: "1.8",
+                          marginBottom: "48px",
+                        }}
+                      >
+                        From J Cosmopolis, everything remains with-in direct reach. Commercial corridors,
+                        schools, entertainment &amp; lifestyle spaces etc., connect here with efficiency.
+                      </p>
+                
+                      {/* Grid */}
+                    <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))",
+                    gap: "32px 20px",
+                    maxWidth: "700px",
+                    margin: "0 auto"
+                  }}
+                >
+                  {locations.map((loc) => (
+                    <div
+                      key={loc.name}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: "12px",
+                      }}
+                    >
+                      {/* Circle image */}
+                      <div
+                        style={{
+                          width: "110px",
+                          height: "110px",
+                          borderRadius: "50%",
+                          overflow: "hidden",
+                          flexShrink: 0,
+                        }}
+                      >
+                        <img
+                          src={loc.img}
+                          alt={loc.name}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            display: "block",
+                          }}
+                        />
+                      </div>
+          
+                      {/* Label */}
+                      <div style={{ textAlign: "center" }}>
+                        <p
+                          style={{
+                            fontSize: "0.88rem",
+                            color: "#4a4a4a",
+                            fontWeight: 400,
+                            margin: 0,
+                            lineHeight: "1.4",
+                          }}
+                        >
+                          {loc.name}
+                        </p>
+                        <p
+                          style={{
+                            fontSize: "0.88rem",
+                            color: "#4a4a4a",
+                            fontWeight: 400,
+                            margin: 0,
+                            lineHeight: "1.4",
+                          }}
+                        >
+                          {loc.time}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+          
+                {/* Responsive styles via a style tag */}
+                <style>{`
+                  @media (max-width: 600px) {
+                    section {
+                      padding: 40px 24px !important;
+                    }
+                  }
+                `}</style>
+              </section>
+      <section
+         style={{
+          padding: "60px 48px",
+          fontFamily: "'Georgia', 'Times New Roman', serif",
+          overflow: "hidden",
+        }}
+       >
+          {/* Heading */}
+          <div style={{ padding: "28px 24px 16px" }}>
+            <h2
+                        style={{
+                          fontSize: "clamp(1.6rem, 3vw, 2.2rem)",
+                          fontWeight: 400,
+                          color: "#a09a91",
+                          marginBottom: "16px",
+                          letterSpacing: "0.01em",
+                        }}
+                      >
+              XXL Luxury
+            </h2>
+          </div>
+    
+          {/* Hero Image */}
+          <div style={{ width: "100%", height: "clamp(200px, 45vw, 320px)", overflow: "hidden" }}>
+            <img
+              src="https://placehold.co/800x320/8a9ba8/ffffff?text=Interior+Hero"
+              alt="Luxury Interior"
+              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            />
+          </div>
+    
+          {/* Description */}
+          <div style={{ padding: "28px 24px 20px" }}>
+            <p
+              style={{
+                fontSize: "clamp(0.82rem, 1.4vw, 0.93rem)",
+                color: "#5a5a5a",
+                lineHeight: "1.75",
+                margin: 0,
+                maxWidth: "560px",
+              }}
+            >
+              Experience seamless continuity and movement in your 3-bedroom configuration.
+              At the entry, you get a clear visual axis of your home. Movement across feels
+              intuitive and uninterrupted. The living space extends toward a broad balcony with
+              multiple seating arrangements. Every space and dimension, from the living room
+              to the kitchen or bedrooms, contribute to a quiet grandeur and assured XXL luxury.
+            </p>
+          </div>
+    
+          {/* Photo Grid + Specs */}
+          <div
+            style={{
+              padding: "0 24px 32px",
+              display: "flex",
+              gap: "20px",
+              alignItems: "flex-start",
+              flexWrap: "wrap",
+            }}
+          >
+            {/* 2x2 Photo Grid */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "4px",
+                flex: "0 0 auto",
+                width: "clamp(200px, 52%, 350px)",
+              }}
+            >
+              {[
+                "Room+1", "Room+2", "Room+3", "Room+4"
+              ].map((label, i) => (
+                <div
+                  key={i}
+                  style={{
+                    width: "100%",
+                    aspectRatio: "1 / 1",
+                    overflow: "hidden",
+                  }}
+                >
+                  <img
+                    src={`https://placehold.co/160x160/8a9ba8/ffffff?text=${label}`}
+                    alt={`Interior ${i + 1}`}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  />
+                </div>
+              ))}
+            </div>
+    
+            {/* Specs List */}
+            <div
+              style={{
+                flex: 1,
+                minWidth: "160px",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              {[
+                "1837 to 2713 sft",
+                "10 ft.\nwide corridors",
+                "Spacious\nbalconies",
+                "East, West, & North\nfacing",
+              ].map((spec, i) => (
+                <div
+                  key={i}
+                  style={{
+                    padding: "14px 0",
+                    borderBottom: i < 3 ? "1px solid #ccc8c0" : "none",
+                    textAlign: "center",
+                  }}
+                >
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: "clamp(0.82rem, 1.5vw, 0.95rem)",
+                      color: "#4a4a4a",
+                      lineHeight: "1.5",
+                      whiteSpace: "pre-line",
+                    }}
+                  >
+                    {spec}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+    
+          {/* Bottom CTA Badges */}
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "0",
+            }}
+          >
+            {[
+              "Completion in 2027",
+              "HMDA & RERA\nApproved",
+              "UDS Share\n42 & 62 Sq yards",
+            ].map((label, i) => (
+              <div
+                key={i}
+                style={{
+                  flex: "1 1 100px",
+                  backgroundColor: "#7ab648",
+                  color: "#ffffff",
+                  textAlign: "center",
+                  padding: "16px 10px",
+                  fontSize: "clamp(0.78rem, 1.4vw, 0.9rem)",
+                  fontWeight: 600,
+                  lineHeight: "1.4",
+                  whiteSpace: "pre-line",
+                  borderRight: i < 2 ? "1px solid #6aa03a" : "none",
+                  fontFamily: "'Georgia', serif",
+                }}
+              >
+                {label}
+              </div>
+            ))}
+          </div>
+    </section>
+
+</div>
+   );
 }

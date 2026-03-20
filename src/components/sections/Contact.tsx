@@ -10,9 +10,13 @@ import { toast } from "sonner";
 
 export function Contact() {
   const [loading, setLoading] = React.useState(false);
-
+    const [agreed, setAgreed] = React.useState(false);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+      if (!agreed) {
+      toast.error("Please agree to the terms and conditions to continue.");
+      return;
+    }
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
@@ -36,8 +40,10 @@ export function Contact() {
 
       toast.success("Inquiry sent successfully! We will contact you soon.");
       (e.target as HTMLFormElement).reset();
+       setAgreed(false);
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
+       setAgreed(false);
     } finally {
       setLoading(false);
     }
@@ -133,8 +139,37 @@ export function Contact() {
                   <label className="text-sm font-bold text-gray-400 uppercase">Message</label>
                   <Textarea name="message" required  className="min-h-[150px] rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-blue-900 transition-all" />
                 </div>
+                 <div className="flex items-start gap-3 pt-2">
+                  <input
+                    type="checkbox"
+                    id="terms"
+                    checked={agreed}
+                    onChange={(e) => setAgreed(e.target.checked)}
+                    className="w-5 h-5 mt-0.5 accent-blue-900 rounded cursor-pointer"
+                  />
+                  <label htmlFor="terms" className="text-sm text-gray-700 leading-relaxed cursor-pointer">
+                    I agree to receive communication via SMS, RCS, and WhatsApp and I accept the{" "}
+                    <a
+                      href="https://thomesinfra.com/privacy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-900 font-semibold hover:underline"
+                    >
+                      Privacy Policy
+                    </a>
+                    {" "}and{" "}
+                    <a
+                      href="https://thomesinfra.com/termsandcondition"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-900 font-semibold hover:underline"
+                    >
+                      Terms & Conditions
+                    </a>
+                  </label>
+                </div>
 
-                <Button disabled={loading} className="w-full h-16 bg-blue-900 hover:bg-blue-800 text-white rounded-2xl text-lg font-bold shadow-xl shadow-blue-900/20">
+                <Button disabled={loading || !agreed} className="w-full h-16 bg-blue-900 hover:bg-blue-800 text-white rounded-2xl text-lg font-bold shadow-xl shadow-blue-900/20">
                   {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />

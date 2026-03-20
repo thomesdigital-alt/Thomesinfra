@@ -1417,6 +1417,7 @@ function ExploreLayoutSection({ project }: { project: IProject }) {
     message: `interested in ${project.name} located at ${project.location}. Please provide more details.`,
   });
   const [submitting, setSubmitting] = useState(false);
+    const [agreed, setAgreed] = React.useState(false);
   const coords = extractLatLng(project.google_embed_url ?? "");
   const directionsUrl = coords
     ? `https://www.google.com/maps/dir/?api=1&destination=${coords.lat},${coords.lng}`
@@ -1424,6 +1425,12 @@ function ExploreLayoutSection({ project }: { project: IProject }) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+       
+    if (!agreed) {
+      toast.error("Please agree to the terms and conditions to continue.");
+      return;
+    }
+
     setSubmitting(true);
     try {
       const res = await fetch("/api/inquiry", {
@@ -1435,10 +1442,13 @@ function ExploreLayoutSection({ project }: { project: IProject }) {
       if (!res.ok) throw new Error(result?.error || "Failed");
       toast.success("Inquiry sent successfully!");
       setFormData({ name: "", phone: "", project: project.name, message: "" });
+      setAgreed(false);
     } catch {
       toast.error("Failed to send inquiry");
+      setAgreed(false);
     } finally {
       setSubmitting(false);
+      
     }
   };
 
@@ -1490,7 +1500,37 @@ function ExploreLayoutSection({ project }: { project: IProject }) {
                   <option value={project.name}>{project.name}</option>
                 </select>
               </div>
-              <Button type="submit" disabled={submitting} className="w-full h-12 rounded-xl bg-[#3b3b98] hover:bg-[#2e2e7a] text-white font-bold shadow-lg transition-all hover:scale-[1.02]">
+               {/* Terms and Conditions Checkbox */}
+                <div className="flex items-start gap-3 pt-2">
+                  <input
+                    type="checkbox"
+                    id="terms"
+                    checked={agreed}
+                    onChange={(e) => setAgreed(e.target.checked)}
+                    className="w-5 h-5 mt-0.5 accent-blue-900 rounded cursor-pointer"
+                  />
+                  <label htmlFor="terms" className="text-sm text-gray-700 leading-relaxed cursor-pointer">
+                    I agree to receive communication via SMS, RCS, and WhatsApp and I accept the{" "}
+                    <a
+                      href="https://thomesinfra.com/privacy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-900 font-semibold hover:underline"
+                    >
+                      Privacy Policy
+                    </a>
+                    {" "}and{" "}
+                    <a
+                      href="https://thomesinfra.com/termsandcondition"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-900 font-semibold hover:underline"
+                    >
+                      Terms & Conditions
+                    </a>
+                  </label>
+                </div>
+              <Button type="submit" disabled={submitting || !agreed} className="w-full h-12 rounded-xl bg-[#3b3b98] hover:bg-[#2e2e7a] text-white font-bold shadow-lg transition-all hover:scale-[1.02]">
                 {submitting ? "Submitting..." : <><Send className="h-4 w-4 mr-2" />Submit Enquiry</>}
               </Button>
             </form>

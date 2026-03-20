@@ -21,9 +21,16 @@ export default function ContactPage() {
     message: "",
   });
   const [submitting, setSubmitting] = React.useState(false);
+  const [agreed, setAgreed] = React.useState(false);
+
  
 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
+      if (!agreed) {
+      toast.error("Please agree to the terms and conditions to continue.");
+      return;
+    }
+
   setSubmitting(true);
 
   // Store reference before any async work
@@ -53,7 +60,9 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
     toast.success("Inquiry sent successfully!");
 
-    form.reset(); // Use stored reference
+    form.reset();
+    
+      setAgreed(false); // Use stored reference
 
     setFormData({
       name: "",
@@ -226,11 +235,39 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       className="min-h-[150px] rounded-xl bg-gray-50 border-0 focus:ring-2 focus:ring-amber-500"
     />
   </div>
-
+          <div className="flex items-start gap-3 pt-2">
+                  <input
+                    type="checkbox"
+                    id="terms"
+                    checked={agreed}
+                    onChange={(e) => setAgreed(e.target.checked)}
+                    className="w-5 h-5 mt-0.5 accent-blue-900 rounded cursor-pointer"
+                  />
+                  <label htmlFor="terms" className="text-sm text-gray-700 leading-relaxed cursor-pointer">
+                    I agree to receive communication via SMS, RCS, and WhatsApp and I accept the{" "}
+                    <a
+                      href="https://thomesinfra.com/privacy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-900 font-semibold hover:underline"
+                    >
+                      Privacy Policy
+                    </a>
+                    {" "}and{" "}
+                    <a
+                      href="https://thomesinfra.com/termsandcondition"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-900 font-semibold hover:underline"
+                    >
+                      Terms & Conditions
+                    </a>
+                  </label>
+                </div>
   {/* SUBMIT */}
   <Button
     type="submit"
-    disabled={submitting}
+    disabled={submitting || !agreed}
     className="w-full h-16 rounded-full bg-amber-500 hover:bg-amber-600 text-black font-bold text-lg"
   >
     {submitting ? "Sending..." : "Send Message"}
