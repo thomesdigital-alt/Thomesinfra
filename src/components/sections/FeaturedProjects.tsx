@@ -144,12 +144,12 @@ export function FeaturedProjects() {
                       <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                         <div>
                           <span className="text-xs text-gray-500">Starting from</span>
-                          <div className="text-lg font-black text-gray-900">
+                          {/* <div className="text-lg font-black text-gray-900">
                             {project.price_per_sqyd
                               ? <>₹{project.price_per_sqyd.toLocaleString()}<span className="text-sm font-normal text-gray-500">/sq.yd</span></>
                               : <span className="text-sm font-normal text-gray-400">Price on request</span>
                             }
-                          </div>
+                          </div> */}
                         </div>
                         <div className="h-10 w-10 rounded-full bg-amber-500 flex items-center justify-center group-hover:bg-amber-600 transition-colors">
                           <ChevronRight className="h-5 w-5 text-black" />

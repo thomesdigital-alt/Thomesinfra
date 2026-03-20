@@ -54,7 +54,7 @@ export function BookingForm({ plot, onSuccess, onCancel }: BookingFormProps) {
           </span>
         </div>
         <p className="text-amber-800/70 text-[10px] font-bold uppercase tracking-wider">
-          {plot.area_sqyds} sq.yds • {plot.facing} Facing • ₹{plot.price?.toLocaleString()}
+          {plot.area_sqyds} sq.yds • {plot.facing} Facing 
         </p>
       </div>
 

@@ -285,7 +285,7 @@ export default function ProjectsPage() {
 
                         {/* Price + CTA */}
                         <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                          <div>
+                          {/* <div>
                             <span className="text-xs text-gray-500">Starting from</span>
                             <div className="text-lg font-black text-gray-900">
                               {project.price_per_sqyd
@@ -293,7 +293,7 @@ export default function ProjectsPage() {
                                 : <span className="text-sm font-normal text-gray-400">Price on request</span>
                               }
                             </div>
-                          </div>
+                          </div> */}
                           <Button size="sm" className="rounded-full bg-amber-500 hover:bg-amber-600 text-black font-bold">
                             View Details
                             <ChevronRight className="ml-1 h-4 w-4" />
