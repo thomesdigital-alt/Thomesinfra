@@ -451,7 +451,7 @@ who feel secure and confident in their investment.
                   <p>
                     With years of experience and deep industry insight, Mr. Gampa Nageshwer Rao plays a
                     vital role in guiding the strategic direction of the company. As Chief Mentor, he
-                    rovides clarity, foresight, and disciplined oversight across all major decisions and
+                    provides clarity, foresight, and disciplined oversight across all major decisions and
                     developments.
                   </p>
                   <p>
