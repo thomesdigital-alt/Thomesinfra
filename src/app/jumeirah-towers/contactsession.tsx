@@ -5,17 +5,75 @@ interface FormState {
   name: string;
   email: string;
   occupation: string;
-  code: string;
+  countryCode: string;
   phone: string;
   checks: { mokila: boolean; hyderabad: boolean; months: boolean };
 }
 
+interface Errors {
+  name?: string;
+  email?: string;
+  occupation?: string;
+  phone?: string;
+  checks?: string;
+}
+
+interface Country {
+  code: string;
+  flag: string;
+  abbr: string;
+}
+
+const FALLBACK_COUNTRIES: Country[] = [
+  { code: "+91",  flag: "🇮🇳", abbr: "IN" },
+  { code: "+1",   flag: "🇺🇸", abbr: "US" },
+  { code: "+44",  flag: "🇬🇧", abbr: "GB" },
+  { code: "+61",  flag: "🇦🇺", abbr: "AU" },
+  { code: "+971", flag: "🇦🇪", abbr: "AE" },
+];
+
 export default function ContactSection() {
   const [form, setForm] = React.useState<FormState>({
-    name: "", email: "", occupation: "", code: "+91", phone: "",
+    name: "",
+    email: "",
+    occupation: "",
+    countryCode: "+91",
+    phone: "",
     checks: { mokila: false, hyderabad: false, months: false },
   });
+
+  const [errors, setErrors] = React.useState<Errors>({});
   const [submitted, setSubmitted] = React.useState(false);
+  const [countries, setCountries] = React.useState<Country[]>(FALLBACK_COUNTRIES);
+  const [loadingCountries, setLoadingCountries] = React.useState(true);
+
+  React.useEffect(() => {
+    fetch("https://restcountries.com/v3.1/all?fields=idd,cca2,flag")
+      .then((r) => r.json())
+      .then((data: any[]) => {
+        const parsed: Country[] = data
+          .filter((c) => c.idd?.root && c.idd?.suffixes?.length === 1)
+          .map((c) => ({
+            code: c.idd.root + c.idd.suffixes[0],
+            flag: c.flag,
+            abbr: c.cca2,
+          }))
+          .filter((c) => /^\+\d+$/.test(c.code));
+
+        const seen = new Set<string>();
+        const unique = parsed
+          .sort((a, b) => a.abbr.localeCompare(b.abbr))
+          .filter((c) => {
+            if (seen.has(c.code)) return false;
+            seen.add(c.code);
+            return true;
+          });
+
+        setCountries(unique);
+      })
+      .catch(() => setCountries(FALLBACK_COUNTRIES))
+      .finally(() => setLoadingCountries(false));
+  }, []);
 
   const set = (field: keyof Omit<FormState, "checks">, val: string) =>
     setForm((f) => ({ ...f, [field]: val }));
@@ -23,294 +81,338 @@ export default function ContactSection() {
   const toggle = (key: keyof FormState["checks"]) =>
     setForm((f) => ({ ...f, checks: { ...f.checks, [key]: !f.checks[key] } }));
 
+  const validate = () => {
+    const e: Errors = {};
+    if (!form.name.trim()) e.name = "Required";
+    else if (form.name.length < 3) e.name = "Min 3 characters";
+    if (!form.email.trim()) e.email = "Required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Invalid email";
+    if (!form.occupation.trim()) e.occupation = "Required";
+    if (!form.phone.trim()) e.phone = "Required";
+    else if (!/^\d{7,15}$/.test(form.phone)) e.phone = "7-15 digits only";
+    if (!Object.values(form.checks).some(Boolean)) e.checks = "Select at least one option";
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  };
+
   const handleSubmit = () => {
+    if (!validate()) return;
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 3000);
   };
 
-  const inputStyle: React.CSSProperties = {
-    background: "#fff",
-    border: "1px solid #ccc",
-    borderRadius: 2,
-    height: 32,
-    padding: "0 10px",
-    fontSize: 13,
-    color: "#333",
-    outline: "none",
-    width: "100%",
-    fontFamily: "Montserrat, sans-serif",
-  };
-
-  const labelStyle: React.CSSProperties = {
-    fontSize: 13,
-    color: "#444",
-    fontFamily: "Montserrat, sans-serif",
-    whiteSpace: "nowrap",
-    fontWeight: 500,
-  };
+  const selectedFlag =
+    countries.find((c) => c.code === form.countryCode)?.flag ?? "🌐";
 
   return (
     <>
       <style>{`
-        .contact-section-wrapper {
-          width: 100%;
-          background-image: url('https://thomestowers.com/wp-content/uploads/2026/03/background-1-scaled.png');
-          background-size: cover;
-          background-position: center;
-          padding: 60px 0 80px;
-          font-family: Montserrat, sans-serif;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700&display=swap');
 
-        .contact-section-inner {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 24px;
-        }
+        * { box-sizing: border-box; }
 
-        .gift-banner {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 10px;
-          margin-bottom: 0;
-          position: relative;
-          z-index: 2;
-        }
-        .gift-icon-wrap {
-          width: 52px;
-          height: 52px;
-          flex-shrink: 0;
-          
-        }
-        .gift-label {
-          background: #555;
-          color: #fff;
-          font-size: clamp(13px, 2vw, 16px);
-          font-weight: 700;
-          padding: 8px 20px;
+        .cs-wrap {
+          font-family: 'Lato', sans-serif;
+          background: #d0cecc;
+          margin: 20px;
+          padding: 20px;
           border-radius: 4px;
-          letter-spacing: 0.02em;
-          font-family: Montserrat, sans-serif;
         }
 
-        .form-card {
-          background: rgba(180,178,174,0.75);
-          padding: clamp(20px, 3vw, 32px) clamp(16px, 3vw, 36px);
+        .cs-grid {
           display: grid;
-          grid-template-columns: 1fr 1fr auto auto;
-          gap: 16px 24px;
+          grid-template-columns: 1fr 1fr 1fr auto;
+          gap: 20px 24px;
           align-items: start;
         }
 
-        .col-fields-left {
+        .cs-col   { display: flex; flex-direction: column; gap: 14px; }
+        .cs-field { display: flex; flex-direction: column; gap: 3px; }
+
+        .cs-row {
           display: flex;
-          flex-direction: column;
-          gap: 14px;
-        }
-        .field-row {
-          display: grid;
-          grid-template-columns: 90px 1fr;
           align-items: center;
-          gap: 10px;
+          gap: 8px;
         }
 
-        .col-fields-right {
-          display: flex;
-          flex-direction: column;
-          gap: 14px;
-        }
-        .field-row-email {
-          display: grid;
-          grid-template-columns: 110px 1fr;
-          align-items: center;
-          gap: 10px;
-        }
-        .field-row-phone {
-          display: grid;
-          grid-template-columns: 110px 60px 1fr;
-          align-items: center;
-          gap: 10px;
-        }
-
-        .col-checks {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          min-width: 220px;
-        }
-        .checks-title {
+        .cs-label {
           font-size: 13px;
           font-weight: 600;
-          color: #333;
-          margin-bottom: 2px;
+          color: #111;
+          white-space: nowrap;
+          width: 110px;
+          flex-shrink: 0;
         }
-        .check-row {
+
+        .cs-input {
+          flex: 1;
+          min-width: 0;
+          height: 34px;
+          padding: 0 10px;
+          border: 1px solid #999;
+          border-radius: 3px;
+          background: #fff;
+          font-size: 13px;
+          font-family: 'Lato', sans-serif;
+          color: #111;
+          outline: none;
+          transition: border-color 0.15s;
+        }
+        .cs-input:focus { border-color: #444; }
+
+        .cs-phone-wrap {
           display: flex;
           align-items: center;
-          justify-content: space-between;
-          gap: 12px;
-        }
-        .check-row span {
-          font-size: 12px;
-          color: #333;
+          gap: 5px;
           flex: 1;
-          line-height: 1.4;
+          min-width: 0;
         }
-        .custom-checkbox {
+
+        .cs-flag {
+          font-size: 20px;
+          line-height: 1;
+          flex-shrink: 0;
+          user-select: none;
+        }
+
+        .cs-select {
+          height: 34px;
+          padding: 0 4px;
+          border: 1px solid #999;
+          border-radius: 3px;
+          background: #fff;
+          font-size: 12px;
+          font-family: 'Lato', sans-serif;
+          color: #111;
+          outline: none;
+          cursor: pointer;
+          width: 80px;
+          flex-shrink: 0;
+        }
+
+        .cs-error {
+          font-size: 11px;
+          color: #b71c1c;
+          padding-left: 118px;
+        }
+
+        .cs-checks { display: flex; flex-direction: column; gap: 10px; }
+
+        .cs-checks-title {
+          font-size: 11.5px;
+          font-weight: 700;
+          color: #111;
+          text-transform: uppercase;
+          letter-spacing: 0.07em;
+        }
+
+        .cs-check-row {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 10px;
+          cursor: pointer;
+          user-select: none;
+        }
+
+        .cs-check-text {
+          font-size: 12.5px;
+          color: #111;
+          line-height: 1.35;
+          flex: 1;
+        }
+
+        .cs-box {
           width: 18px;
           height: 18px;
-          border: 1.5px solid #888;
+          border: 1.5px solid #777;
           background: #fff;
+          border-radius: 2px;
           flex-shrink: 0;
-          cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
-          border-radius: 2px;
+          margin-top: 1px;
+          transition: background 0.12s, border-color 0.12s;
         }
-        .custom-checkbox.checked::after {
-          content: '';
-          display: block;
-          width: 10px;
-          height: 10px;
-          background: #555;
-          border-radius: 1px;
+        .cs-box.on { background: #4a4a4a; border-color: #4a4a4a; }
+        .cs-box.on::after { content: "✓"; color: #fff; font-size: 11px; font-weight: 700; }
+
+        .cs-checks-err { font-size: 11px; color: #b71c1c; }
+
+        .cs-btns {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          min-width: 128px;
         }
 
-        .col-submit {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          align-self: center;
-        }
-        .submit-btn {
-          background: #666;
-          color: #fff;
+        .cs-btn {
+          height: 38px;
+          width: 100%;
           border: none;
-          padding: 10px 28px;
-          font-size: 14px;
-          font-weight: 600;
-          font-family: Montserrat, sans-serif;
+          border-radius: 3px;
+          font-family: 'Lato', sans-serif;
+          font-size: 12.5px;
+          font-weight: 700;
+          letter-spacing: 0.05em;
           text-transform: uppercase;
-          letter-spacing: 0.04em;
           cursor: pointer;
-          border-radius: 2px;
-          transition: background .2s;
-          white-space: nowrap;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background 0.15s, transform 0.1s;
         }
-        .submit-btn:hover { background: #444; }
-        .submit-btn.ok    { background: #4a7c59; }
+        .cs-btn:active { transform: scale(0.97); }
 
-        @media (max-width: 960px) {
-          .form-card { grid-template-columns: 1fr 1fr; }
-          .col-checks { grid-column: 1; }
-          .col-submit  { grid-column: 2; justify-content: flex-end; align-self: end; }
+        .cs-btn-submit       { background: #5a5a5a; color: #fff; }
+        .cs-btn-submit:hover { background: #3a3a3a; }
+        .cs-btn-submit.done  { background: #2e7d32; }
+
+        .cs-btn-brochure       { background: #7a7a7a; color: #fff; }
+        .cs-btn-brochure:hover { background: #505050; }
+
+        @media (max-width: 860px) {
+          .cs-grid { grid-template-columns: 1fr 1fr; }
         }
 
-        @media (max-width: 640px) {
-          .form-card { grid-template-columns: 1fr; }
-          .field-row,
-          .field-row-email { grid-template-columns: 100px 1fr; }
-          .field-row-phone  { grid-template-columns: 100px 56px 1fr; }
-          .col-checks { min-width: unset; }
-          .col-submit { grid-column: 1; justify-content: stretch; }
-          .submit-btn { width: 100%; }
+        @media (max-width: 560px) {
+          .cs-wrap { margin: 20px; padding: 14px 12px; }
+
+          .cs-grid { grid-template-columns: 1fr; gap: 16px; }
+
+          .cs-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+          }
+
+          .cs-label { width: auto; font-size: 12px; }
+
+          .cs-input { width: 100%; height: 42px; font-size: 15px; }
+
+          .cs-select { height: 42px; font-size: 13px; }
+
+          .cs-phone-wrap { width: 100%; }
+
+          .cs-error { padding-left: 0; }
+
+          .cs-btns { flex-direction: row; min-width: unset; }
+          .cs-btns .cs-btn { flex: 1; }
         }
       `}</style>
 
-      <section className="contact-section-wrapper" id="contact">
-        <div className="contact-section-inner">
+      <div className="cs-wrap">
+        <div className="cs-grid">
 
-          {/* Gift banner */}
-          <div className="gift-banner">
-            <div className="gift-icon-wrap">
-             <svg 
-               viewBox="0 0 52 52" 
-                xmlns="http://www.w3.org/2000/svg"
-                style={{ width: "100%", height: "100%" }}
-                  >
-                  {/* Rounded white background */}
-                <rect x="2" y="2" width="48" height="48" rx="10" fill="white" />
-
-                  {/* Icon */}
-                <g 
-                  stroke="#9CA3AF" 
-                  strokeWidth="3" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  fill="none"
-                >
-                <rect x="6" y="20" width="40" height="6" rx="1"/>
-                <rect x="9" y="26" width="34" height="20" rx="1"/>
-                <line x1="26" y1="20" x2="26" y2="46"/>
-
-    <path d="M26 20 C26 20 18 14 16 10 C14 6 20 4 24 8 C26 10 26 14 26 20Z"/>
-    <path d="M26 20 C26 20 34 14 36 10 C38 6 32 4 28 8 C26 10 26 14 26 20Z"/>
-  </g>
-</svg>
+          <div className="cs-col">
+            <div className="cs-field">
+              <div className="cs-row">
+                <span className="cs-label">Name</span>
+                <input
+                  className="cs-input"
+                  value={form.name}
+                  onChange={(e) => set("name", e.target.value)}
+                  placeholder="Full name"
+                />
+              </div>
+              {errors.name && <div className="cs-error">{errors.name}</div>}
             </div>
-            <span className="gift-label">First 50 site visits get assured gift</span>
+
+            <div className="cs-field">
+              <div className="cs-row">
+                <span className="cs-label">Occupation</span>
+                <input
+                  className="cs-input"
+                  value={form.occupation}
+                  onChange={(e) => set("occupation", e.target.value)}
+                  placeholder="Your occupation"
+                />
+              </div>
+              {errors.occupation && <div className="cs-error">{errors.occupation}</div>}
+            </div>
           </div>
 
-          {/* Form card */}
-          <div className="form-card">
-
-            <div className="col-fields-left">
-              <div className="field-row">
-                <label style={labelStyle}>Name</label>
-                <input style={inputStyle} value={form.name} onChange={e => set("name", e.target.value)} />
+          <div className="cs-col">
+            <div className="cs-field">
+              <div className="cs-row">
+                <span className="cs-label">E-mail address:</span>
+                <input
+                  className="cs-input"
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => set("email", e.target.value)}
+                  placeholder="you@example.com"
+                />
               </div>
-              <div className="field-row">
-                <label style={labelStyle}>Occupation</label>
-                <input style={inputStyle} value={form.occupation} onChange={e => set("occupation", e.target.value)} />
-              </div>
+              {errors.email && <div className="cs-error">{errors.email}</div>}
             </div>
 
-            <div className="col-fields-right">
-              <div className="field-row-email">
-                <label style={labelStyle}>E-mail address:</label>
-                <input style={inputStyle} type="email" value={form.email} onChange={e => set("email", e.target.value)} />
-              </div>
-              <div className="field-row-phone">
-                <label style={labelStyle}>Code & Phone number:</label>
-                <input style={{ ...inputStyle, textAlign: "center" }} value={form.code} onChange={e => set("code", e.target.value)} />
-                <input style={inputStyle} type="tel" value={form.phone} onChange={e => set("phone", e.target.value)} />
-              </div>
-            </div>
-
-            <div className="col-checks">
-              <div className="checks-title">Tick what's applicable</div>
-              {([
-                ["mokila",    "Yes I am actively looking for 3bhk in Mokila"],
-                ["hyderabad", "I am looking for a 3bhk in Hyderabad"],
-                ["months",    "Not immediately but in 3–6 months."],
-              ] as [keyof FormState["checks"], string][]).map(([key, label]) => (
-                <div key={key} className="check-row">
-                  <span>{label}</span>
-                  <div
-                    className={`custom-checkbox${form.checks[key] ? " checked" : ""}`}
-                    onClick={() => toggle(key)}
-                    role="checkbox"
-                    aria-checked={form.checks[key]}
-                    tabIndex={0}
-                    onKeyDown={e => e.key === " " && toggle(key)}
+            <div className="cs-field">
+              <div className="cs-row">
+                <span className="cs-label">Code &amp; Phone:</span>
+                <div className="cs-phone-wrap">
+                  <span className="cs-flag">{selectedFlag}</span>
+                  <select
+                    className="cs-select"
+                    value={form.countryCode}
+                    onChange={(e) => set("countryCode", e.target.value)}
+                    disabled={loadingCountries}
+                  >
+                    {loadingCountries ? (
+                      <option>Loading...</option>
+                    ) : (
+                      countries.map((c) => (
+                        <option key={c.abbr} value={c.code}>
+                          {c.abbr} {c.code}
+                        </option>
+                      ))
+                    )}
+                  </select>
+                  <input
+                    className="cs-input"
+                    value={form.phone}
+                    onChange={(e) => set("phone", e.target.value.replace(/\D/g, ""))}
+                    placeholder="Phone number"
+                    maxLength={15}
+                    inputMode="numeric"
                   />
                 </div>
-              ))}
+              </div>
+              {errors.phone && <div className="cs-error">{errors.phone}</div>}
             </div>
-
-            <div className="col-submit">
-              <button
-                className={`submit-btn${submitted ? " ok" : ""}`}
-                onClick={handleSubmit}
-              >
-                {submitted ? "Submitted ✓" : "Submit"}
-              </button>
-            </div>
-
           </div>
+
+          <div className="cs-checks">
+            <div className="cs-checks-title">Tick what's applicable</div>
+            {([
+              ["mokila",    "Yes I am actively looking for 3BHK in Mokila"],
+              ["hyderabad", "I am looking for a 3BHK in Hyderabad"],
+              ["months",    "Not immediately but in 3-6 months"],
+            ] as const).map(([key, label]) => (
+              <div key={key} className="cs-check-row" onClick={() => toggle(key)}>
+                <span className="cs-check-text">{label}</span>
+                <div className={`cs-box ${form.checks[key] ? "on" : ""}`} />
+              </div>
+            ))}
+            {errors.checks && <div className="cs-checks-err">{errors.checks}</div>}
+          </div>
+
+          <div className="cs-btns">
+            <button
+              className={`cs-btn cs-btn-submit ${submitted ? "done" : ""}`}
+              onClick={handleSubmit}
+            >
+              {submitted ? "Submitted ✓" : "Submit"}
+            </button>
+
+            <a href="/brochure.pdf" download style={{ textDecoration: "none" }}>
+              <button className="cs-btn cs-btn-brochure">Download Brochure</button>
+            </a>
+          </div>
+
         </div>
-      </section>
+      </div>
     </>
   );
 }
