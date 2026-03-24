@@ -113,7 +113,7 @@ export default function ContactSection() {
 
         .cs-wrap {
           font-family: 'Lato', sans-serif;
-          background: #d0cecc;
+          background: #d0d2d3;
           margin: 20px;
           padding: 20px;
           border-radius: 4px;
