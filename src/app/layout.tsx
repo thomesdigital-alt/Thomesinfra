@@ -3,7 +3,12 @@ import "./globals.css";
 import VisualEditsMessenger from "../visual-edits/VisualEditsMessenger";
 import ErrorReporter from "@/components/ErrorReporter";
 import Script from "next/script";
-// import { WhatsAppButton } from "@/components/ui/whatsappbutton";
+import { Montserrat } from "next/font/google"; // ✅ added
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://thomesinfra.com/"),
@@ -43,21 +48,17 @@ export const metadata: Metadata = {
     canonical: "https://thomesinfra.com/",
   },
 };
+
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body className="antialiased">
-        {/* <Script
-          id="orchids-browser-logs"
-          src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts/orchids-browser-logs.js"
-          strategy="afterInteractive"
-          data-orchids-project-id="5c558719-90eb-4032-8493-5e5c070ff8d2"
-        /> */}
+      <body className={`${montserrat.className} antialiased`}>
         <ErrorReporter />
+
         <Script
           src="/route-messenger.js"
           strategy="afterInteractive"
@@ -68,8 +69,8 @@ export default function RootLayout({
           data-debug="true"
           data-custom-data='{"appName": "YourApp", "version": "1.0.0", "greeting": "hi"}'
         />
+
         {children}
-         {/* <WhatsAppButton /> */}
 
         <VisualEditsMessenger />
       </body>
