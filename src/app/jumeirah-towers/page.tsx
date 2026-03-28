@@ -145,6 +145,14 @@ export default function xxlpage() {
     }, 3000);
     return () => clearInterval(i);
   }, []);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const NAVY = "#1a2e5a";
 
@@ -173,9 +181,8 @@ export default function xxlpage() {
       }}
     >
       <header
-        className="navbar"
         style={{
-          // position: "fixed",
+          position: "relative",
           top: 0,
           left: 0,
           right: 0,
@@ -186,7 +193,6 @@ export default function xxlpage() {
           background: scrolled ? "rgba(232,229,223,0.85)" : "transparent",
         }}
       >
-        {/* INNER CONTAINER (IMPORTANT) */}
         <div
           style={{
             maxWidth: "1200px",
@@ -195,36 +201,48 @@ export default function xxlpage() {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
+            position: "relative",
           }}
         >
           {/* LOGO */}
           <img
             src={LOGO}
             alt="T Homes Infra"
-            style={{ height: scrolled ? 70 : 100, objectFit: "contain" }}
-          />
-          <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              marginLeft: "auto",
+              height: scrolled ? 70 : 100,
+              objectFit: "contain",
             }}
-          >
+          />
+
+          {/* RIGHT SIDE */}
+          <div style={{ display: "flex", alignItems: "center" }}>
             {/* NAV */}
-            <nav style={{ display: "flex", gap: "28px" }}>
+            <nav
+              style={{
+                display: isMobile ? (menuOpen ? "flex" : "none") : "flex",
+                flexDirection: isMobile ? "column" : "row",
+                position: isMobile ? "absolute" : "static",
+                top: isMobile ? "100%" : "auto",
+                right: isMobile ? 0 : "auto",
+                background: isMobile ? "white" : "transparent",
+                padding: isMobile ? "16px" : 0,
+                gap: "20px",
+                boxShadow: isMobile ? "0 8px 20px rgba(0,0,0,0.1)" : "none",
+                borderRadius: isMobile ? "10px" : 0,
+                zIndex: 300,
+              }}
+            >
               {navLinks.map(([h, l]) => (
                 <a
                   key={h}
                   href={h}
+                  onClick={() => setMenuOpen(false)} // 🔥 close on click
                   style={{
                     fontSize: 14,
                     color: "#444",
                     fontWeight: 500,
-                    letterSpacing: ".02em",
-                    transition: "color .2s",
+                    textDecoration: "none",
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = NAVY)}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#444")}
                 >
                   {l}
                 </a>
@@ -232,10 +250,25 @@ export default function xxlpage() {
             </nav>
 
             {/* HAMBURGER */}
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              style={{
+                display: isMobile ? "block" : "none", // 🔥 FIXED
+                fontSize: "26px",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                marginLeft: "12px",
+              }}
+            >
+              ☰
+            </button>
           </div>
         </div>
       </header>
-      <HeroCarousel />
+      <div style={{ marginTop: -120, zIndex: -1 }}>
+        <HeroCarousel />
+      </div>
       <section id="contact">
         <ContactSection />
       </section>
@@ -335,7 +368,7 @@ export default function xxlpage() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
+            gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", // 🔥 key fix
             gap: "18px 10px",
             maxWidth: "98%",
             margin: "0 auto",
@@ -408,7 +441,7 @@ export default function xxlpage() {
         <style>{`
                   @media (max-width: 600px) {
                     section {
-                      padding: 40px 24px !important;
+                      padding: 40px 10px !important;
                     }
                   }
                 `}</style>
@@ -425,7 +458,7 @@ export default function xxlpage() {
               fontWeight: 500,
               color: "#a09a91",
               letterSpacing: "-0.04em",
-              padding: "2px 10px 2% 8% ",
+              padding: isMobile ? "2px  0 0 0 " : "2px 10px 2% 8% ",
             }}
           >
             XXL Luxury
@@ -510,9 +543,9 @@ export default function xxlpage() {
         >
           <p
             style={{
-              fontSize: "22px",
+              fontSize: "20px",
               color: "#000000",
-              fontWeight: 500,
+              fontWeight: 450,
               lineHeight: "1.8",
               letterSpacing: "-0.02rem",
             }}
@@ -531,75 +564,106 @@ export default function xxlpage() {
         <div
           style={{
             marginLeft: "15%",
-            marginRight: "5%",
+            marginRight: isMobile ? 0 : "5%",
             display: "flex",
             gap: "20px",
             alignItems: "flex-start",
             flexWrap: "wrap",
+            height: "70%",
           }}
         >
           {/* 2x2 Photo Grid */}
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "1fr 1fr",
+              gridTemplateColumns: "1fr",
               gap: "4px",
               flex: "0 0 auto",
-              width: "clamp(200px, 52%, 350px)",
+
+              width: isMobile
+                ? "clamp(90%, 80%, 450px)"
+                : "clamp(50%, 52%, 350px)",
             }}
           >
-            {[
-              "https://thomestowers.com/wp-content/uploads/2026/03/Reception-scaled.png",
-              "https://thomestowers.com/wp-content/uploads/2026/03/Luxury-master-Bedroom-scaled.png",
-              "https://thomestowers.com/wp-content/uploads/2026/03/Beautiful-balcony.jpeg",
-              "https://thomestowers.com/wp-content/uploads/2026/03/1-E-scaled.png",
-            ].map((label, i) => (
-              <div
-                key={i}
-                style={{
-                  width: "100%",
-                  aspectRatio: "1 / 1",
-                  overflow: "hidden",
-                }}
-              >
-                <img
-                  src={`${label}`}
-                  alt={`Interior ${i + 1}`}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    display: "block",
-                  }}
-                />
-              </div>
-            ))}
+            {/* Row 1: wide | narrow (2:1) */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "2fr 1fr",
+                gap: "4px",
+                height: "200px",
+              }}
+            >
+              {[
+                "https://thomestowers.com/wp-content/uploads/2026/03/Reception-scaled.png",
+                "https://thomestowers.com/wp-content/uploads/2026/03/Luxury-master-Bedroom-scaled.png",
+              ].map((src, i) => (
+                <div key={i} style={{ overflow: "hidden", height: "100%" }}>
+                  <img
+                    src={src}
+                    alt={`Interior ${i + 1}`}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Row 2: narrow | wide (1:2) */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 2fr",
+                gap: "4px",
+                height: "200px",
+              }}
+            >
+              {[
+                "https://thomestowers.com/wp-content/uploads/2026/03/Beautiful-balcony.jpeg",
+                "https://thomestowers.com/wp-content/uploads/2026/03/1-E-scaled.png",
+              ].map((src, i) => (
+                <div key={i} style={{ overflow: "hidden", height: "100%" }}>
+                  <img
+                    src={src}
+                    alt={`Interior ${i + 3}`}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Specs List */}
           <div
             style={{
               flex: 1,
-              marginRight: "13%",
+              marginRight: "18%",
+              marginTop: "10px",
               display: "flex",
               flexDirection: "column",
-              marginTop: "3px",
             }}
           >
             {[
               "1837 to 2713 sft",
               "10 ft.\nwide corridors",
-
-              "East, West, & North\n Orientations",
+              "Spacious \n Balconies",
+              "East, West, & North\n facing",
             ].map((spec, i) => (
               <div
                 key={i}
                 style={{
-                  padding: "15px 0",
-                  borderBottom: i < 3 ? "1px solid #ccc8c0" : "none",
-                  backgroundColor: "#e5e4e2",
+                  backgroundColor: "#e4e3e1",
                   textAlign: "center",
-                  marginBottom: "4px",
+                  marginBottom: "2%",
                 }}
               >
                 <p
@@ -641,13 +705,15 @@ export default function xxlpage() {
                 backgroundColor: "#5CDF46",
                 color: "#FFFFFF", // 👈 change here
                 textAlign: "center",
-                padding: "14px 20px",
+                padding: "25px 20px",
                 fontSize: "25px",
                 fontWeight: 600,
                 lineHeight: "1.4",
                 whiteSpace: "pre-line",
                 borderRight: i < 2 ? "1px solid #5CDF46 " : "none",
                 marginRight: "8px",
+                marginTop: "3%",
+                marginBottom: "1%",
               }}
             >
               {label}
@@ -662,7 +728,7 @@ export default function xxlpage() {
         style={{ marginTop: "10px" }}
       >
         {/* ── Green card ── */}
-        <div className="amenities-card">
+        <div className="amenities-card" style={{ paddingLeft: "8%" }}>
           <h2 className="amenities-title">XXL Amenities</h2>
           <p className="amenities-desc">
             Community forms differently when space supports it. J Cosmopolis
@@ -752,15 +818,15 @@ export default function xxlpage() {
 
         .amenities-title {
           color: #ffffff;
-          font-size: clamp(2rem, 4vw, 2.75rem);
-          font-weight: 700;
+          font-size: clamp(3rem, 2.8vw, 2rem);
+          font-weight: 400;
           margin: 0 0 14px;
-          letter-spacing: -0.5px;
+          letter-spacing: -1px;
         }
 
         .amenities-desc {
           color: #ffffff;
-          font-size:20px;
+          font-size:22px;
           line-height: 1.65;
           margin: 0 0 36px;
          
@@ -787,7 +853,7 @@ export default function xxlpage() {
           align-items: center;
           gap: 10px;
           color: #ffffff;
-          font-size: clamp(0.88rem, 1.4vw, 1rem);
+          font-size: clamp(1.2rem, 1.5vw, 1rem);
           font-weight: 500;
         }
 
@@ -805,6 +871,7 @@ export default function xxlpage() {
           grid-template-columns: 1fr 1fr;
           height: 380px;
           background-color:#5CDF46 
+          
         }
 
         /* ── Slideshow (left panel) ── */
@@ -812,6 +879,7 @@ export default function xxlpage() {
           position: relative;
           height: 100%;
           overflow: hidden;
+          
           background: #1a1a1a;
         }
 
@@ -933,17 +1001,18 @@ export default function xxlpage() {
       </section>
       <section
         style={{
-          padding: "60px 48px",
+          padding: "30px 30px",
+          paddingLeft: "8%",
         }}
       >
         {/* Heading */}
         <h2
           style={{
             fontSize: "clamp(2.6rem, 3vw, 3.2rem)",
-            fontWeight: 400,
-            color: "#a09a91",
+            fontWeight: 500,
+            color: "#939291",
             marginBottom: "16px",
-            letterSpacing: "0.02em",
+            letterSpacing: "-0.02em",
           }}
         >
           XXL Assurance
@@ -952,11 +1021,13 @@ export default function xxlpage() {
         {/* Subtext */}
         <p
           style={{
-            fontSize: "25px",
+            fontSize: "22px",
             color: "#000000",
-            fontWeight: 500,
-            lineHeight: "2",
+            fontWeight: 450,
+            lineHeight: "1.6",
             marginBottom: "48px",
+            paddingRight: "15%",
+            letterSpacing: "-0.08px",
           }}
         >
           Built with intent and promoted with discipline, T Homes Infra brings a
@@ -965,22 +1036,15 @@ export default function xxlpage() {
           design.{" "}
         </p>
 
-        <div
-          style={{
-            display: "flex",
-
-            width: "100%",
-            flexWrap: "wrap",
-          }}
-        >
+        <div style={{ display: "flex", width: "100%", flexWrap: "wrap" }}>
           <div
             style={{
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-
+              flexDirection: isMobile ? "column" : "row", // ← stack on mobile
               width: "100%",
-              minHeight: "420px",
+              minHeight: isMobile ? "auto" : "420px",
               overflow: "hidden",
               position: "relative",
             }}
@@ -988,11 +1052,12 @@ export default function xxlpage() {
             {/* LEFT — Logo */}
             <div
               style={{
-                flex: "0 0 35%",
+                flex: isMobile ? "unset" : "0 0 35%", // ← release fixed width
+                width: isMobile ? "60%" : "auto", // ← controlled width on mobile
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                padding: "40px",
+                padding: isMobile ? "30px 20px 10px" : "40px",
                 zIndex: 2,
               }}
             >
@@ -1000,23 +1065,23 @@ export default function xxlpage() {
                 src="https://thomestowers.com/wp-content/uploads/2026/03/T-Homes-Logo-1.png"
                 alt="T Homes Infra Logo"
                 style={{
-                  width: "100%",
-
-                  height: "auto",
+                  width: "auto",
+                  height: "120%",
                   display: "block",
                   objectFit: "contain",
                 }}
               />
             </div>
 
-            {/* RIGHT — Building image, larger, bottom-anchored */}
+            {/* RIGHT — Building image */}
             <div
               style={{
-                flex: "0 0 65%",
+                flex: isMobile ? "unset" : "0 0 65%",
+                width: isMobile ? "100%" : "auto", // ← full width on mobile
                 display: "flex",
                 alignItems: "flex-end",
                 justifyContent: "center",
-                height: "420px",
+                height: isMobile ? "280px" : "420px", // ← shorter on mobile
                 overflow: "hidden",
                 position: "relative",
               }}
@@ -1025,8 +1090,8 @@ export default function xxlpage() {
                 src="https://thomestowers.com/wp-content/uploads/2026/03/Bitmap.png"
                 alt="T Homes Tower"
                 style={{
-                  width: "110%",
-                  height: "110%",
+                  width: "100%",
+                  height: "100%",
                   objectFit: "cover",
                   objectPosition: "center bottom",
                   display: "block",
@@ -1338,19 +1403,18 @@ export default function xxlpage() {
           ${scrolled ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"}`}
       >
         <div
-          className="flex items-center gap-2 px-4 py-3 rounded-full  text-black font-semibold shadow-lg transition-all duration-300
-                        animate-bounce hover:animate-none hover:shadow-[0_0_20px_rgba(255,215,0,0.9)]"
+          className="flex items-center gap-2 px-4 py-3 rounded-full text-black font-semibold shadow-lg transition-all duration-300"
           style={{
-            backgroundColor: "#C08552",
+            backgroundColor: "#5CDF46",
+            border: "1px solid #ffffff", // ✅ white border
+            cursor: "pointer",
           }}
         >
           {/* Icon */}
-          <Download className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
+          <Download className="w-5 h-5" />
 
-          {/* Text (hidden → visible on hover) */}
-          <span className="max-w-0 overflow-hidden whitespace-nowrap transition-all duration-300 group-hover:max-w-xs">
-            Download Brochure
-          </span>
+          {/* Text (always visible) */}
+          <span className="whitespace-nowrap">Download Brochure</span>
         </div>
       </a>
     </div>
