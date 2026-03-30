@@ -682,38 +682,41 @@ export default function HeroCarousel({
 
           /* hide arrows on mobile — use swipe instead */
           .hc-arrow { display: none; }
-
-          /* hero slide elements */
+      @media (max-width: 767px) {
           .hero-building {
-            right: 0;
-            top: 0;
-            width: 52%;
-            height: 50%;
+            right: clamp(10px, 5vw, 42px);
+            top: -6px;
+            width: 58%;
+            height: 58%;
             z-index: 2;
-            display: flex;
-            align-items: flex-end;
-            justify-content: flex-end;
+            marginRight: "10px"
           }
           .hero-building img {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             object-fit: contain;
-            object-position: bottom right;
+            object-position: center bottom;
+            
           }
+
           .hero-logo {
-            left: 16px;
-            bottom: 28%;
-            width: 65%;
+            left: clamp(12px, 4vw, 20px);
+            bottom: clamp(32%, 36%, 40%);
+            width: clamp(60%, 75%, 82%);
+            marginLeft: 30
           }
+
           .hero-words {
-            bottom: 10%;
-            left: 18%;
-            gap: 6px;
+            bottom: clamp(15%, 10%, 14%);
+            left: clamp(25%, 25%, 30%);
+            gap: clamp(6px, 2vw, 12px);
           }
           .hero-word {
-            font-size: clamp(13px, 4vw, 20px);
+            font-size: clamp(18px, 5vw, 28px);
           }
         }
+
+          /* hero slide elements */
+        
 
         /* ── TABLET (768–1023px) — unchanged ── */
         @media (min-width: 768px) and (max-width: 1023px) {
