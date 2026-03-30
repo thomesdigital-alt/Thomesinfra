@@ -64,7 +64,7 @@ export default function xxlpage() {
       "Cricketing Net",
     ],
     [
-      "Squash Court",
+      "Wellness",
       "Basket Ball Court",
       "Children's Play Zone",
       "Relaxation Park for Elders",
