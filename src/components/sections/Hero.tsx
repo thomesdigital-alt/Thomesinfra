@@ -2,12 +2,7 @@
 
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Volume2,
-  VolumeX,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
 
 /**
  * Videos
@@ -16,6 +11,7 @@ const heroVideos = [
   "/videos/logo_intro.mp4",
   "/videos/PILLAR-TELUGU.mp4",
   "/videos/PILLAR-ENGLISH.mp4",
+  "https://thomestowers.com/wp-content/uploads/2026/03/full-project.mp4",
 ];
 
 export function Hero() {
@@ -65,7 +61,7 @@ export function Hero() {
   const prevVideo = useCallback(() => {
     setDirection(-1);
     setCurrentVideo(
-      (prev) => (prev - 1 + heroVideos.length) % heroVideos.length
+      (prev) => (prev - 1 + heroVideos.length) % heroVideos.length,
     );
   }, []);
 
@@ -77,7 +73,7 @@ export function Hero() {
       setDirection(index > currentVideo ? 1 : -1);
       setCurrentVideo(index);
     },
-    [currentVideo]
+    [currentVideo],
   );
 
   /**
@@ -121,36 +117,28 @@ export function Hero() {
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setShowControls(true)}
     >
-
       {/* VIDEO */}
       <div className="absolute inset-0">
-
         <AnimatePresence mode="wait">
           <motion.video
             key={currentVideo}
             ref={videoRef}
             src={heroVideos[currentVideo]}
-
             autoPlay
             playsInline
             preload="auto"
             muted={isMuted}
-
             onEnded={nextVideo}
-
             className="absolute inset-0 w-full h-full object-cover"
-
             initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-
             transition={{ duration: 0.8 }}
           />
         </AnimatePresence>
 
         {/* subtle overlay */}
         <div className="absolute inset-0 bg-black/10" />
-
       </div>
 
       {/* CONTROLS */}
@@ -161,7 +149,6 @@ export function Hero() {
         ${showControls ? "opacity-100" : "opacity-0"}
       `}
       >
-
         {/* LEFT */}
         <button
           onClick={prevVideo}
@@ -212,7 +199,6 @@ export function Hero() {
 
         {/* DOTS */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3">
-
           {heroVideos.map((_, index) => (
             <button
               key={index}
@@ -227,12 +213,8 @@ export function Hero() {
               `}
             />
           ))}
-
         </div>
-
       </div>
-
     </section>
   );
 }
-
