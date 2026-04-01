@@ -176,12 +176,13 @@ export default function xxlpage() {
   return (
     <div
       style={{
-        minHeight: "2vh",
+        minHeight: "100vh",
         backgroundImage: `url('https://thomestowers.com/wp-content/uploads/2026/04/Clip-Group_-3-scaled.png')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        backgroundAttachment: "fixed",
+
+        backgroundAttachment: isMobile ? "scroll" : "fixed",
       }}
     >
       <header
