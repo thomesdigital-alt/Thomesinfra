@@ -435,10 +435,26 @@ export default function xxlpage() {
           ))}
         </div>
         <style>{`
-          @media (max-width: 600px) {
-            section { padding: 40px 10px !important; }
-          }
-        `}</style>
+  @media (max-width: 600px) {
+    section { padding: 40px 10px !important; }
+  }
+
+  .page-bg {
+    background-image: url('https://thomestowers.com/wp-content/uploads/2026/04/Clip-Group_-3-scaled.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  @supports (-webkit-touch-callout: none) {
+    .page-bg {
+      background-attachment: scroll;
+      background-size: cover;
+    }
+  }
+`}</style>
       </section>
 
       <section style={{ overflow: "hidden" }}>
