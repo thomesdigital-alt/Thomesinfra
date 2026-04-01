@@ -177,7 +177,7 @@ export default function xxlpage() {
     <div
       style={{
         minHeight: "100vh",
-        backgroundImage: `url('https://thomestowers.com/wp-content/uploads/2026/03/background-1.png')`,
+        backgroundImage: `url('https://thomestowers.com/wp-content/uploads/2026/04/Clip-Group_-3-scaled.png')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
