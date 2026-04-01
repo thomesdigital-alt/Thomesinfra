@@ -181,12 +181,8 @@ export default function xxlpage() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        backgroundAttachment: "scroll",
-        imageRendering: "-webkit-optimize-contrast",
-        backfaceVisibility: "hidden",
-        WebkitBackfaceVisibility: "hidden",
-        willChange: "transform",
-        transform: "translateZ(0)",
+
+        backgroundAttachment: isMobile ? "scroll" : "fixed",
       }}
     >
       <header
