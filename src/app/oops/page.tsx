@@ -174,17 +174,23 @@ export default function xxlpage() {
   }, []);
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundImage: `url('https://thomestowers.com/wp-content/uploads/2026/04/Clip-Group_-3-scaled.png')`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
+    <div style={{ position: "relative", minHeight: "100vh" }}>
+      {/* FIXED BACKGROUND LAYER */}
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          backgroundImage: `url('https://thomestowers.com/wp-content/uploads/2026/04/Clip-Group_-3-scaled.png')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          zIndex: -1,
+        }}
+      />
 
-        backgroundAttachment: isMobile ? "scroll" : "fixed",
-      }}
-    >
+      {/* YOUR CONTENT */}
+      <div>{/* all your existing content */}</div>
+
       <header
         style={{
           position: "relative",
