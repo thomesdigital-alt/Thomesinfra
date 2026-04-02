@@ -29,10 +29,10 @@ const navLinks = [
   { name: "Home", href: "/" },
   { name: "About Us", href: "/about" },
   { name: "India", hasDropdown: true },
-  { name: "Dubai", href:"https://globalthomesrealty.com/" },
-  { name: "Jumeirah Towers", href: "https://thomestowers.com/" },
+  { name: "Dubai", href: "https://globalthomesrealty.com/" },
+  { name: "Jumeirah Towers", href: "/jumeirah-towers" },
 
-  {name: "Blogs", href: "/blogs"},
+  { name: "Blogs", href: "/blogs" },
   { name: "Contact", href: "/contact" },
 ];
 
@@ -42,7 +42,13 @@ function getProjectsByCountry(country: string): Project[] {
   return Object.values(data).flat();
 }
 
-function StatusBadge({ status, external }: { status?: string; external?: boolean }) {
+function StatusBadge({
+  status,
+  external,
+}: {
+  status?: string;
+  external?: boolean;
+}) {
   if (external)
     return (
       <span className="shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
@@ -89,7 +95,9 @@ function ProjectCard({ p, onClick }: { p: Project; onClick: () => void }) {
           {p.name}
         </div>
         {p.location && (
-          <div className="text-xs text-gray-400 mt-0.5 truncate">{p.location}</div>
+          <div className="text-xs text-gray-400 mt-0.5 truncate">
+            {p.location}
+          </div>
         )}
       </div>
 
@@ -100,7 +108,12 @@ function ProjectCard({ p, onClick }: { p: Project; onClick: () => void }) {
 
   if (p.externalLink) {
     return (
-      <a href={p.externalLink} target="_blank" rel="noopener noreferrer" onClick={onClick}>
+      <a
+        href={p.externalLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={onClick}
+      >
         {inner}
       </a>
     );
@@ -116,7 +129,9 @@ function ProjectCard({ p, onClick }: { p: Project; onClick: () => void }) {
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2 px-1 mb-1.5 mt-3 first:mt-0">
-      <span className="font-bold text-[10px] uppercase tracking-widest text-gray-400">{children}</span>
+      <span className="font-bold text-[10px] uppercase tracking-widest text-gray-400">
+        {children}
+      </span>
       <div className="flex-1 h-px bg-gray-100" />
     </div>
   );
@@ -124,8 +139,12 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 export function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [activeDropdown, setActiveDropdown] = React.useState<string | null>(null);
-  const [mobileExpanded, setMobileExpanded] = React.useState<string | null>(null);
+  const [activeDropdown, setActiveDropdown] = React.useState<string | null>(
+    null,
+  );
+  const [mobileExpanded, setMobileExpanded] = React.useState<string | null>(
+    null,
+  );
   const [searchDesktop, setSearchDesktop] = React.useState("");
   const [searchMobile, setSearchMobile] = React.useState("");
 
@@ -151,7 +170,6 @@ export function Navbar() {
   return (
     <header className="fixed top-0 left-0 w-full bg-white shadow z-50">
       <div className="max-w-7xl mx-auto px-4">
-
         {/* MAIN BAR */}
         <div className="flex items-center justify-between h-20">
           {/* LOGO */}
@@ -182,11 +200,15 @@ export function Navbar() {
 
               const projects = getProjectsByCountry(link.name);
               const filtered = projects.filter((p) =>
-                p.name.toLowerCase().includes(searchDesktop.toLowerCase())
+                p.name.toLowerCase().includes(searchDesktop.toLowerCase()),
               );
               const ongoing = filtered.filter((p) => p.status === "Ongoing");
-              const completed = filtered.filter((p) => p.status === "Completed");
-              const external = filtered.filter((p) => p.externalLink && !p.status);
+              const completed = filtered.filter(
+                (p) => p.status === "Completed",
+              );
+              const external = filtered.filter(
+                (p) => p.externalLink && !p.status,
+              );
 
               return (
                 <div
@@ -214,7 +236,6 @@ export function Navbar() {
                         style={{ top: "100%" }}
                       >
                         <div className="bg-white shadow-2xl border border-gray-100 rounded-2xl overflow-hidden">
-
                           {/* SEARCH — sticky at top */}
                           <div className="px-4 pt-4 pb-3 border-b border-gray-100">
                             <input
@@ -227,12 +248,15 @@ export function Navbar() {
 
                           {/* SCROLLABLE LIST */}
                           <div className="max-h-[420px] overflow-y-auto px-3 py-3 space-y-0.5 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
-
                             {ongoing.length > 0 && (
                               <>
                                 <SectionLabel>Ongoing Projects</SectionLabel>
                                 {ongoing.map((p) => (
-                                  <ProjectCard key={p.name} p={p} onClick={() => setActiveDropdown(null)} />
+                                  <ProjectCard
+                                    key={p.name}
+                                    p={p}
+                                    onClick={() => setActiveDropdown(null)}
+                                  />
                                 ))}
                               </>
                             )}
@@ -241,7 +265,11 @@ export function Navbar() {
                               <>
                                 <SectionLabel>Completed Projects</SectionLabel>
                                 {completed.map((p) => (
-                                  <ProjectCard key={p.name} p={p} onClick={() => setActiveDropdown(null)} />
+                                  <ProjectCard
+                                    key={p.name}
+                                    p={p}
+                                    onClick={() => setActiveDropdown(null)}
+                                  />
                                 ))}
                               </>
                             )}
@@ -250,13 +278,19 @@ export function Navbar() {
                               <>
                                 <SectionLabel>Dubai Projects</SectionLabel>
                                 {external.map((p) => (
-                                  <ProjectCard key={p.name} p={p} onClick={() => setActiveDropdown(null)} />
+                                  <ProjectCard
+                                    key={p.name}
+                                    p={p}
+                                    onClick={() => setActiveDropdown(null)}
+                                  />
                                 ))}
                               </>
                             )}
 
                             {filtered.length === 0 && (
-                              <p className="text-sm text-gray-400 text-center py-8">No projects found.</p>
+                              <p className="text-sm text-gray-400 text-center py-8">
+                                No projects found.
+                              </p>
                             )}
                           </div>
                           {/* FOOTER — sticky at bottom */}
@@ -269,7 +303,6 @@ export function Navbar() {
                               View All Projects →
                             </Link>
                           </div>
-
                         </div>
                       </motion.div>
                     )}
@@ -310,7 +343,6 @@ export function Navbar() {
             >
               <div className="p-4 space-y-1">
                 {navLinks.map((link) => {
-
                   if (!link.hasDropdown)
                     return (
                       <Link
@@ -325,18 +357,26 @@ export function Navbar() {
 
                   const projects = getProjectsByCountry(link.name);
                   const filtered = projects.filter((p) =>
-                    p.name.toLowerCase().includes(searchMobile.toLowerCase())
+                    p.name.toLowerCase().includes(searchMobile.toLowerCase()),
                   );
-                  const ongoing = filtered.filter((p) => p.status === "Ongoing");
-                  const completed = filtered.filter((p) => p.status === "Completed");
-                  const external = filtered.filter((p) => p.externalLink && !p.status);
+                  const ongoing = filtered.filter(
+                    (p) => p.status === "Ongoing",
+                  );
+                  const completed = filtered.filter(
+                    (p) => p.status === "Completed",
+                  );
+                  const external = filtered.filter(
+                    (p) => p.externalLink && !p.status,
+                  );
                   const expanded = mobileExpanded === link.name;
 
                   return (
                     <div key={link.name} className="border-b border-gray-100">
                       {/* Accordion Header */}
                       <button
-                        onClick={() => setMobileExpanded(expanded ? null : link.name)}
+                        onClick={() =>
+                          setMobileExpanded(expanded ? null : link.name)
+                        }
                         className="flex justify-between items-center w-full py-3 px-2 font-semibold text-gray-800 hover:text-amber-600 transition-colors"
                       >
                         <span>{link.name}</span>
@@ -344,7 +384,11 @@ export function Navbar() {
                           animate={{ rotate: expanded ? 45 : 0 }}
                           transition={{ duration: 0.15 }}
                         >
-                          {expanded ? <Minus size={18} className="text-amber-500" /> : <Plus size={18} />}
+                          {expanded ? (
+                            <Minus size={18} className="text-amber-500" />
+                          ) : (
+                            <Plus size={18} />
+                          )}
                         </motion.div>
                       </button>
 
@@ -363,7 +407,9 @@ export function Navbar() {
                               <div className="px-2 mb-3">
                                 <input
                                   value={searchMobile}
-                                  onChange={(e) => setSearchMobile(e.target.value)}
+                                  onChange={(e) =>
+                                    setSearchMobile(e.target.value)
+                                  }
                                   placeholder="Search projects..."
                                   className="border border-gray-200 bg-gray-50 px-3 py-2.5 rounded-xl w-full text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
                                 />
@@ -371,11 +417,12 @@ export function Navbar() {
 
                               {/* Scrollable project list — fixed height on mobile */}
                               <div className="max-h-[55vh] overflow-y-auto px-2 space-y-0.5">
-
                                 {ongoing.length > 0 && (
                                   <>
                                     <div className="flex items-center gap-2 py-2">
-                                      <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Ongoing</span>
+                                      <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                                        Ongoing
+                                      </span>
                                       <div className="flex-1 h-px bg-gray-100" />
                                     </div>
                                     {ongoing.map((p) => (
@@ -391,7 +438,9 @@ export function Navbar() {
                                 {completed.length > 0 && (
                                   <>
                                     <div className="flex items-center gap-2 py-2">
-                                      <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Completed</span>
+                                      <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                                        Completed
+                                      </span>
                                       <div className="flex-1 h-px bg-gray-100" />
                                     </div>
                                     {completed.map((p) => (
@@ -407,7 +456,9 @@ export function Navbar() {
                                 {external.length > 0 && (
                                   <>
                                     <div className="flex items-center gap-2 py-2">
-                                      <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Dubai</span>
+                                      <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                                        Dubai
+                                      </span>
                                       <div className="flex-1 h-px bg-gray-100" />
                                     </div>
                                     {external.map((p) => (
@@ -421,7 +472,9 @@ export function Navbar() {
                                 )}
 
                                 {filtered.length === 0 && (
-                                  <p className="text-sm text-gray-400 text-center py-6">No projects found.</p>
+                                  <p className="text-sm text-gray-400 text-center py-6">
+                                    No projects found.
+                                  </p>
                                 )}
                               </div>
 
@@ -458,7 +511,6 @@ export function Navbar() {
             </motion.div>
           )}
         </AnimatePresence>
-
       </div>
     </header>
   );
@@ -483,7 +535,9 @@ function MobileProjectRow({ p, onClose }: { p: Project; onClose: () => void }) {
           {p.name}
         </div>
         {p.location && (
-          <div className="text-xs text-gray-400 mt-0.5 truncate">{p.location}</div>
+          <div className="text-xs text-gray-400 mt-0.5 truncate">
+            {p.location}
+          </div>
         )}
       </div>
 

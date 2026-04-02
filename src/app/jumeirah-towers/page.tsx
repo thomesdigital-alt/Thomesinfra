@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import ContactSection from "./contactsession";
 import { Download } from "lucide-react";
 import HeroCarousel from "./herocarousel";
+
 export default function xxlpage() {
   const locations = [
     {
@@ -47,6 +48,7 @@ export default function xxlpage() {
       img: "https://images.jdmagicbox.com/v2/comp/hyderabad/19/040pg002719/catalogue/icfai-university-hyderabad-vidya-nagar-hyderabad-mba-college-correspondence-oxghl-250.jpg",
     },
   ];
+
   const navLinks: [string, string][] = [
     ["#amenities", "Amenities"],
     ["#layout", "Layout plan"],
@@ -62,7 +64,7 @@ export default function xxlpage() {
       "Cricketing Net",
     ],
     [
-      "Squash Court",
+      "Wellness",
       "Basket Ball Court",
       "Children's Play Zone",
       "Relaxation Park for Elders",
@@ -70,7 +72,6 @@ export default function xxlpage() {
     ["Meeting Rooms", "Banquet Hall", "Yoga Studio", "Reading Room"],
   ];
 
-  // ── Replace with your actual image URLs ──
   const slideshowImages = [
     {
       src: "https://thomestowers.com/wp-content/uploads/2026/03/10-pool-scaled-e1774351296238.png",
@@ -131,6 +132,8 @@ export default function xxlpage() {
   };
 
   const [scrolled, setScrolled] = React.useState(false);
+  // ── ADDED: track whether hero slide is active ──
+  const [heroActive, setHeroActive] = React.useState(true);
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [toast, setToast] = React.useState(false);
   const [current, setCurrent] = useState(0);
@@ -145,6 +148,7 @@ export default function xxlpage() {
     }, 3000);
     return () => clearInterval(i);
   }, []);
+
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -170,16 +174,23 @@ export default function xxlpage() {
   }, []);
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundImage: `url('https://thomestowers.com/wp-content/uploads/2026/03/background-1.png')`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        backgroundAttachment: "fixed",
-      }}
-    >
+    <div style={{ position: "relative", minHeight: "100vh" }}>
+      {/* FIXED BACKGROUND LAYER */}
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          backgroundImage: `url('https://thomestowers.com/wp-content/uploads/2026/04/Clip-Group_-3-scaled.png')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          zIndex: -1,
+        }}
+      />
+
+      {/* YOUR CONTENT */}
+      <div>{/* all your existing content */}</div>
+
       <header
         style={{
           position: "relative",
@@ -204,13 +215,20 @@ export default function xxlpage() {
             position: "relative",
           }}
         >
-          {/* LOGO */}
+          {/* ── LOGO with dynamic filter ── */}
           <img
             src={LOGO}
             alt="T Homes Infra"
             style={{
               height: scrolled ? 70 : 100,
               objectFit: "contain",
+              // White logo on hero (light bg), normal on colored slides, normal when scrolled
+              filter: scrolled
+                ? "none"
+                : heroActive
+                  ? "none"
+                  : "brightness(0) invert(1)",
+              transition: "filter 0.3s ease, height 0.3s ease",
             }}
           />
 
@@ -236,7 +254,7 @@ export default function xxlpage() {
                 <a
                   key={h}
                   href={h}
-                  onClick={() => setMenuOpen(false)} // 🔥 close on click
+                  onClick={() => setMenuOpen(false)}
                   style={{
                     fontSize: 14,
                     color: "#444",
@@ -253,7 +271,7 @@ export default function xxlpage() {
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               style={{
-                display: isMobile ? "block" : "none", // 🔥 FIXED
+                display: isMobile ? "block" : "none",
                 fontSize: "26px",
                 background: "none",
                 border: "none",
@@ -266,9 +284,12 @@ export default function xxlpage() {
           </div>
         </div>
       </header>
+
+      {/* ── HERO CAROUSEL — passes onHeroChange callback ── */}
       <div style={{ marginTop: -120, zIndex: -1 }}>
-        <HeroCarousel />
+        <HeroCarousel onHeroChange={setHeroActive} />
       </div>
+
       <section id="contact">
         <ContactSection />
       </section>
@@ -286,23 +307,18 @@ export default function xxlpage() {
 
           {/* RIGHT - CONTENT */}
           <div className="w-full lg:w-1/2.5 flex flex-col justify-start pt-12 lg:pr-30 lg:pl-2">
-            {/* TITLE */}
             <h2 className="text-3xl md:text-4xl lg:text-[40px] font-normal leading-tight">
               XXL in Scale
             </h2>
-
-            {/* DESCRIPTION */}
             <p className="text-white text-base md:text-sm lg:text-lg leading-relaxed tracking-wide">
               From the very first sight, J Cosmopolis stands tall with
               composure, drawing admiration to its unmissable neo-modern curved
               edges. Register openness as you walk through a pergola-framed
-              entry. The reception lobby’s double height ceiling establishes
+              entry. The reception lobby's double height ceiling establishes
               grandness without announcing it. With scale and space defining its
               presence, the singular tower spells exclusivity in an extra-large
               format.
             </p>
-
-            {/* STATS */}
             <div className="flex flex-wrap items-center gap-6 md:gap-10 pt-5">
               {[
                 { value: "1.93", label: "Acres" },
@@ -320,7 +336,6 @@ export default function xxlpage() {
                       {item.label}
                     </p>
                   </div>
-
                   {index !== 4 && (
                     <div className="hidden md:block w-px h-10 bg-white/30" />
                   )}
@@ -330,12 +345,8 @@ export default function xxlpage() {
           </div>
         </div>
       </section>
-      <section
-        style={{
-          padding: "60px 8%",
-        }}
-      >
-        {/* Heading */}
+
+      <section style={{ padding: "60px 8%" }}>
         <h2
           style={{
             fontSize: "clamp(3rem, 1vw , 4rem)",
@@ -347,8 +358,6 @@ export default function xxlpage() {
         >
           XXL Connectivity
         </h2>
-
-        {/* Subtext */}
         <p
           style={{
             fontSize: "20px",
@@ -363,12 +372,10 @@ export default function xxlpage() {
           corridors, schools, entertainment &amp; lifestyle spaces etc., connect
           here with efficiency.
         </p>
-
-        {/* Grid */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", // 🔥 key fix
+            gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)",
             gap: "18px 10px",
             maxWidth: "98%",
             margin: "0 auto",
@@ -386,7 +393,6 @@ export default function xxlpage() {
                 gap: "20px",
               }}
             >
-              {/* Circle image */}
               <div
                 style={{
                   width: "110px",
@@ -407,8 +413,6 @@ export default function xxlpage() {
                   }}
                 />
               </div>
-
-              {/* Label */}
               <div style={{ textAlign: "center" }}>
                 <p
                   style={{
@@ -436,21 +440,14 @@ export default function xxlpage() {
             </div>
           ))}
         </div>
-
-        {/* Responsive styles via a style tag */}
         <style>{`
-                  @media (max-width: 600px) {
-                    section {
-                      padding: 40px 10px !important;
-                    }
-                  }
-                `}</style>
+          @media (max-width: 600px) {
+            section { padding: 40px 10px !important; }
+          }
+        `}</style>
       </section>
-      <section
-        style={{
-          overflow: "hidden",
-        }}
-      >
+
+      <section style={{ overflow: "hidden" }}>
         <div>
           <h2
             style={{
@@ -458,18 +455,15 @@ export default function xxlpage() {
               fontWeight: 500,
               color: "#a09a91",
               letterSpacing: "-0.04em",
-              padding: isMobile ? "2px  0 0 0 " : "2px 10px 2% 8% ",
+              padding: isMobile ? "2px 0 0 0" : "2px 10px 2% 8%",
             }}
           >
             XXL Luxury
           </h2>
         </div>
-
-        {/* Hero Image */}
         <div
           style={{ width: "100%", overflow: "hidden", position: "relative" }}
         >
-          {/* Slides */}
           <div
             style={{
               display: "flex",
@@ -506,8 +500,6 @@ export default function xxlpage() {
               }}
             />
           </div>
-
-          {/* Dots */}
           <div
             style={{
               position: "absolute",
@@ -533,14 +525,7 @@ export default function xxlpage() {
             ))}
           </div>
         </div>
-        {/* Description */}
-        <div
-          style={{
-            marginLeft: "8%",
-            marginRight: "17%",
-            padding: "20px ",
-          }}
-        >
+        <div style={{ marginLeft: "8%", marginRight: "17%", padding: "20px" }}>
           <p
             style={{
               fontSize: "20px",
@@ -559,8 +544,6 @@ export default function xxlpage() {
             luxury.
           </p>
         </div>
-
-        {/* Photo Grid + Specs */}
         <div
           style={{
             marginLeft: "15%",
@@ -572,20 +555,17 @@ export default function xxlpage() {
             height: "70%",
           }}
         >
-          {/* 2x2 Photo Grid */}
           <div
             style={{
               display: "grid",
               gridTemplateColumns: "1fr",
               gap: "4px",
               flex: "0 0 auto",
-
               width: isMobile
                 ? "clamp(90%, 80%, 450px)"
                 : "clamp(50%, 52%, 350px)",
             }}
           >
-            {/* Row 1: wide | narrow (2:1) */}
             <div
               style={{
                 display: "grid",
@@ -612,8 +592,6 @@ export default function xxlpage() {
                 </div>
               ))}
             </div>
-
-            {/* Row 2: narrow | wide (1:2) */}
             <div
               style={{
                 display: "grid",
@@ -641,8 +619,6 @@ export default function xxlpage() {
               ))}
             </div>
           </div>
-
-          {/* Specs List */}
           <div
             style={{
               flex: 1,
@@ -682,8 +658,6 @@ export default function xxlpage() {
             ))}
           </div>
         </div>
-
-        {/* Bottom CTA Badges */}
         <div
           style={{
             display: "flex",
@@ -703,14 +677,14 @@ export default function xxlpage() {
               style={{
                 flex: "1 1 100px",
                 backgroundColor: "#5CDF46",
-                color: "#FFFFFF", // 👈 change here
+                color: "#FFFFFF",
                 textAlign: "center",
                 padding: "25px 20px",
                 fontSize: "25px",
                 fontWeight: 600,
                 lineHeight: "1.4",
                 whiteSpace: "pre-line",
-                borderRight: i < 2 ? "1px solid #5CDF46 " : "none",
+                borderRight: i < 2 ? "1px solid #5CDF46" : "none",
                 marginRight: "8px",
                 marginTop: "3%",
                 marginBottom: "1%",
@@ -727,7 +701,6 @@ export default function xxlpage() {
         className="amenities-section"
         style={{ marginTop: "10px" }}
       >
-        {/* ── Green card ── */}
         <div className="amenities-card" style={{ paddingLeft: "8%" }}>
           <h2 className="amenities-title">XXL Amenities</h2>
           <p className="amenities-desc">
@@ -735,7 +708,6 @@ export default function xxlpage() {
             comes with a host of amenities intended for celebrations and social
             interactions.
           </p>
-
           <div className="amenities-grid">
             {amenities.map((col, ci) => (
               <ul key={ci} className="amenities-list">
@@ -749,18 +721,13 @@ export default function xxlpage() {
             ))}
           </div>
         </div>
-
-        {/* ── Photo grid ── */}
         <div className="photo-grid" style={{ marginTop: "10px" }}>
-          {/* LEFT — Slideshow */}
           <div className="photo-large">
             <img
               src={slideshowImages[current].src}
               alt={slideshowImages[current].alt}
               className={`slide-img ${animating ? "slide-out" : "slide-in"}`}
             />
-
-            {/* Prev / Next arrows */}
             <button
               className="slide-arrow left"
               onClick={() =>
@@ -780,8 +747,6 @@ export default function xxlpage() {
             >
               ›
             </button>
-
-            {/* Dot indicators */}
             <div className="slide-dots">
               {slideshowImages.map((_, i) => (
                 <button
@@ -801,211 +766,48 @@ export default function xxlpage() {
             ))}
           </div>
         </div>
-
         <style>{`
-        .amenities-section {
-          
-          width: 100%;
-          overflow: hidden;
-          background-color:#5CDF46
-        }
-
-        /* ── Green card ── */
-        .amenities-card {
-          background-color: #5CDF46 ;
-          padding: 48px 56px 52px;
-        }
-
-        .amenities-title {
-          color: #ffffff;
-          font-size: clamp(3rem, 2.8vw, 2rem);
-          font-weight: 400;
-          margin: 0 0 14px;
-          letter-spacing: -1px;
-        }
-
-        .amenities-desc {
-          color: #ffffff;
-          font-size:22px;
-          line-height: 1.65;
-          margin: 0 0 36px;
-         
-        }
-
-        .amenities-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 8px 24px;
-          marginleft: 35%
-        }
-
-        .amenities-list {
-          list-style: none;
-          margin: 0;
-          padding: 0;
-          display: flex;
-          flex-direction: column;
-          gap: 14px;
-        }
-
-        .amenities-item {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          color: #ffffff;
-          font-size: clamp(1.2rem, 1.5vw, 1rem);
-          font-weight: 500;
-        }
-
-        .amenities-dot {
-          flex-shrink: 0;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background-color: #ffffff;
-        }
-
-        /* ── Photo grid layout ── */
-        .photo-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          height: 380px;
-          background-color:#5CDF46 
-          
-        }
-
-        /* ── Slideshow (left panel) ── */
-        .photo-large {
-          position: relative;
-          height: 100%;
-          overflow: hidden;
-          
-          background: #1a1a1a;
-        }
-
-        .slide-img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          display: block;
-          position: absolute;
-          inset: 0;
-          transition: opacity 0.35s ease, transform 0.35s ease;
-        }
-
-        .slide-img.slide-in {
-          opacity: 1;
-          transform: scale(1);
-        }
-
-        .slide-img.slide-out {
-          opacity: 0;
-          transform: scale(1.04);
-        }
-
-        /* Arrows */
-        .slide-arrow {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          background: rgba(0, 0, 0, 0.38);
-          color: #fff;
-          border: none;
-          font-size: 2.2rem;
-          line-height: 1;
-          width: 38px;
-          height: 56px;
-          cursor: pointer;
-          z-index: 3;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 4px;
-          transition: background 0.2s;
-        }
-        .slide-arrow:hover { background: rgba(0, 0, 0, 0.65); }
-        .slide-arrow.left  { left: 10px; }
-        .slide-arrow.right { right: 10px; }
-
-        /* Dots */
-        .slide-dots {
-          position: absolute;
-          bottom: 13px;
-          left: 50%;
-          transform: translateX(-50%);
-          display: flex;
-          gap: 8px;
-          z-index: 3;
-        }
-
-        .slide-dot {
-          width: 9px;
-          height: 9px;
-          border-radius: 50%;
-          border: 2px solid rgba(255,255,255,0.85);
-          background: transparent;
-          cursor: pointer;
-          padding: 0;
-          transition: background 0.25s, border-color 0.25s;
-        }
-
-        .slide-dot.active {
-          background: #5CDF46 ;
-          border-color: #5CDF46 ;
-        }
-
-        /* ── Small grid (right panel) ── */
-        .photo-small-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          grid-template-rows: repeat(2, 1fr);
-          gap: 3px;
-        }
-
-        .photo-small {
-          overflow: hidden;
-        }
-
-        .photo-small img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          display: block;
-          transition: transform 0.4s ease;
-        }
-
-        .photo-small:hover img {
-          transform: scale(1.07);
-        }
-        /* ── Responsive ── */
-        @media (max-width: 1000px) {
-          .amenities-card { padding: 36px 32px 40px; }
-          .amenities-grid { grid-template-columns: repeat(2, 1fr); }
-          .photo-grid { grid-template-columns: 1fr; height: auto; }
-          .photo-large { height: 280px; }
-          .photo-small-grid {
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(2, 140px);
+          .amenities-section { width: 100%; overflow: hidden; background-color:#5CDF46 }
+          .amenities-card { background-color: #5CDF46; padding: 48px 56px 52px; }
+          .amenities-title { color: #ffffff; font-size: clamp(3rem, 2.8vw, 2rem); font-weight: 400; margin: 0 0 14px; letter-spacing: -1px; }
+          .amenities-desc { color: #ffffff; font-size:22px; line-height: 1.65; margin: 0 0 36px; }
+          .amenities-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 24px; }
+          .amenities-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+          .amenities-item { display: flex; align-items: center; gap: 10px; color: #ffffff; font-size: clamp(1.2rem, 1.5vw, 1rem); font-weight: 500; }
+          .amenities-dot { flex-shrink: 0; width: 8px; height: 8px; border-radius: 50%; background-color: #ffffff; }
+          .photo-grid { display: grid; grid-template-columns: 1fr 1fr; height: 380px; background-color:#5CDF46 }
+          .photo-large { position: relative; height: 100%; overflow: hidden; background: #1a1a1a; }
+          .slide-img { width: 100%; height: 100%; object-fit: cover; display: block; position: absolute; inset: 0; transition: opacity 0.35s ease, transform 0.35s ease; }
+          .slide-img.slide-in { opacity: 1; transform: scale(1); }
+          .slide-img.slide-out { opacity: 0; transform: scale(1.04); }
+          .slide-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.38); color: #fff; border: none; font-size: 2.2rem; line-height: 1; width: 38px; height: 56px; cursor: pointer; z-index: 3; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: background 0.2s; }
+          .slide-arrow:hover { background: rgba(0,0,0,0.65); }
+          .slide-arrow.left { left: 10px; }
+          .slide-arrow.right { right: 10px; }
+          .slide-dots { position: absolute; bottom: 13px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 3; }
+          .slide-dot { width: 9px; height: 9px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.85); background: transparent; cursor: pointer; padding: 0; transition: background 0.25s, border-color 0.25s; }
+          .slide-dot.active { background: #5CDF46; border-color: #5CDF46; }
+          .photo-small-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 3px; }
+          .photo-small { overflow: hidden; }
+          .photo-small img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+          .photo-small:hover img { transform: scale(1.07); }
+          @media (max-width: 1000px) {
+            .amenities-card { padding: 36px 32px 40px; }
+            .amenities-grid { grid-template-columns: repeat(2, 1fr); }
+            .photo-grid { grid-template-columns: 1fr; height: auto; }
+            .photo-large { height: 280px; }
+            .photo-small-grid { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 140px); }
           }
-        }
-        @media (max-width: 600px) {
-          .amenities-card { padding: 28px 20px 32px; }
-          .amenities-grid { grid-template-columns: 1fr; gap: 6px; }
-          .photo-large { height: 230px; }
-          .photo-small-grid {
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(3, 120px);
+          @media (max-width: 600px) {
+            .amenities-card { padding: 28px 20px 32px; }
+            .amenities-grid { grid-template-columns: 1fr; gap: 6px; }
+            .photo-large { height: 230px; }
+            .photo-small-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 120px); }
           }
-        }
-      `}</style>
+        `}</style>
       </section>
-      <section
-        style={{
-          padding: "30px 30px",
-          paddingLeft: "8%",
-        }}
-      >
-        {/* Heading */}
+
+      <section style={{ padding: "30px 30px", paddingLeft: "8%" }}>
         <h2
           style={{
             fontSize: "clamp(2.6rem, 3vw, 3.2rem)",
@@ -1017,8 +819,6 @@ export default function xxlpage() {
         >
           XXL Assurance
         </h2>
-
-        {/* Subtext */}
         <p
           style={{
             fontSize: "22px",
@@ -1033,27 +833,25 @@ export default function xxlpage() {
           Built with intent and promoted with discipline, T Homes Infra brings a
           considered understanding of land value and delivery integrity. J
           Cosmopolis too, comes with the promise where execution sustains
-          design.{" "}
+          design.
         </p>
-
         <div style={{ display: "flex", width: "100%", flexWrap: "wrap" }}>
           <div
             style={{
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              flexDirection: isMobile ? "column" : "row", // ← stack on mobile
+              flexDirection: isMobile ? "column" : "row",
               width: "100%",
               minHeight: isMobile ? "auto" : "420px",
               overflow: "hidden",
               position: "relative",
             }}
           >
-            {/* LEFT — Logo */}
             <div
               style={{
-                flex: isMobile ? "unset" : "0 0 35%", // ← release fixed width
-                width: isMobile ? "60%" : "auto", // ← controlled width on mobile
+                flex: isMobile ? "unset" : "0 0 35%",
+                width: isMobile ? "60%" : "auto",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -1072,16 +870,14 @@ export default function xxlpage() {
                 }}
               />
             </div>
-
-            {/* RIGHT — Building image */}
             <div
               style={{
                 flex: isMobile ? "unset" : "0 0 65%",
-                width: isMobile ? "100%" : "auto", // ← full width on mobile
+                width: isMobile ? "100%" : "auto",
                 display: "flex",
                 alignItems: "flex-end",
                 justifyContent: "center",
-                height: isMobile ? "280px" : "420px", // ← shorter on mobile
+                height: isMobile ? "280px" : "420px",
                 overflow: "hidden",
                 position: "relative",
               }}
@@ -1101,12 +897,8 @@ export default function xxlpage() {
           </div>
         </div>
       </section>
-      <section
-        id="location"
-        style={{
-          padding: "60px 48px",
-        }}
-      >
+
+      <section id="location" style={{ padding: "60px 48px" }}>
         <h2
           style={{
             fontSize: "clamp(2.6rem, 3vw, 3.2rem)",
@@ -1118,7 +910,6 @@ export default function xxlpage() {
         >
           Location
         </h2>
-
         <div
           style={{
             display: "flex",
@@ -1128,7 +919,6 @@ export default function xxlpage() {
             alignItems: "flex-start",
           }}
         >
-          {/* Map Embed */}
           <div
             style={{
               flex: "1 1 560px",
@@ -1147,8 +937,6 @@ export default function xxlpage() {
               referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
-
-          {/* Location Info */}
           <div
             style={{
               flex: "1 1 260px",
@@ -1176,23 +964,17 @@ export default function xxlpage() {
                   fontWeight: 600,
                   color: "#2c2c2c",
                   margin: 0,
-
                   lineHeight: 1.4,
                 }}
               >
                 T HOMES – Jumeirah Towers
               </p>
               <p
-                style={{
-                  fontSize: "13px",
-                  color: "#777",
-                  margin: "4px 0 0 0",
-                }}
+                style={{ fontSize: "13px", color: "#777", margin: "4px 0 0 0" }}
               >
                 by DNB Constructions
               </p>
             </div>
-
             <div
               style={{
                 width: "40px",
@@ -1201,7 +983,6 @@ export default function xxlpage() {
                 opacity: 0.5,
               }}
             />
-
             <div>
               <p
                 style={{
@@ -1219,7 +1000,6 @@ export default function xxlpage() {
                   fontSize: "14px",
                   color: "#444",
                   margin: 0,
-
                   lineHeight: 1.7,
                 }}
               >
@@ -1230,7 +1010,6 @@ export default function xxlpage() {
                 India
               </p>
             </div>
-
             <div
               style={{
                 width: "40px",
@@ -1239,7 +1018,6 @@ export default function xxlpage() {
                 opacity: 0.5,
               }}
             />
-
             <a
               href="https://maps.google.com/?q=T+HOMES+Jumeirah+Towers+DNB+Constructions"
               target="_blank"
@@ -1253,7 +1031,6 @@ export default function xxlpage() {
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",
                 textDecoration: "none",
-
                 transition: "all 0.2s ease",
                 width: "fit-content",
               }}
@@ -1291,7 +1068,6 @@ export default function xxlpage() {
             gap: "24px",
           }}
         >
-          {/* HMDA Logo + Registration */}
           <div
             style={{
               display: "flex",
@@ -1318,8 +1094,6 @@ export default function xxlpage() {
               055194/SKP/R1/U6/HMDA/14062022 and
             </p>
           </div>
-
-          {/* TG RERA Logo + Number */}
           <div
             style={{
               display: "flex",
@@ -1351,18 +1125,10 @@ export default function xxlpage() {
               alignItems: "center",
             }}
           >
-            <p
-              style={{
-                fontSize: "13px",
-                color: "#555",
-                textAlign: "center",
-              }}
-            >
+            <p style={{ fontSize: "13px", color: "#555", textAlign: "center" }}>
               Consultant Architect
             </p>
           </div>
-
-          {/* Landscaping Partner */}
           <div
             style={{
               display: "flex",
@@ -1371,33 +1137,20 @@ export default function xxlpage() {
               gap: "8px",
             }}
           >
-            <p
-              style={{
-                fontSize: "13px",
-                color: "#555",
-                textAlign: "center",
-              }}
-            >
+            <p style={{ fontSize: "13px", color: "#555", textAlign: "center" }}>
               Landscapping Partner
             </p>
           </div>
-
-          {/* Playarea Design by Pool */}
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <p
-              style={{
-                fontSize: "13px",
-                color: "#555",
-                textAlign: "center",
-              }}
-            >
+            <p style={{ fontSize: "13px", color: "#555", textAlign: "center" }}>
               Playarea Design by Pool
             </p>
           </div>
         </div>
       </footer>
+
       <a
-        href="/brochure.pdf" // 👉 replace with your file link
+        href="/brochure.pdf"
         download
         className={`group fixed bottom-6 right-6 z-50 transition-all duration-500 
           ${scrolled ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"}`}
@@ -1406,14 +1159,11 @@ export default function xxlpage() {
           className="flex items-center gap-2 px-4 py-3 rounded-full text-black font-semibold shadow-lg transition-all duration-300"
           style={{
             backgroundColor: "#5CDF46",
-            border: "1px solid #ffffff", // ✅ white border
+            border: "1px solid #ffffff",
             cursor: "pointer",
           }}
         >
-          {/* Icon */}
           <Download className="w-5 h-5" />
-
-          {/* Text (always visible) */}
           <span className="whitespace-nowrap">Download Brochure</span>
         </div>
       </a>

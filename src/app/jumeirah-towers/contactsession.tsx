@@ -25,10 +25,10 @@ interface Country {
 }
 
 const FALLBACK_COUNTRIES: Country[] = [
-  { code: "+91",  flag: "🇮🇳", abbr: "IN" },
-  { code: "+1",   flag: "🇺🇸", abbr: "US" },
-  { code: "+44",  flag: "🇬🇧", abbr: "GB" },
-  { code: "+61",  flag: "🇦🇺", abbr: "AU" },
+  { code: "+91", flag: "🇮🇳", abbr: "IN" },
+  { code: "+1", flag: "🇺🇸", abbr: "US" },
+  { code: "+44", flag: "🇬🇧", abbr: "GB" },
+  { code: "+61", flag: "🇦🇺", abbr: "AU" },
   { code: "+971", flag: "🇦🇪", abbr: "AE" },
 ];
 
@@ -44,7 +44,8 @@ export default function ContactSection() {
 
   const [errors, setErrors] = React.useState<Errors>({});
   const [submitted, setSubmitted] = React.useState(false);
-  const [countries, setCountries] = React.useState<Country[]>(FALLBACK_COUNTRIES);
+  const [countries, setCountries] =
+    React.useState<Country[]>(FALLBACK_COUNTRIES);
   const [loadingCountries, setLoadingCountries] = React.useState(true);
 
   React.useEffect(() => {
@@ -86,11 +87,13 @@ export default function ContactSection() {
     if (!form.name.trim()) e.name = "Required";
     else if (form.name.length < 3) e.name = "Min 3 characters";
     if (!form.email.trim()) e.email = "Required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Invalid email";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+      e.email = "Invalid email";
     if (!form.occupation.trim()) e.occupation = "Required";
     if (!form.phone.trim()) e.phone = "Required";
     else if (!/^\d{7,15}$/.test(form.phone)) e.phone = "7-15 digits only";
-    if (!Object.values(form.checks).some(Boolean)) e.checks = "Select at least one option";
+    if (!Object.values(form.checks).some(Boolean))
+      e.checks = "Select at least one option";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -304,7 +307,6 @@ export default function ContactSection() {
 
       <div className="cs-wrap">
         <div className="cs-grid">
-
           <div className="cs-col">
             <div className="cs-field">
               <div className="cs-row">
@@ -329,7 +331,9 @@ export default function ContactSection() {
                   placeholder="Your occupation"
                 />
               </div>
-              {errors.occupation && <div className="cs-error">{errors.occupation}</div>}
+              {errors.occupation && (
+                <div className="cs-error">{errors.occupation}</div>
+              )}
             </div>
           </div>
 
@@ -372,7 +376,9 @@ export default function ContactSection() {
                   <input
                     className="cs-input"
                     value={form.phone}
-                    onChange={(e) => set("phone", e.target.value.replace(/\D/g, ""))}
+                    onChange={(e) =>
+                      set("phone", e.target.value.replace(/\D/g, ""))
+                    }
                     placeholder="Phone number"
                     maxLength={15}
                     inputMode="numeric"
@@ -385,17 +391,25 @@ export default function ContactSection() {
 
           <div className="cs-checks">
             <div className="cs-checks-title">Tick what's applicable</div>
-            {([
-              ["mokila",    "Yes I am actively looking for 3BHK in Mokila"],
-              ["hyderabad", "I am looking for a 3BHK in Hyderabad"],
-              ["months",    "Not immediately but in 3-6 months"],
-            ] as const).map(([key, label]) => (
-              <div key={key} className="cs-check-row" onClick={() => toggle(key)}>
+            {(
+              [
+                ["mokila", "Yes I am actively looking for 3BHK in Mokila"],
+                ["hyderabad", "I am looking for a 3BHK in Hyderabad"],
+                ["months", "Not immediately but in 3-6 months"],
+              ] as const
+            ).map(([key, label]) => (
+              <div
+                key={key}
+                className="cs-check-row"
+                onClick={() => toggle(key)}
+              >
                 <span className="cs-check-text">{label}</span>
                 <div className={`cs-box ${form.checks[key] ? "on" : ""}`} />
               </div>
             ))}
-            {errors.checks && <div className="cs-checks-err">{errors.checks}</div>}
+            {errors.checks && (
+              <div className="cs-checks-err">{errors.checks}</div>
+            )}
           </div>
 
           <div className="cs-btns">
@@ -407,10 +421,11 @@ export default function ContactSection() {
             </button>
 
             <a href="/brochure.pdf" download style={{ textDecoration: "none" }}>
-              <button className="cs-btn cs-btn-brochure">Download Brochure</button>
+              <button className="cs-btn cs-btn-brochure">
+                Download Brochure
+              </button>
             </a>
           </div>
-
         </div>
       </div>
     </>
