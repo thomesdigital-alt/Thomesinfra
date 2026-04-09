@@ -353,7 +353,7 @@ export default function HeroCarousel({
         }
         return p;
       });
-    }, 3000);
+    }, 10000);
   }, []);
 
   useEffect(() => {
@@ -799,7 +799,7 @@ export default function HeroCarousel({
               <div className="hero-building">
                 <img
                   src="https://thomestowers.com/wp-content/uploads/2026/03/Image_-1.png"
-                  alt="J Cosmopolis Building"
+                  alt="J  Tower Building"
                 />
               </div>
 
