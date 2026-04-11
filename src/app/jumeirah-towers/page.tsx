@@ -628,10 +628,10 @@ export default function xxlpage() {
             }}
           >
             {[
-              "1837 to 2713 sft",
-              "10 ft.\nwide corridors",
+              "1837 to 2713 SFT",
+              "10 ft.\n  ⁠Wide Corridors",
               "Spacious \n Balconies",
-              "East, West, & North\n facing",
+              "East, West, & North\n Facing",
             ].map((spec, i) => (
               <div
                 key={i}

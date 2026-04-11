@@ -25,7 +25,7 @@ const SLIDES = [
         sub: "",
         col: 0,
         row: 0,
-        img: "https://thomestowers.com/wp-content/uploads/2026/03/Path_-1.png",
+        img: "https://thomestowers.com/wp-content/uploads/2026/04/Path_-14.png",
       },
       {
         name: " ",
