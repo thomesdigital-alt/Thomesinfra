@@ -1,5 +1,7 @@
 "use client";
 import React from "react";
+import { toast } from "sonner";
+import { email } from "zod/v4";
 
 interface FormState {
   name: string;
@@ -98,10 +100,52 @@ export default function ContactSection() {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!validate()) return;
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 3000);
+
+    const data = {
+      name: form.name,
+      phone: `${form.countryCode}${form.phone}`,
+      project: `${form.checks.mokila ? "Yes I am actively looking for 3BHK in Mokila" : ""} also  ${form.checks.hyderabad ? "I am looking for a 3BHK in Hyderabad" : ""} but ${form.checks.months ? "Not immediately but in 3-6 months" : ""}`,
+      message: `Occupation: ${form.occupation}`,
+      email: form.email,
+      status: "jumeriah-towers",
+    };
+    try {
+      const response = await fetch("/api/inquiry", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result?.error || "Failed");
+      }
+
+      toast.success("Inquiry sent successfully!");
+
+      // Use stored reference
+
+      setForm({
+        name: "",
+        email: "",
+        occupation: "",
+        countryCode: "+91",
+        phone: "",
+        checks: { mokila: false, hyderabad: false, months: false },
+      });
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to send inquiry");
+    } finally {
+      setSubmitted(false);
+    }
   };
 
   const selectedFlag =
