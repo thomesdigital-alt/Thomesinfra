@@ -2,7 +2,13 @@
 
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
 
 /**
  * Videos
@@ -110,6 +116,28 @@ export function Hero() {
   if (!mounted) {
     return <section className="relative min-h-screen bg-black" />;
   }
+  async function SaveVideo() {
+    try {
+      const videoUrl = heroVideos[currentVideo];
+
+      const response = await fetch(videoUrl, { mode: "cors" });
+      const blob = await response.blob();
+
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = `video-${currentVideo + 1}.mp4`;
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  }
 
   return (
     <section
@@ -196,7 +224,22 @@ export function Hero() {
         >
           {isMuted ? <VolumeX size={22} /> : <Volume2 size={22} />}
         </button>
-
+        <button
+          onClick={SaveVideo}
+          className="
+    absolute bottom-8 left-8
+    flex items-center justify-center gap-2
+    bg-black/40 hover:bg-black/60
+    backdrop-blur-md
+    border border-white/20
+    text-white
+    px-4 py-2 rounded-full
+    transition
+  "
+        >
+          <Download size={20} className="shrink-0" />
+          <span className="text-sm font-medium leading-none">Download</span>
+        </button>
         {/* DOTS */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3">
           {heroVideos.map((_, index) => (

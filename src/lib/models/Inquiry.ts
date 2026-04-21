@@ -6,7 +6,7 @@ export interface IInquiry extends Document {
   phone: string;
   project?: string;
   message: string;
-  status: "pending" | "contacted" | "resolved"|"new";
+  status: "pending" | "contacted" | "resolved"|"new"|"jumeriah-towers";
   createdAt: Date;
 }
 
@@ -16,7 +16,7 @@ const InquirySchema: Schema = new Schema({
   phone: { type: String, required: true },
   project: { type: String },
   message: { type: String, required: true },
-  status: { type: String, enum: ["pending", "contacted", "resolved","new"], default: "new" },
+  status: { type: String, enum: ["pending", "contacted", "resolved","new","jumeriah-towers"], default: "new" },
   createdAt: { type: Date, default: Date.now },
 });
 
