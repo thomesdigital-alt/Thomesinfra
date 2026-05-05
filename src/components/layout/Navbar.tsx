@@ -315,7 +315,7 @@ export function Navbar() {
           {/* VIEW MAPS BUTTON */}
           <div className="hidden lg:block">
             <a
-              href="https://earth.google.com/earth/d/17GEvwTcuXVKNAbark1aqu8Waah0zeZoq?usp=sharing"
+              href="https://earth.google.com/earth/d/1gvZGGSD4MdlONdowzB2MOC5xr-zprqJl?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -498,7 +498,7 @@ export function Navbar() {
 
                 <div className="pt-3">
                   <a
-                    href="https://earth.google.com/earth/d/1MS-DYbZVeEuiRP8LbFLcjeS-nd0V7S2c?usp=sharing"
+                    href="https://earth.google.com/earth/d/1gvZGGSD4MdlONdowzB2MOC5xr-zprqJl?usp=sharing"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
