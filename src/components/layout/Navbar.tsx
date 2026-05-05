@@ -30,7 +30,7 @@ const navLinks = [
   { name: "About Us", href: "/about" },
   { name: "India", hasDropdown: true },
   { name: "Dubai", href: "https://globalthomesrealty.com/" },
-  { name: "Jumeirah Towers", href: "/jumeirah-towers" },
+  { name: "J Towers", href: "/jumeirah-towers" },
 
   { name: "Blogs", href: "/blogs" },
   { name: "Contact", href: "/contact" },
