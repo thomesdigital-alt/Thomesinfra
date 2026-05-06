@@ -1148,7 +1148,7 @@ export default function xxlpage() {
       </footer>
 
       <a
-        href="/brochure.pdf"
+        href="https://mediumpurple-sandpiper-111248.hostingersite.com/wp-content/uploads/2026/05/T-Homes_Mokila-Brochure.pdf"
         download
         className={`group fixed bottom-6 right-6 z-50 transition-all duration-500 
           ${scrolled ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"}`}
