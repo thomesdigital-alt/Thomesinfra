@@ -43,7 +43,29 @@ export default function ContactSection() {
     phone: "",
     checks: { mokila: false, hyderabad: false, months: false },
   });
+  const handleDownload = async () => {
+    const fileUrl =
+      "https://mediumpurple-sandpiper-111248.hostingersite.com/wp-content/uploads/2026/05/T-Homes_Mokila-Brochure.pdf";
 
+    try {
+      const response = await fetch(fileUrl);
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "T-Homes_Mokila-Brochure.pdf";
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  };
   const [errors, setErrors] = React.useState<Errors>({});
   const [submitted, setSubmitted] = React.useState(false);
   const [countries, setCountries] =
@@ -456,7 +478,7 @@ export default function ContactSection() {
             )}
           </div>
 
-          <div className="cs-btns">
+          <div onClick={handleDownload} className="cs-btns">
             <button
               className={`cs-btn cs-btn-submit ${submitted ? "done" : ""}`}
               onClick={handleSubmit}
@@ -464,11 +486,9 @@ export default function ContactSection() {
               {submitted ? "Submitted ✓" : "Submit"}
             </button>
 
-            <a href="/brochure.pdf" download style={{ textDecoration: "none" }}>
-              <button className="cs-btn cs-btn-brochure">
-                Download Brochure
-              </button>
-            </a>
+            <button className="cs-btn cs-btn-brochure">
+              Download Brochure
+            </button>
           </div>
         </div>
       </div>
