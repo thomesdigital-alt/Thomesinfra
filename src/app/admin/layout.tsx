@@ -5,10 +5,25 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { 
-  LayoutDashboard, Building2, FileText, Users, Settings, 
-  LogOut, ChevronRight, Plus, Eye, Edit, Trash2, Image as ImageIcon,
-  Menu, X, Bell, Search, MessageSquare, Map
+import {
+  LayoutDashboard,
+  Building2,
+  FileText,
+  Users,
+  Settings,
+  LogOut,
+  ChevronRight,
+  Plus,
+  Eye,
+  Edit,
+  Trash2,
+  Image as ImageIcon,
+  Menu,
+  X,
+  Bell,
+  Search,
+  MessageSquare,
+  Map,
 } from "lucide-react";
 import { toast, Toaster } from "sonner";
 import { map } from "leaflet";
@@ -21,7 +36,7 @@ interface AdminLayoutProps {
 const navItems = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { name: "Projects", href: "/admin/projects", icon: Building2 },
-  { name: "Jumeirah Towers", href: "/admin/jumeirah", icon: Building2 },
+  { name: "J Towers", href: "/admin/jumeirah", icon: Building2 },
   { name: "Bookings", href: "/admin/bookings", icon: FileText },
   { name: "Inquiries", href: "/admin/inquiries", icon: Users },
   { name: "AI Chat Logs", href: "/admin/chats", icon: MessageSquare },
@@ -86,13 +101,15 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <div className="space-y-4">
             <Input
               type="password"
-             
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && handleLogin()}
               className="h-14 rounded-xl"
             />
-            <Button onClick={handleLogin} className="w-full h-14 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold">
+            <Button
+              onClick={handleLogin}
+              className="w-full h-14 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold"
+            >
               Login to Admin
             </Button>
           </div>
@@ -107,9 +124,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <div className="min-h-screen bg-gray-100">
       <Toaster position="top-center" />
-      
+
       {/* Sidebar */}
-      <aside className={`fixed left-0 top-0 z-40 h-screen bg-[#0a1628] transition-all duration-300 ${sidebarOpen ? "w-64" : "w-20"}`}>
+      <aside
+        className={`fixed left-0 top-0 z-40 h-screen bg-[#0a1628] transition-all duration-300 ${sidebarOpen ? "w-64" : "w-20"}`}
+      >
         <div className="flex h-full flex-col">
           {/* Logo */}
           <div className="flex h-20 items-center justify-between px-6 border-b border-white/10">
@@ -118,8 +137,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 THomes Admin
               </Link>
             )}
-            <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-white/60 hover:text-white" title={sidebarOpen ? "Close sidebar" : "Open sidebar"}>
-              {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="text-white/60 hover:text-white"
+              title={sidebarOpen ? "Close sidebar" : "Open sidebar"}
+            >
+              {sidebarOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
             </button>
           </div>
 
@@ -151,7 +178,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       </aside>
 
       {/* Main Content */}
-      <main className={`transition-all duration-300 ${sidebarOpen ? "ml-64" : "ml-20"}`}>
+      <main
+        className={`transition-all duration-300 ${sidebarOpen ? "ml-64" : "ml-20"}`}
+      >
         {/* Header */}
         <header className="sticky top-0 z-30 bg-white border-b border-gray-200 px-6 py-4">
           <div className="flex items-center justify-between">
@@ -160,7 +189,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <Input className="pl-10 w-64 rounded-full bg-gray-100 border-0" />
             </div>
             <div className="flex items-center gap-4">
-              <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-full" type="button" title="Notifications">
+              <button
+                className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-full"
+                type="button"
+                title="Notifications"
+              >
                 <Bell className="h-5 w-5" />
                 <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full" />
               </button>
@@ -172,9 +205,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </header>
 
         {/* Page Content */}
-        <div className="p-6">
-          {children}
-        </div>
+        <div className="p-6">{children}</div>
       </main>
     </div>
   );

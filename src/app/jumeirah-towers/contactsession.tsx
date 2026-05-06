@@ -43,28 +43,24 @@ export default function ContactSection() {
     phone: "",
     checks: { mokila: false, hyderabad: false, months: false },
   });
+  const isFormValid = () => {
+    return (
+      form.name.trim().length >= 3 &&
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email) &&
+      form.occupation.trim() !== "" &&
+      /^\d{7,15}$/.test(form.phone) &&
+      Object.values(form.checks).some(Boolean)
+    );
+  };
   const handleDownload = async () => {
-    const fileUrl =
+    if (!isFormValid()) return;
+
+    // submit form first
+    await handleSubmit({} as React.MouseEvent<HTMLButtonElement>);
+
+    // download brochure
+    window.location.href =
       "https://mediumpurple-sandpiper-111248.hostingersite.com/wp-content/uploads/2026/05/T-Homes_Mokila-Brochure.pdf";
-
-    try {
-      const response = await fetch(fileUrl);
-      const blob = await response.blob();
-
-      const url = window.URL.createObjectURL(blob);
-
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "T-Homes_Mokila-Brochure.pdf";
-
-      document.body.appendChild(link);
-      link.click();
-
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Download failed:", error);
-    }
   };
   const [errors, setErrors] = React.useState<Errors>({});
   const [submitted, setSubmitted] = React.useState(false);
