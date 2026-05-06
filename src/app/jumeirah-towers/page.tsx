@@ -55,7 +55,29 @@ export default function xxlpage() {
     ["#location", "Location"],
     ["#contact", "Call for site visit"],
   ];
+  const handleDownload = async () => {
+    const fileUrl =
+      "https://mediumpurple-sandpiper-111248.hostingersite.com/wp-content/uploads/2026/05/T-Homes_Mokila-Brochure.pdf";
 
+    try {
+      const response = await fetch(fileUrl);
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "T-Homes_Mokila-Brochure.pdf";
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  };
   const amenities = [
     [
       "15,000 Sq. ft. Clubhouse",
@@ -1154,6 +1176,7 @@ export default function xxlpage() {
           ${scrolled ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"}`}
       >
         <div
+          onClick={handleDownload}
           className="flex items-center gap-2 px-4 py-3 rounded-full text-black font-semibold shadow-lg transition-all duration-300"
           style={{
             backgroundColor: "#5CDF46",
