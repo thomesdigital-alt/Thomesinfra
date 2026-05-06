@@ -97,7 +97,8 @@ export function Contact() {
 
               <div className="flex gap-6 group">
                 <div className="h-14 w-14 rounded-2xl bg-blue-50 flex items-center justify-center group-hover:bg-blue-900 transition-colors duration-500">
-                  <MapPin className="h-6 w-6 text-blue-900 group-hover:text-white transition-colors" />
+                  <a href="https://www.google.com/maps/place/T+HOMES+INFRA+PRIVATE+LIMITED/@17.4242362,78.4255312,627m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3bcb9737e4038e9f:0xcb609b5821acadb1!8m2!3d17.4242362!4d78.4255312!16s%2Fg%2F11s3qd2w86?entry=ttu&g_ep=EgoyMDI2MDUwMi4wIKXMDSoASAFQAw%3D%3D">
+                    <MapPin className="h-6 w-6 text-blue-900 group-hover:text-white transition-colors" /> </a>
                 </div>
                 <div>
                   <div className="text-sm font-bold text-gray-400 uppercase mb-1">Office</div>
