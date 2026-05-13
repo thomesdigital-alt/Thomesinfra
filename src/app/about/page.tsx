@@ -54,7 +54,7 @@ const team = [
     name: "GAMPA NAGESHWER RAO",
     role: "chief mentor",
     image:
-      "https://mediumpurple-sandpiper-111248.hostingersite.com/wp-content/uploads/2025/10/NRJ0642-scaled.jpg",
+      "https://mediumpurple-sandpiper-111248.hostingersite.com/wp-content/uploads/2026/05/IMG_5050.JPG.jpeg",
     description:
       "Guiding strategic vision with experience, clarity, and disciplined oversight.",
   },
@@ -567,7 +567,7 @@ export default function AboutPage() {
               <div className="lg:col-span-5 order-1 lg:order-2">
                 <div className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden shadow-2xl group">
                   <Image
-                    src="https://mediumpurple-sandpiper-111248.hostingersite.com/wp-content/uploads/2026/05/Untitled-design-2.png"
+                    src="https://mediumpurple-sandpiper-111248.hostingersite.com/wp-content/uploads/2026/05/IMG_5050.JPG.jpeg"
                     alt="Gampa Nageshwer Rao - Chief Mentor"
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
