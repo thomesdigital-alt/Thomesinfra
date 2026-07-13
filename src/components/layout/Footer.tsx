@@ -378,7 +378,7 @@ export function Footer() {
   {[
     {
       Icon: MapPin,
-      text: "Flat No: 8-2-120/77/4B, 3rd Floor, NVR Towers, Road No. 2, Banjara Hills, Hyderabad – 500034" ,link:"https://www.google.com/maps/dir/?api=1&destination=17.424236183469244,78.42295627494836" ,},
+      text: "Flat No: 8-2-120/77/4B, 3rd Floor, NVR Towers, Road No. 2, Banjara Hills, Hyderabad – 500034" ,link:"https://maps.app.goo.gl/eFnk4rsh6hNg1grN7" ,},
     { Icon: Phone, text: "+919032939753", link: "tel:+919032939753" },
     { Icon: Mail, text: "info@thomesinfra.com", link: "mailto:info@thomesinfra.com" },
   ].map(({ Icon, text, link }) => (
