@@ -9,80 +9,101 @@ import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, Mail, MapPin, Clock, Send, ChevronRight, MessageCircle } from "lucide-react";
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
+  Send,
+  ChevronRight,
+  MessageCircle,
+} from "lucide-react";
 import { toast, Toaster } from "sonner";
 
 export default function ContactPage() {
   const [formData, setFormData] = React.useState({
     name: "",
     phone: "",
-   
+
     project: "",
     message: "",
   });
   const [submitting, setSubmitting] = React.useState(false);
   const [agreed, setAgreed] = React.useState(false);
 
- 
-const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-      if (!agreed) {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!agreed) {
       toast.error("Please agree to the terms and conditions to continue.");
       return;
     }
 
-  setSubmitting(true);
+    setSubmitting(true);
 
-  // Store reference before any async work
-  const form = e.currentTarget;
+    // Store reference before any async work
+    const form = e.currentTarget;
 
-  const data = {
-    name: formData.name,
-    phone: formData.phone,
-    project: formData.project,
-    message: formData.message,
-  };
+    const data = {
+      name: formData.name,
+      phone: formData.phone,
+      project: formData.project,
+      message: formData.message,
+    };
 
-  try {
-    const response = await fetch("/api/inquiry", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    try {
+      const response = await fetch("/api/inquiry", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-    const result = await response.json();
+      const result = await response.json();
 
-    if (!response.ok) {
-      throw new Error(result?.error || "Failed");
-    }
+      if (!response.ok) {
+        throw new Error(result?.error || "Failed");
+      }
 
-    toast.success("Inquiry sent successfully!");
+      toast.success("Inquiry sent successfully!");
 
-    form.reset();
-    
+      form.reset();
+
       setAgreed(false); // Use stored reference
 
-    setFormData({
-      name: "",
-      phone: "",
-      project: "",
-      message: "",
-    });
-
-  } catch (err) {
-    console.error(err);
-    toast.error("Failed to send inquiry");
-  } finally {
-    setSubmitting(false);
-  }
-};
+      setFormData({
+        name: "",
+        phone: "",
+        project: "",
+        message: "",
+      });
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to send inquiry");
+    } finally {
+      setSubmitting(false);
+    }
+  };
   return (
     <main className="min-h-screen bg-white">
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1400323585502475');
+fbq('track', 'PageView');`,
+        }}
+      />
+      <noscript></noscript>
       <Navbar />
       <Toaster position="top-center" />
-      
+
       {/* Hero */}
       <section className="relative pt-20 pb-32 bg-[#0a1628] overflow-hidden">
         <div className="absolute inset-0 opacity-20">
@@ -96,7 +117,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
           />
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/80 to-[#0a1628]" />
-        
+
         <div className="container relative z-10 mx-auto px-4 pt-16">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -110,7 +131,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
               Let's Build Your <span className="text-amber-400">Future</span>
             </h1>
             <p className="text-xl text-white/60">
-              Have questions about our projects? Want to schedule a site visit? 
+              Have questions about our projects? Want to schedule a site visit?
               Our team is here to help you find the perfect investment.
             </p>
           </motion.div>
@@ -122,10 +143,10 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-6">
             {[ */}
-              {/* // { icon: Phone, title: "Call Us", value: "+91 91212 12121", subtitle: "Mon-Sat, 9AM-7PM" }, */}
-              {/* // { icon: Mail, title: "Email Us", value: "info@thomesinfra.com", subtitle: "We reply within 24 hours" }, */}
-              {/* { icon: MapPin, title: "Visit Us", value: "Flat No : 8-2-120/77/4B, 3rd floor, NVR Towers, Road No. 2, opp. NTR Memorial Trust Blood Bank,Banjara Hills, Hyderabad, Telangana 500034", subtitle: "Banjara Hills, Hyderabad" }, */}
-            {/* ].map((item, index) => (
+      {/* // { icon: Phone, title: "Call Us", value: "+91 91212 12121", subtitle: "Mon-Sat, 9AM-7PM" }, */}
+      {/* // { icon: Mail, title: "Email Us", value: "info@thomesinfra.com", subtitle: "We reply within 24 hours" }, */}
+      {/* { icon: MapPin, title: "Visit Us", value: "Flat No : 8-2-120/77/4B, 3rd floor, NVR Towers, Road No. 2, opp. NTR Memorial Trust Blood Bank,Banjara Hills, Hyderabad, Telangana 500034", subtitle: "Banjara Hills, Hyderabad" }, */}
+      {/* ].map((item, index) => (
               <motion.div
                 key={item.title}
                 initial={{ opacity: 0, y: 20 }}
@@ -155,87 +176,84 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Send Us a Message</h2>
-              <p className="text-gray-500 mb-8">Fill out the form and our team will get back to you within 24 hours.</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                Send Us a Message
+              </h2>
+              <p className="text-gray-500 mb-8">
+                Fill out the form and our team will get back to you within 24
+                hours.
+              </p>
 
               <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* NAME */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-gray-700">
+                      Full Name *
+                    </label>
 
-  <div className="grid md:grid-cols-2 gap-6">
+                    <Input
+                      name="name"
+                      required
+                      value={formData.name}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
+                      className="h-14 rounded-xl bg-gray-50 border-0 focus:ring-2 focus:ring-amber-500"
+                    />
+                  </div>
 
-    {/* NAME */}
-    <div className="space-y-2">
-      <label className="text-sm font-semibold text-gray-700">
-        Full Name *
-      </label>
+                  {/* PHONE */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-gray-700">
+                      Phone Number *
+                    </label>
 
-      <Input
-        name="name"
-        required
-      
-        value={formData.name}
-        onChange={(e) =>
-          setFormData({ ...formData, name: e.target.value })
-        }
-        className="h-14 rounded-xl bg-gray-50 border-0 focus:ring-2 focus:ring-amber-500"
-      />
-    </div>
+                    <Input
+                      name="phone"
+                      required
+                      value={formData.phone}
+                      onChange={(e) =>
+                        setFormData({ ...formData, phone: e.target.value })
+                      }
+                      className="h-14 rounded-xl bg-gray-50 border-0 focus:ring-2 focus:ring-amber-500"
+                    />
+                  </div>
+                </div>
 
-    {/* PHONE */}
-    <div className="space-y-2">
-      <label className="text-sm font-semibold text-gray-700">
-        Phone Number *
-      </label>
+                {/* PROJECT */}
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700">
+                    Interest
+                  </label>
 
-      <Input
-        name="phone"
-        required
-        
-        value={formData.phone}
-        onChange={(e) =>
-          setFormData({ ...formData, phone: e.target.value })
-        }
-        className="h-14 rounded-xl bg-gray-50 border-0 focus:ring-2 focus:ring-amber-500"
-      />
-    </div>
+                  <Input
+                    name="project"
+                    value={formData.project}
+                    onChange={(e) =>
+                      setFormData({ ...formData, project: e.target.value })
+                    }
+                    className="h-14 rounded-xl bg-gray-50 border-0 focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
 
-  </div>
+                {/* MESSAGE */}
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700">
+                    Your Message
+                  </label>
 
-  {/* PROJECT */}
-  <div className="space-y-2">
-    <label className="text-sm font-semibold text-gray-700">
-      Interest
-    </label>
-
-    <Input
-      name="project"
-     
-      value={formData.project}
-      onChange={(e) =>
-        setFormData({ ...formData, project: e.target.value })
-      }
-      className="h-14 rounded-xl bg-gray-50 border-0 focus:ring-2 focus:ring-amber-500"
-    />
-  </div>
-
-  {/* MESSAGE */}
-  <div className="space-y-2">
-    <label className="text-sm font-semibold text-gray-700">
-      Your Message
-    </label>
-
-    <Textarea
-      name="message"
-      required
-    
-      
-      value={formData.message}
-      onChange={(e) =>
-        setFormData({ ...formData, message: e.target.value })
-      }
-      className="min-h-[150px] rounded-xl bg-gray-50 border-0 focus:ring-2 focus:ring-amber-500"
-    />
-  </div>
-          <div className="flex items-start gap-3 pt-2">
+                  <Textarea
+                    name="message"
+                    required
+                    value={formData.message}
+                    onChange={(e) =>
+                      setFormData({ ...formData, message: e.target.value })
+                    }
+                    className="min-h-[150px] rounded-xl bg-gray-50 border-0 focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
+                <div className="flex items-start gap-3 pt-2">
                   <input
                     type="checkbox"
                     id="terms"
@@ -243,8 +261,12 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                     onChange={(e) => setAgreed(e.target.checked)}
                     className="w-5 h-5 mt-0.5 accent-blue-900 rounded cursor-pointer"
                   />
-                  <label htmlFor="terms" className="text-sm text-gray-700 leading-relaxed cursor-pointer">
-                    I agree to receive communication via SMS, RCS, and WhatsApp and I accept the{" "}
+                  <label
+                    htmlFor="terms"
+                    className="text-sm text-gray-700 leading-relaxed cursor-pointer"
+                  >
+                    I agree to receive communication via SMS, RCS, and WhatsApp
+                    and I accept the{" "}
                     <a
                       href="https://thomesinfra.com/privacy"
                       target="_blank"
@@ -252,8 +274,8 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                       className="text-blue-900 font-semibold hover:underline"
                     >
                       Privacy Policy
-                    </a>
-                    {" "}and{" "}
+                    </a>{" "}
+                    and{" "}
                     <a
                       href="https://thomesinfra.com/termsandcondition"
                       target="_blank"
@@ -264,17 +286,16 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                     </a>
                   </label>
                 </div>
-  {/* SUBMIT */}
-  <Button
-    type="submit"
-    disabled={submitting || !agreed}
-    className="w-full h-16 rounded-full bg-amber-500 hover:bg-amber-600 text-black font-bold text-lg"
-  >
-    {submitting ? "Sending..." : "Send Message"}
-    <Send className="ml-2 h-5 w-5" />
-  </Button>
-
-</form>
+                {/* SUBMIT */}
+                <Button
+                  type="submit"
+                  disabled={submitting || !agreed}
+                  className="w-full h-16 rounded-full bg-amber-500 hover:bg-amber-600 text-black font-bold text-lg"
+                >
+                  {submitting ? "Sending..." : "Send Message"}
+                  <Send className="ml-2 h-5 w-5" />
+                </Button>
+              </form>
             </motion.div>
 
             {/* Office Info */}
@@ -290,19 +311,30 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   <div className="flex gap-4">
                     <MapPin className="h-6 w-6 text-amber-400 flex-shrink-0" />
                     <div>
-                      <div className="font-semibold">T Homes Infra Pvt. Ltd.</div>
+                      <div className="font-semibold">
+                        T Homes Infra Pvt. Ltd.
+                      </div>
                       {/* <div className="text-sm font-bold text-gray-900">Flat No : 8-2-120/77/4B, 3rd floor, NVR Towers, <br /> Road No. 2, opp. NTR Memorial Trust Blood Bank, <br />Banjara Hills, Hyderabad, Telangana 500034</div>
-                */}
-                      <div className="text-sm-white/60">Flat No : 8-2-120/77/4B, 3rd floor, NVR Towers, <br /> Road No. 2, opp. NTR Memorial Trust Blood Bank</div>
-                      <div className="text-white/60">Banjara Hills, Hyderabad, Telangana 500034</div>
+                       */}
+                      <div className="text-sm-white/60">
+                        Flat No : 8-2-120/77/4B, 3rd floor, NVR Towers, <br />{" "}
+                        Road No. 2, opp. NTR Memorial Trust Blood Bank
+                      </div>
+                      <div className="text-white/60">
+                        Banjara Hills, Hyderabad, Telangana 500034
+                      </div>
                     </div>
                   </div>
                   <div className="flex gap-4">
                     <Clock className="h-6 w-6 text-amber-400 flex-shrink-0" />
                     <div>
                       <div className="font-semibold">Working Hours</div>
-                      <div className="text-white/60">Monday - Saturday: 9:00 AM - 7:00 PM</div>
-                      <div className="text-white/60">Sunday: By Appointment Only</div>
+                      <div className="text-white/60">
+                        Monday - Saturday: 9:00 AM - 7:00 PM
+                      </div>
+                      <div className="text-white/60">
+                        Sunday: By Appointment Only
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -351,7 +383,10 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             Schedule a free site visit and see our premium plots firsthand.
           </p>
           <Link href="/projects">
-            <Button size="lg" className="h-16 rounded-full bg-black hover:bg-gray-900 text-white px-10 text-lg font-bold">
+            <Button
+              size="lg"
+              className="h-16 rounded-full bg-black hover:bg-gray-900 text-white px-10 text-lg font-bold"
+            >
               Explore Our Projects
               <ChevronRight className="ml-2 h-5 w-5" />
             </Button>

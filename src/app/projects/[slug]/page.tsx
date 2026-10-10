@@ -11,10 +11,10 @@
 // import { Button } from "@/components/ui/button";
 // // import { supabase, Project, Plot } from "@/lib/supabase";
 // import { toast, Toaster } from "sonner";
-// import { 
-//   MapPin, ChevronRight, ShieldCheck, Phone, Download, 
+// import {
+//   MapPin, ChevronRight, ShieldCheck, Phone, Download,
 //   X, CheckCircle, ArrowLeft, Building2,
-//   TreePine, Droplets, Shield, Zap, Car, School, Map as MapIcon, 
+//   TreePine, Droplets, Shield, Zap, Car, School, Map as MapIcon,
 //   Layout, Box, Cuboid, Eye, Navigation, Compass as CompassIcon
 // } from "lucide-react";
 // import { ProjectHighlights } from "@/components/sections/ProjectHighlights";
@@ -48,8 +48,8 @@
 
 // // const TownshipLayout3D = dynamic(
 // //   () => import("@/components/3d/TownshipLayout3D").then((mod) => mod.TownshipLayout3D),
-// //   { 
-// //     ssr: false, 
+// //   {
+// //     ssr: false,
 // //     loading: () => (
 // //       <div className="w-full h-[700px] bg-[#0a1628] rounded-[3.5rem] flex flex-col items-center justify-center gap-6 border border-white/10 overflow-hidden">
 // //         <div className="relative">
@@ -63,7 +63,7 @@
 // //           <div className="text-white/30 text-[10px] font-bold uppercase tracking-widest">Loading Premium Assets & Layout</div>
 // //         </div>
 // //       </div>
-// //     ) 
+// //     )
 // //   }
 // // );
 
@@ -100,7 +100,6 @@
 //   const [loading, setLoading] = React.useState(true);
 //   const [selectedPlot, setSelectedPlot] = useState<any | null>(null);
 
-
 //   async function fetchProject() {
 //     try {
 //       const response = await fetch(`/api/projects?slug=${slug}`);
@@ -108,7 +107,7 @@
 //       if (projectData && !projectData.error) {
 //         setProject(projectData);
 //         console.log("Fetched project:", projectData);
-        
+
 //         // For now, plots might still be empty or we fetch them from another API
 //         const plotsResponse = await fetch(`/api/projects/${projectData._id}/plots`);
 //         if (plotsResponse.ok) {
@@ -180,7 +179,7 @@
 //   window.initSendOTP({
 //     widgetId: "366271695963363335323530",
 //     tokenAuth: "494774TDaayJXaIdop69943abeP1",
-    
+
 //     success: (data: any) => {
 //       console.log("OTP success:", data);
 
@@ -219,7 +218,7 @@
 //     <main className="min-h-screen bg-white">
 //       <Navbar />
 //       <Toaster position="top-center" />
-      
+
 //       {/* Hero */}
 //       <section className="relative pt-20 pb-32 bg-[#0a1628] overflow-hidden">
 //         <div className="absolute inset-0 opacity-30">
@@ -231,7 +230,7 @@
 //           />
 //         </div>
 //         <div className="absolute inset-0 bg-gradient-to-t from-[#0a1628] via-[#0a1628]/80 to-[#0a1628]/60" />
-        
+
 //         <div className="container relative z-10 mx-auto px-4 pt-16">
 //           <Link href="/projects" className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-8 transition-colors">
 //             <ArrowLeft className="h-4 w-4" />
@@ -251,7 +250,7 @@
 //           </div>
 
 //           <h1 className="text-5xl md:text-8xl font-black text-white mb-4 tracking-tighter">{project.name}</h1>
-          
+
 //           <div className="flex items-center gap-2 text-white/60 text-xl mb-8">
 //             <MapPin className="h-5 w-5 text-amber-500" />
 //             {project.location}
@@ -282,7 +281,6 @@
 //     Interactive 3D Tour
 //   </Button> */}
 
-
 //   {/* EXPLORE LOCATION */}
 //   <Button
 //     onClick={() =>
@@ -305,7 +303,6 @@
 //     <MapIcon className="h-6 w-6" />
 //     Explore Location
 //   </Button>
-
 
 //   {/* DOWNLOAD BROCHURE */}
 //  <Button
@@ -354,7 +351,6 @@
 
 // </div>
 
-
 //           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
 //             {[
 //               { label: "Total Plots", value: project.total_plots },
@@ -402,7 +398,7 @@
 //           </div>
 
 //           <div className="relative aspect-[16/9] md:aspect-[21/9] w-full min-h-[700px]">
-//             <TownshipLayout3D 
+//             <TownshipLayout3D
 //               plots={plots}
 //               layoutImage={project.layout_image || undefined}
 //               onPlotSelect={setSelectedPlot}
@@ -534,7 +530,6 @@
 //       </Link>
 //     </div>
 
-
 //     {/* Map Container */}
 //     {project.google_embed_url ? (
 //       <div
@@ -588,7 +583,7 @@
 //             </Button>
 //           </div>
 //         </div>
-        
+
 //         {/* Abstract shapes */}
 //         <div className="absolute -top-24 -left-24 w-96 h-96 bg-amber-500/5 rounded-full blur-[120px]" />
 //         <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-500/5 rounded-full blur-[120px]" />
@@ -612,10 +607,10 @@
 // // import { Button } from "@/components/ui/button";
 // // import { supabase, Project, Plot } from "@/lib/supabase";
 // // import { toast, Toaster } from "sonner";
-// // import { 
-// //   MapPin, ChevronRight, ShieldCheck, Phone, Download, 
+// // import {
+// //   MapPin, ChevronRight, ShieldCheck, Phone, Download,
 // //   X, CheckCircle, ArrowLeft, Building2,
-// //   TreePine, Droplets, Shield, Zap, Car, School, Map as MapIcon, 
+// //   TreePine, Droplets, Shield, Zap, Car, School, Map as MapIcon,
 // //   Layout, Box, Cuboid, Eye, Navigation, Compass as CompassIcon
 // // } from "lucide-react";
 // // import { ProjectHighlights } from "@/components/sections/ProjectHighlights";
@@ -627,8 +622,8 @@
 // // }
 // // const TownshipLayout3D = dynamic(
 // //   () => import("@/components/3d/TownshipLayout3D").then((mod) => mod.TownshipLayout3D),
-// //   { 
-// //     ssr: false, 
+// //   {
+// //     ssr: false,
 // //     loading: () => (
 // //       <div className="w-full h-[700px] bg-[#0a1628] rounded-[3.5rem] flex flex-col items-center justify-center gap-6 border border-white/10 overflow-hidden">
 // //         <div className="relative">
@@ -642,7 +637,7 @@
 // //           <div className="text-white/30 text-[10px] font-bold uppercase tracking-widest">Loading Premium Assets & Layout</div>
 // //         </div>
 // //       </div>
-// //     ) 
+// //     )
 // //   }
 // // );
 
@@ -685,7 +680,7 @@
 // //       const projectData = await response.json();
 // //       if (projectData && !projectData.error) {
 // //         setProject(projectData);
-        
+
 // //         // For now, plots might still be empty or we fetch them from another API
 // //         const plotsResponse = await fetch(`/api/projects/${projectData._id}/plots`);
 // //         if (plotsResponse.ok) {
@@ -704,7 +699,7 @@
 // //     setMounted(true);
 // //     fetchProject();
 // //   }, [slug]);
- 
+
 // //   if (!project) {
 // //     return (
 // //       <main className="min-h-screen bg-gray-50">
@@ -726,7 +721,7 @@
 // //     <main className="min-h-screen bg-white">
 // //       <Navbar />
 // //       <Toaster position="top-center" />
-      
+
 // //       {/* Hero */}
 // //       <section className="relative pt-20 pb-32 bg-[#0a1628] overflow-hidden">
 // //         <div className="absolute inset-0 opacity-30">
@@ -738,7 +733,7 @@
 // //           />
 // //         </div>
 // //         <div className="absolute inset-0 bg-gradient-to-t from-[#0a1628] via-[#0a1628]/80 to-[#0a1628]/60" />
-        
+
 // //         <div className="container relative z-10 mx-auto px-4 pt-16">
 // //           <Link href="/projects" className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-8 transition-colors">
 // //             <ArrowLeft className="h-4 w-4" />
@@ -758,7 +753,7 @@
 // //           </div>
 
 // //           <h1 className="text-5xl md:text-8xl font-black text-white mb-4 tracking-tighter">{project.name}</h1>
-          
+
 // //           <div className="flex items-center gap-2 text-white/60 text-xl mb-8">
 // //             <MapPin className="h-5 w-5 text-amber-500" />
 // //             {project.location}
@@ -789,7 +784,6 @@
 // //     Interactive 3D Tour
 // //   </Button>
 
-
 // //   {/* EXPLORE LOCATION */}
 // //   <Button
 // //     onClick={() =>
@@ -813,13 +807,12 @@
 // //     Explore Location
 // //   </Button>
 
-
 // //   {/* DOWNLOAD BROCHURE */}
 // //  <Button
 // //   onClick={() => {
 // //       router.push(`/ventures/${project.slug}.pdf`);
 // //   }
-   
+
 // //   }
 // //     className="
 // //       h-16 px-10 rounded-full
@@ -851,7 +844,6 @@
 // //   </Button>
 
 // // </div>
-
 
 // //           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
 // //             {[
@@ -900,7 +892,7 @@
 // //           </div>
 
 // //           <div className="relative aspect-[16/9] md:aspect-[21/9] w-full min-h-[700px]">
-// //             <TownshipLayout3D 
+// //             <TownshipLayout3D
 // //               plots={plots}
 // //               layoutImage={project.layout_image || undefined}
 // //               onPlotSelect={setSelectedPlot}
@@ -964,7 +956,7 @@
 // //   </Button>
 // // </Link>
 // //           </div>
-          
+
 // //           <div className="aspect-[21/9] w-full bg-gray-200 rounded-[4rem] overflow-hidden shadow-2xl border-8 border-white">
 // //             <iframe
 // //               width="100%"
@@ -999,7 +991,7 @@
 // //             </Button>
 // //           </div>
 // //         </div>
-        
+
 // //         {/* Abstract shapes */}
 // //         <div className="absolute -top-24 -left-24 w-96 h-96 bg-amber-500/5 rounded-full blur-[120px]" />
 // //         <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-500/5 rounded-full blur-[120px]" />
@@ -1021,17 +1013,34 @@ import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { toast, Toaster } from "sonner";
 import {
-  MapPin, ShieldCheck, Phone, ArrowLeft, Building2,
-  Car, School, ChevronLeft, ChevronRight, CheckCircle,
-  Stethoscope, Plane, Train, Navigation, Send, User,
-  Star, TrendingUp,
+  MapPin,
+  ShieldCheck,
+  Phone,
+  ArrowLeft,
+  Building2,
+  Car,
+  School,
+  ChevronLeft,
+  ChevronRight,
+  CheckCircle,
+  Stethoscope,
+  Plane,
+  Train,
+  Navigation,
+  Send,
+  User,
+  Star,
+  TrendingUp,
 } from "lucide-react";
 import Head from "next/head";
 import { ProjectHighlights } from "@/components/sections/ProjectHighlights";
 import { AnimatePresence, motion } from "framer-motion";
+import Script from "next/script"; // Inside your component return
 
 declare global {
-  interface Window { initSendOTP: any; }
+  interface Window {
+    initSendOTP: any;
+  }
 }
 
 // ── Interface ─────────────────────────────────────────────────────────────────
@@ -1074,18 +1083,32 @@ const extractLatLng = (iframeHtml: string) => {
 // ── Normalise helpers ─────────────────────────────────────────────────────────
 function normaliseGallery(raw: any): string[] {
   console.log("[normaliseGallery] raw input:", JSON.stringify(raw));
-  if (!raw) { console.log("[normaliseGallery] → null/undefined, return []"); return []; }
-  if (!Array.isArray(raw)) { console.log("[normaliseGallery] → not an array, return []"); return []; }
-  if (raw.length === 0) { console.log("[normaliseGallery] → empty array, return []"); return []; }
+  if (!raw) {
+    console.log("[normaliseGallery] → null/undefined, return []");
+    return [];
+  }
+  if (!Array.isArray(raw)) {
+    console.log("[normaliseGallery] → not an array, return []");
+    return [];
+  }
+  if (raw.length === 0) {
+    console.log("[normaliseGallery] → empty array, return []");
+    return [];
+  }
   const first = raw[0];
-  console.log("[normaliseGallery] first element type:", typeof first, "value:", first);
+  console.log(
+    "[normaliseGallery] first element type:",
+    typeof first,
+    "value:",
+    first,
+  );
   if (typeof first === "string") {
     const result = (raw as string[]).filter(Boolean);
     console.log("[normaliseGallery] → plain strings, result:", result);
     return result;
   }
   const result = (raw as { label?: string; value?: string }[])
-    .map(g => g.value ?? "")
+    .map((g) => g.value ?? "")
     .filter(Boolean);
   console.log("[normaliseGallery] → {label,value} objects, result:", result);
   return result;
@@ -1093,7 +1116,8 @@ function normaliseGallery(raw: any): string[] {
 
 function normaliseProximity(raw: any): { label: string; value: string }[] {
   if (!raw || !Array.isArray(raw) || raw.length === 0) return [];
-  if (typeof raw[0] === "string") return (raw as string[]).map(s => ({ label: s, value: "" }));
+  if (typeof raw[0] === "string")
+    return (raw as string[]).map((s) => ({ label: s, value: "" }));
   return raw as { label: string; value: string }[];
 }
 
@@ -1102,7 +1126,9 @@ function normaliseVideos(raw: any): string[] {
   if (!raw) return [];
   if (typeof raw === "string") return raw.trim() ? [raw.trim()] : [];
   if (!Array.isArray(raw)) return [];
-  return (raw as string[]).filter(s => typeof s === "string" && s.trim().length > 0);
+  return (raw as string[]).filter(
+    (s) => typeof s === "string" && s.trim().length > 0,
+  );
 }
 
 function normaliseNumber(val: any): number | undefined {
@@ -1112,7 +1138,8 @@ function normaliseNumber(val: any): number | undefined {
 }
 
 // ── Defaults ──────────────────────────────────────────────────────────────────
-const defaultWhychooseUs = "We provide premium DTCP approved layouts with clear titles and high growth potential.";
+const defaultWhychooseUs =
+  "We provide premium DTCP approved layouts with clear titles and high growth potential.";
 const defaultWhychooseUspoints = [
   "DTCP Approved Layout",
   "Clear Legal Documentation",
@@ -1137,13 +1164,22 @@ const projectImages: Record<string, string[]> = {
 };
 
 const proximityIconMap: Record<string, React.ElementType> = {
-  School, Airport: Plane, Hospital: Stethoscope,
-  Highway: Car, Metro: Train, Station: Train,
+  School,
+  Airport: Plane,
+  Hospital: Stethoscope,
+  Highway: Car,
+  Metro: Train,
+  Station: Train,
   default: Navigation,
 };
 
 // ─── HERO CAROUSEL ────────────────────────────────────────────────────────────
-function HeroCarousel({ images, project, onScrollToMap, onBrochureClick }: {
+function HeroCarousel({
+  images,
+  project,
+  onScrollToMap,
+  onBrochureClick,
+}: {
   images: string[];
   project: IProject;
   onScrollToMap: () => void;
@@ -1152,110 +1188,208 @@ function HeroCarousel({ images, project, onScrollToMap, onBrochureClick }: {
   const [activeIdx, setActiveIdx] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const goTo = useCallback((idx: number) => {
-    setActiveIdx((idx + images.length) % images.length);
-  }, [images.length]);
+  const goTo = useCallback(
+    (idx: number) => {
+      setActiveIdx((idx + images.length) % images.length);
+    },
+    [images.length],
+  );
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://thomesinfra.com/" },
-      { "@type": "ListItem", position: 2, name: "Projects", item: "https://thomesinfra.com/projects" },
-      { "@type": "ListItem", position: 3, name: project.name, item: `https://thomesinfra.com/projects/${project.slug}` },
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://thomesinfra.com/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Projects",
+        item: "https://thomesinfra.com/projects",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: project.name,
+        item: `https://thomesinfra.com/projects/${project.slug}`,
+      },
     ],
   };
 
   useEffect(() => {
     timerRef.current = setInterval(() => goTo(activeIdx + 1), 3000);
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
   }, [activeIdx, goTo]);
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <Head>
         <title>{project.name} | T Homes Infra</title>
         <meta name="description" content={project.description} />
-        <meta name="keywords" content={`HMDA plots ${project.location}, plots in ${project.location}, land investment ${project.location}`} />
+        <meta
+          name="keywords"
+          content={`HMDA plots ${project.location}, plots in ${project.location}, land investment ${project.location}`}
+        />
         <meta property="og:title" content={project.name} />
         <meta property="og:description" content={project.description} />
         <meta property="og:type" content="website" />
-        {project.hero_image && <meta property="og:image" content={project.hero_image} />}
-        <link rel="canonical" href={`https://thomesinfra.com/projects/${project.slug}`} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Product",
-            name: project.name,
-            description: project.description,
-            image: project.hero_image,
-            brand: { "@type": "Organization", name: "T Homes Infra" },
-            offers: {
-              "@type": "Offer",
-              priceCurrency: "INR",
-         
-              availability: project.available_plots > 0 ? "https://schema.org/InStock" : "https://schema.org/SoldOut",
-            },
-            address: { "@type": "PostalAddress", addressLocality: project.location, addressCountry: "India" },
-          }),
-        }} />
+        {project.hero_image && (
+          <meta property="og:image" content={project.hero_image} />
+        )}
+        <link
+          rel="canonical"
+          href={`https://thomesinfra.com/projects/${project.slug}`}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Product",
+              name: project.name,
+              description: project.description,
+              image: project.hero_image,
+              brand: { "@type": "Organization", name: "T Homes Infra" },
+              offers: {
+                "@type": "Offer",
+                priceCurrency: "INR",
+
+                availability:
+                  project.available_plots > 0
+                    ? "https://schema.org/InStock"
+                    : "https://schema.org/SoldOut",
+              },
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: project.location,
+                addressCountry: "India",
+              },
+            }),
+          }}
+        />
       </Head>
       <div className="bg-[#0a0a0a]">
         <section className="relative w-full h-screen min-h-[680px] overflow-hidden">
           {images.map((src, i) => (
-            <div key={i} className="absolute inset-0 transition-opacity duration-1000" style={{ opacity: i === activeIdx ? 1 : 0 }}>
-              <NextImage src={src} alt={project.name} fill className="object-cover" priority={i === 0} />
+            <div
+              key={i}
+              className="absolute inset-0 transition-opacity duration-1000"
+              style={{ opacity: i === activeIdx ? 1 : 0 }}
+            >
+              <NextImage
+                src={src}
+                alt={project.name}
+                fill
+                className="object-cover"
+                priority={i === 0}
+              />
               <div className="absolute inset-0 bg-black/40" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             </div>
           ))}
-          <div className="absolute top-0 inset-x-0 z-30"><Navbar /></div>
+          <div className="absolute top-0 inset-x-0 z-30">
+            <Navbar />
+          </div>
           <div className="relative z-20 h-full flex flex-col justify-center items-center text-center px-4 md:px-6 pt-10">
-            <Link href="/projects" className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-6 transition-colors text-sm">
+            <Link
+              href="/projects"
+              className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-6 transition-colors text-sm"
+            >
               <ArrowLeft className="h-4 w-4" /> Back to Projects
             </Link>
             <div className="flex flex-wrap items-center justify-center gap-3 mb-5">
-              <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ${project.status === "ongoing" ? "bg-emerald-500 text-white" : "bg-blue-500 text-white"}`}>
+              <span
+                className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ${project.status === "ongoing" ? "bg-emerald-500 text-white" : "bg-blue-500 text-white"}`}
+              >
                 {project.status}
               </span>
               <span className="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm text-white text-xs font-semibold flex items-center gap-2 border border-white/20">
-                <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" /> {project.approval_type}
+                <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />{" "}
+                {project.approval_type}
               </span>
-            </div>  
+            </div>
             <h1 className="text-2xl md:text-3xl lg:text-5xl font-black text-white tracking-tighter mb-4 italic leading-none drop-shadow-lg">
               {project.name}
             </h1>
             <p className="text-sm md:text-lg text-white/70 max-w-2xl mb-10 font-light italic leading-relaxed px-2">
               {project.description}
             </p>
-            <Button onClick={onBrochureClick} className="h-12 md:h-14 px-7 md:px-10 rounded-xl bg-[#3b3b98] hover:bg-[#2e2e7a] text-white font-bold text-sm md:text-base transition-all hover:scale-105 shadow-[0_20px_40px_-10px_rgba(59,59,152,0.5)]">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 16v-8m0 8l-3-3m3 3l3-3M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" />
+            <Button
+              onClick={onBrochureClick}
+              className="h-12 md:h-14 px-7 md:px-10 rounded-xl bg-[#3b3b98] hover:bg-[#2e2e7a] text-white font-bold text-sm md:text-base transition-all hover:scale-105 shadow-[0_20px_40px_-10px_rgba(59,59,152,0.5)]"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 16v-8m0 8l-3-3m3 3l3-3M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"
+                />
               </svg>
               Download Brochure
             </Button>
-            <button onClick={onScrollToMap} className="absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-2 text-white/80 hover:text-amber-400 transition-colors group">
+            <button
+              onClick={onScrollToMap}
+              className="absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-2 text-white/80 hover:text-amber-400 transition-colors group"
+            >
               <MapPin className="h-5 w-5 text-amber-500 group-hover:scale-110 transition-transform" />
-              <span className="text-sm font-medium underline underline-offset-4">{project.location}</span>
+              <span className="text-sm font-medium underline underline-offset-4">
+                {project.location}
+              </span>
             </button>
           </div>
         </section>
 
         {/* Thumbnail strip */}
         <div className="bg-[#0a0a0a] px-4 md:px-6 py-4 md:py-5">
-          <div className="max-w-[1280px] mx-auto flex items-center gap-2 md:gap-3 overflow-x-auto" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+          <div
+            className="max-w-[1280px] mx-auto flex items-center gap-2 md:gap-3 overflow-x-auto"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
             {images.map((src, i) => (
-              <button key={i} onClick={() => { goTo(i); if (timerRef.current) clearInterval(timerRef.current); }}
+              <button
+                key={i}
+                onClick={() => {
+                  goTo(i);
+                  if (timerRef.current) clearInterval(timerRef.current);
+                }}
                 className={`relative flex-shrink-0 rounded-xl overflow-hidden transition-all duration-300 border-2 ${i === activeIdx ? "border-amber-400 opacity-100 scale-105 shadow-lg shadow-amber-500/30" : "border-white/10 opacity-50 hover:opacity-80 hover:border-white/30"}`}
-                style={{ width: 80, height: 52 }}>
-                <NextImage src={src} alt={`Preview ${i + 1}`} fill className="object-cover" />
-                {i === activeIdx && <div className="absolute bottom-0 inset-x-0 h-1 bg-amber-400 rounded-b-xl" />}
+                style={{ width: 80, height: 52 }}
+              >
+                <NextImage
+                  src={src}
+                  alt={`Preview ${i + 1}`}
+                  fill
+                  className="object-cover"
+                />
+                {i === activeIdx && (
+                  <div className="absolute bottom-0 inset-x-0 h-1 bg-amber-400 rounded-b-xl" />
+                )}
               </button>
             ))}
             <div className="ml-auto flex items-center gap-1.5 pl-3 flex-shrink-0">
               {images.map((_, i) => (
-                <button key={i} onClick={() => goTo(i)} className={`block rounded-full transition-all duration-300 ${i === activeIdx ? "w-5 h-1.5 bg-amber-400" : "w-1.5 h-1.5 bg-white/30 hover:bg-white/60"}`} />
+                <button
+                  key={i}
+                  onClick={() => goTo(i)}
+                  className={`block rounded-full transition-all duration-300 ${i === activeIdx ? "w-5 h-1.5 bg-amber-400" : "w-1.5 h-1.5 bg-white/30 hover:bg-white/60"}`}
+                />
               ))}
             </div>
           </div>
@@ -1266,21 +1400,46 @@ function HeroCarousel({ images, project, onScrollToMap, onBrochureClick }: {
 }
 
 // ─── STATS SECTION ────────────────────────────────────────────────────────────
-function StatsSection({ project, onScrollToMap }: { project: IProject; onScrollToMap: () => void }) {
+function StatsSection({
+  project,
+  onScrollToMap,
+}: {
+  project: IProject;
+  onScrollToMap: () => void;
+}) {
   const [activeStatIdx, setActiveStatIdx] = useState(0);
-  const totalAcres       = normaliseNumber(project.Totalacres);
-  const commercialPlots  = normaliseNumber(project.commercial_plots);
+  const totalAcres = normaliseNumber(project.Totalacres);
+  const commercialPlots = normaliseNumber(project.commercial_plots);
   const residentialPlots = normaliseNumber(project.residential_plots);
 
   const stats = [
-    { label: "Total Acres",       value: totalAcres       ? `${totalAcres} Acres` : "—", sub: "Premium land area"      },
-    { label: "Total Plots",       value: project.total_plots  || "—",                     sub: "Carefully planned"     },
-    { label: "Commercial Plots",  value: commercialPlots  ?? "—",                          sub: "150–300 sq yards"     },
-    { label: "Residential Plots", value: residentialPlots ?? project.available_plots ?? "—", sub: "200–400 sq yards"   },
+    {
+      label: "Total Acres",
+      value: totalAcres ? `${totalAcres} Acres` : "—",
+      sub: "Premium land area",
+    },
+    {
+      label: "Total Plots",
+      value: project.total_plots || "—",
+      sub: "Carefully planned",
+    },
+    {
+      label: "Commercial Plots",
+      value: commercialPlots ?? "—",
+      sub: "150–300 sq yards",
+    },
+    {
+      label: "Residential Plots",
+      value: residentialPlots ?? project.available_plots ?? "—",
+      sub: "200–400 sq yards",
+    },
   ];
 
   useEffect(() => {
-    const t = setInterval(() => setActiveStatIdx(p => (p + 1) % stats.length), 3000);
+    const t = setInterval(
+      () => setActiveStatIdx((p) => (p + 1) % stats.length),
+      3000,
+    );
     return () => clearInterval(t);
   }, [stats.length]);
 
@@ -1288,29 +1447,56 @@ function StatsSection({ project, onScrollToMap }: { project: IProject; onScrollT
     <section className="py-14 md:py-20 bg-white">
       <div className="max-w-[1280px] mx-auto px-4 md:px-8">
         <div className="text-center mb-10 md:mb-14">
-          <p className="text-xs font-black uppercase tracking-[0.35em] text-amber-600 mb-3">Project Overview</p>
-          <h2 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight mb-3">Numbers That Matter</h2>
-          <button onClick={onScrollToMap} className="flex items-center gap-2 mx-auto text-gray-500 hover:text-amber-600 transition-colors text-sm font-medium">
+          <p className="text-xs font-black uppercase tracking-[0.35em] text-amber-600 mb-3">
+            Project Overview
+          </p>
+          <h2 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight mb-3">
+            Numbers That Matter
+          </h2>
+          <button
+            onClick={onScrollToMap}
+            className="flex items-center gap-2 mx-auto text-gray-500 hover:text-amber-600 transition-colors text-sm font-medium"
+          >
             <MapPin className="h-4 w-4 text-amber-500" />
             {project.location}
-            <span className="underline underline-offset-2 text-xs">View on map →</span>
+            <span className="underline underline-offset-2 text-xs">
+              View on map →
+            </span>
           </button>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
           <div className="grid grid-cols-2 gap-3 md:gap-4">
             {stats.map((stat, i) => (
-              <div key={stat.label} onClick={() => setActiveStatIdx(i)}
-                className={`cursor-pointer rounded-2xl p-5 md:p-7 border-2 transition-all duration-500 ${i === activeStatIdx ? "bg-[#3b3b98] border-[#3b3b98] text-white scale-105 shadow-xl shadow-[#3b3b98]/30" : "bg-gray-50 border-gray-100 text-gray-800 hover:border-gray-200"}`}>
-                <div className={`text-2xl md:text-3xl font-black mb-1 ${i === activeStatIdx ? "text-white" : "text-gray-900"}`}>{stat.value}</div>
-                <div className={`font-bold text-xs md:text-sm mb-1 ${i === activeStatIdx ? "text-white/90" : "text-gray-700"}`}>{stat.label}</div>
-                <div className={`text-xs ${i === activeStatIdx ? "text-white/60" : "text-gray-400"}`}>{stat.sub}</div>
+              <div
+                key={stat.label}
+                onClick={() => setActiveStatIdx(i)}
+                className={`cursor-pointer rounded-2xl p-5 md:p-7 border-2 transition-all duration-500 ${i === activeStatIdx ? "bg-[#3b3b98] border-[#3b3b98] text-white scale-105 shadow-xl shadow-[#3b3b98]/30" : "bg-gray-50 border-gray-100 text-gray-800 hover:border-gray-200"}`}
+              >
+                <div
+                  className={`text-2xl md:text-3xl font-black mb-1 ${i === activeStatIdx ? "text-white" : "text-gray-900"}`}
+                >
+                  {stat.value}
+                </div>
+                <div
+                  className={`font-bold text-xs md:text-sm mb-1 ${i === activeStatIdx ? "text-white/90" : "text-gray-700"}`}
+                >
+                  {stat.label}
+                </div>
+                <div
+                  className={`text-xs ${i === activeStatIdx ? "text-white/60" : "text-gray-400"}`}
+                >
+                  {stat.sub}
+                </div>
               </div>
             ))}
           </div>
           <div className="relative mt-6 lg:mt-0">
             <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
               <NextImage
-                src={project.layout_image || "https://thomesinfra.com/wp-content/uploads/2023/11/DJI_0474.jpg"}
+                src={
+                  project.layout_image ||
+                  "https://thomesinfra.com/wp-content/uploads/2023/11/DJI_0474.jpg"
+                }
                 alt="Layout"
                 width={0}
                 height={0}
@@ -1321,7 +1507,9 @@ function StatsSection({ project, onScrollToMap }: { project: IProject; onScrollT
             <div className="absolute -bottom-4 -right-2 md:-bottom-5 md:-right-5 bg-white rounded-2xl px-4 md:px-5 py-2 md:py-3 shadow-[0_10px_30px_rgba(0,0,0,0.2)] border border-gray-100 flex items-center gap-2 md:gap-3 z-10">
               <ShieldCheck className="h-6 w-6 md:h-8 md:w-8 text-emerald-500" />
               <div>
-                <div className="font-black text-gray-900 text-xs md:text-sm">{project.approval_type}</div>
+                <div className="font-black text-gray-900 text-xs md:text-sm">
+                  {project.approval_type}
+                </div>
                 <div className="text-xs text-gray-400">Government Approved</div>
               </div>
             </div>
@@ -1338,18 +1526,37 @@ function AmenitiesSection({ amenities }: { amenities: string[] }) {
     <section className="py-14 md:py-24 bg-[#f8f8fc]">
       <div className="max-w-[1280px] mx-auto px-4 md:px-8">
         <div className="text-center mb-10 md:mb-14">
-          <p className="text-xs font-black uppercase tracking-[0.35em] text-amber-600 mb-3">Lifestyle Features</p>
-          <h2 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight">World-Class Amenities</h2>
+          <p className="text-xs font-black uppercase tracking-[0.35em] text-amber-600 mb-3">
+            Lifestyle Features
+          </p>
+          <h2 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight">
+            World-Class Amenities
+          </h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
           {amenities.map((amenity) => (
-            <div key={amenity} className="flex items-center gap-3 bg-white rounded-2xl px-4 md:px-5 py-3 md:py-4 border border-gray-100 shadow-sm hover:shadow-md hover:border-emerald-200 hover:-translate-y-0.5 transition-all duration-200 group">
+            <div
+              key={amenity}
+              className="flex items-center gap-3 bg-white rounded-2xl px-4 md:px-5 py-3 md:py-4 border border-gray-100 shadow-sm hover:shadow-md hover:border-emerald-200 hover:-translate-y-0.5 transition-all duration-200 group"
+            >
               <div className="flex-shrink-0 w-7 h-7 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center group-hover:bg-emerald-500 group-hover:border-emerald-500 transition-all duration-200">
-                <svg className="w-4 h-4 text-emerald-600 group-hover:text-white transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                <svg
+                  className="w-4 h-4 text-emerald-600 group-hover:text-white transition-colors duration-200"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
               </div>
-              <span className="text-gray-800 font-semibold text-sm leading-tight">{amenity}</span>
+              <span className="text-gray-800 font-semibold text-sm leading-tight">
+                {amenity}
+              </span>
             </div>
           ))}
         </div>
@@ -1359,40 +1566,75 @@ function AmenitiesSection({ amenities }: { amenities: string[] }) {
 }
 
 // ─── PROXIMITIES ─────────────────────────────────────────────────────────────
-function ProximitiesSection({ proximity }: { proximity: { label: string; value: string }[] }) {
+function ProximitiesSection({
+  proximity,
+}: {
+  proximity: { label: string; value: string }[];
+}) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const scroll = (dir: "left" | "right") =>
-    scrollRef.current?.scrollBy({ left: dir === "left" ? -280 : 280, behavior: "smooth" });
+    scrollRef.current?.scrollBy({
+      left: dir === "left" ? -280 : 280,
+      behavior: "smooth",
+    });
 
   return (
     <section className="py-14 md:py-24 bg-white">
       <div className="max-w-[1280px] mx-auto px-4 md:px-8">
         <div className="flex items-end justify-between mb-8 md:mb-12">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.35em] text-amber-600 mb-2 md:mb-3">Connectivity</p>
-            <h2 className="text-2xl md:text-5xl font-black text-gray-900 tracking-tight">Proximity Highlights</h2>
+            <p className="text-xs font-black uppercase tracking-[0.35em] text-amber-600 mb-2 md:mb-3">
+              Connectivity
+            </p>
+            <h2 className="text-2xl md:text-5xl font-black text-gray-900 tracking-tight">
+              Proximity Highlights
+            </h2>
           </div>
           <div className="flex gap-2">
-            <button onClick={() => scroll("left")} className="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-gray-200 flex items-center justify-center hover:border-[#3b3b98] hover:text-[#3b3b98] transition-all">
+            <button
+              onClick={() => scroll("left")}
+              className="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-gray-200 flex items-center justify-center hover:border-[#3b3b98] hover:text-[#3b3b98] transition-all"
+            >
               <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
             </button>
-            <button onClick={() => scroll("right")} className="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-gray-200 flex items-center justify-center hover:border-[#3b3b98] hover:text-[#3b3b98] transition-all">
+            <button
+              onClick={() => scroll("right")}
+              className="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-gray-200 flex items-center justify-center hover:border-[#3b3b98] hover:text-[#3b3b98] transition-all"
+            >
               <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
             </button>
           </div>
         </div>
-        <div ref={scrollRef} className="flex gap-4 md:gap-5 overflow-x-auto pb-4 snap-x snap-mandatory pt-2" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+        <div
+          ref={scrollRef}
+          className="flex gap-4 md:gap-5 overflow-x-auto pb-4 snap-x snap-mandatory pt-2"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
           {proximity.map((item, i) => {
-            const keys = Object.keys(proximityIconMap).filter(k => k !== "default");
-            const matchedKey = keys.find(k => item.label.toLowerCase().includes(k.toLowerCase())) ?? "default";
+            const keys = Object.keys(proximityIconMap).filter(
+              (k) => k !== "default",
+            );
+            const matchedKey =
+              keys.find((k) =>
+                item.label.toLowerCase().includes(k.toLowerCase()),
+              ) ?? "default";
             const Icon = proximityIconMap[matchedKey] as React.ElementType;
             return (
-              <div key={i} className="flex-shrink-0 snap-start w-52 md:w-60 bg-gray-50 rounded-3xl p-5 md:p-7 border-2 border-gray-100 hover:border-[#3b3b98]/30 hover:shadow-lg hover:-translate-y-1 transition-all group">
+              <div
+                key={i}
+                className="flex-shrink-0 snap-start w-52 md:w-60 bg-gray-50 rounded-3xl p-5 md:p-7 border-2 border-gray-100 hover:border-[#3b3b98]/30 hover:shadow-lg hover:-translate-y-1 transition-all group"
+              >
                 <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-[#3b3b98]/10 flex items-center justify-center mb-4 md:mb-5 group-hover:bg-[#3b3b98] transition-colors">
                   <Icon className="h-6 w-6 md:h-7 md:w-7 text-[#3b3b98] group-hover:text-white transition-colors" />
                 </div>
-                <div className="font-black text-gray-900 text-sm md:text-base mb-1">{item.label}</div>
-                {item.value && <div className="text-amber-600 font-bold text-xs md:text-sm">{item.value}</div>}
+                <div className="font-black text-gray-900 text-sm md:text-base mb-1">
+                  {item.label}
+                </div>
+                {item.value && (
+                  <div className="text-amber-600 font-bold text-xs md:text-sm">
+                    {item.value}
+                  </div>
+                )}
               </div>
             );
           })}
@@ -1400,7 +1642,13 @@ function ProximitiesSection({ proximity }: { proximity: { label: string; value: 
         <div className="mt-8 md:mt-12 relative h-16 md:h-20 rounded-2xl bg-gradient-to-r from-[#3b3b98]/5 via-[#3b3b98]/10 to-[#3b3b98]/5 border border-[#3b3b98]/10 overflow-hidden flex items-center px-4 md:px-6">
           <MapPin className="h-4 w-4 md:h-5 md:w-5 text-amber-500 flex-shrink-0" />
           <div className="flex-1 mx-3 md:mx-4 relative h-0.5 bg-[#3b3b98]/20 overflow-hidden rounded-full">
-            <div className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#3b3b98] to-amber-400 rounded-full" style={{ animation: "slideRight 2s ease-in-out infinite", width: "40%" }} />
+            <div
+              className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#3b3b98] to-amber-400 rounded-full"
+              style={{
+                animation: "slideRight 2s ease-in-out infinite",
+                width: "40%",
+              }}
+            />
           </div>
           <MapPin className="h-4 w-4 md:h-5 md:w-5 text-[#3b3b98] flex-shrink-0" />
           <style>{`@keyframes slideRight { 0% { left: -40%; } 100% { left: 100%; } }`}</style>
@@ -1413,11 +1661,13 @@ function ProximitiesSection({ proximity }: { proximity: { label: string; value: 
 // ─── MAP + CONTACT ────────────────────────────────────────────────────────────
 function ExploreLayoutSection({ project }: { project: IProject }) {
   const [formData, setFormData] = React.useState({
-    name: "", phone: "", project: project.name,
+    name: "",
+    phone: "",
+    project: project.name,
     message: `interested in ${project.name} located at ${project.location}. Please provide more details.`,
   });
   const [submitting, setSubmitting] = useState(false);
-    const [agreed, setAgreed] = React.useState(false);
+  const [agreed, setAgreed] = React.useState(false);
   const coords = extractLatLng(project.google_embed_url ?? "");
   const directionsUrl = coords
     ? `https://www.google.com/maps/dir/?api=1&destination=${coords.lat},${coords.lng}`
@@ -1425,7 +1675,7 @@ function ExploreLayoutSection({ project }: { project: IProject }) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-       
+
     if (!agreed) {
       toast.error("Please agree to the terms and conditions to continue.");
       return;
@@ -1448,16 +1698,22 @@ function ExploreLayoutSection({ project }: { project: IProject }) {
       setAgreed(false);
     } finally {
       setSubmitting(false);
-      
     }
   };
 
   return (
-    <section id="location-map" className="py-14 md:py-24 bg-[#f8f8fc] scroll-mt-20">
+    <section
+      id="location-map"
+      className="py-14 md:py-24 bg-[#f8f8fc] scroll-mt-20"
+    >
       <div className="max-w-[1280px] mx-auto px-4 md:px-8">
         <div className="mb-8 md:mb-12">
-          <p className="text-xs font-black uppercase tracking-[0.35em] text-amber-600 mb-3">Strategic Location</p>
-          <h2 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight mb-3">Explore Location</h2>
+          <p className="text-xs font-black uppercase tracking-[0.35em] text-amber-600 mb-3">
+            Strategic Location
+          </p>
+          <h2 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight mb-3">
+            Explore Location
+          </h2>
           <p className="text-gray-500 flex items-center gap-2">
             <MapPin className="h-4 w-4 text-amber-500" /> {project.location}
           </p>
@@ -1466,11 +1722,17 @@ function ExploreLayoutSection({ project }: { project: IProject }) {
           <div className="lg:col-span-3 order-2 lg:order-1">
             <div className="rounded-3xl overflow-hidden border-4 border-white shadow-2xl aspect-video">
               {project.google_embed_url ? (
-                <div className="w-full h-full [&_iframe]:w-full [&_iframe]:h-full [&_iframe]:border-0" dangerouslySetInnerHTML={{ __html: project.google_embed_url }} />
+                <div
+                  className="w-full h-full [&_iframe]:w-full [&_iframe]:h-full [&_iframe]:border-0"
+                  dangerouslySetInnerHTML={{ __html: project.google_embed_url }}
+                />
               ) : (
-                <div className="w-full h-full [&_iframe]:w-full [&_iframe]:h-full [&_iframe]:border-0" dangerouslySetInnerHTML={{
-                  __html: `<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2731.138050523078!2d78.4255312!3d17.4242362!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb9737e4038e9f%3A0xcb609b5821acadb1!2sT%20HOMES%20INFRA%20PRIVATE%20LIMITED!5e1!3m2!1sen!2sin!4v1772110980620!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
-                }} />
+                <div
+                  className="w-full h-full [&_iframe]:w-full [&_iframe]:h-full [&_iframe]:border-0"
+                  dangerouslySetInnerHTML={{
+                    __html: `<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2731.138050523078!2d78.4255312!3d17.4242362!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb9737e4038e9f%3A0xcb609b5821acadb1!2sT%20HOMES%20INFRA%20PRIVATE%20LIMITED!5e1!3m2!1sen!2sin!4v1772110980620!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`,
+                  }}
+                />
               )}
             </div>
             <div className="mt-4 flex justify-end">
@@ -1483,55 +1745,95 @@ function ExploreLayoutSection({ project }: { project: IProject }) {
             </div>
           </div>
           <div className="bg-white rounded-3xl p-6 md:p-7 shadow-xl border border-gray-100 order-1 lg:order-2">
-            <h3 className="text-xl font-black text-gray-900 mb-1">Quick Enquiry</h3>
-            <p className="text-gray-400 text-sm mb-6">We'll get back within 2 hours</p>
+            <h3 className="text-xl font-black text-gray-900 mb-1">
+              Quick Enquiry
+            </h3>
+            <p className="text-gray-400 text-sm mb-6">
+              We'll get back within 2 hours
+            </p>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <input required value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))} className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#3b3b98] text-sm font-medium placeholder:text-gray-400 transition-colors" />
+                <input
+                  required
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData((p) => ({ ...p, name: e.target.value }))
+                  }
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#3b3b98] text-sm font-medium placeholder:text-gray-400 transition-colors"
+                />
               </div>
               <div className="relative">
                 <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <input required type="tel" value={formData.phone} onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))} className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#3b3b98] text-sm font-medium placeholder:text-gray-400 transition-colors" />
+                <input
+                  required
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) =>
+                    setFormData((p) => ({ ...p, phone: e.target.value }))
+                  }
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#3b3b98] text-sm font-medium placeholder:text-gray-400 transition-colors"
+                />
               </div>
               <div className="relative">
                 <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <select value={formData.project} onChange={e => setFormData(p => ({ ...p, project: e.target.value }))} className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#3b3b98] text-sm font-medium text-gray-700 transition-colors appearance-none bg-white">
+                <select
+                  value={formData.project}
+                  onChange={(e) =>
+                    setFormData((p) => ({ ...p, project: e.target.value }))
+                  }
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#3b3b98] text-sm font-medium text-gray-700 transition-colors appearance-none bg-white"
+                >
                   <option value={project.name}>{project.name}</option>
                 </select>
               </div>
-               {/* Terms and Conditions Checkbox */}
-                <div className="flex items-start gap-3 pt-2">
-                  <input
-                    type="checkbox"
-                    id="terms"
-                    checked={agreed}
-                    onChange={(e) => setAgreed(e.target.checked)}
-                    className="w-5 h-5 mt-0.5 accent-blue-900 rounded cursor-pointer"
-                  />
-                  <label htmlFor="terms" className="text-sm text-gray-700 leading-relaxed cursor-pointer">
-                    I agree to receive communication via SMS, RCS, and WhatsApp and I accept the{" "}
-                    <a
-                      href="https://thomesinfra.com/privacy"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-900 font-semibold hover:underline"
-                    >
-                      Privacy Policy
-                    </a>
-                    {" "}and{" "}
-                    <a
-                      href="https://thomesinfra.com/termsandcondition"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-900 font-semibold hover:underline"
-                    >
-                      Terms & Conditions
-                    </a>
-                  </label>
-                </div>
-              <Button type="submit" disabled={submitting || !agreed} className="w-full h-12 rounded-xl bg-[#3b3b98] hover:bg-[#2e2e7a] text-white font-bold shadow-lg transition-all hover:scale-[1.02]">
-                {submitting ? "Submitting..." : <><Send className="h-4 w-4 mr-2" />Submit Enquiry</>}
+              {/* Terms and Conditions Checkbox */}
+              <div className="flex items-start gap-3 pt-2">
+                <input
+                  type="checkbox"
+                  id="terms"
+                  checked={agreed}
+                  onChange={(e) => setAgreed(e.target.checked)}
+                  className="w-5 h-5 mt-0.5 accent-blue-900 rounded cursor-pointer"
+                />
+                <label
+                  htmlFor="terms"
+                  className="text-sm text-gray-700 leading-relaxed cursor-pointer"
+                >
+                  I agree to receive communication via SMS, RCS, and WhatsApp
+                  and I accept the{" "}
+                  <a
+                    href="https://thomesinfra.com/privacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-900 font-semibold hover:underline"
+                  >
+                    Privacy Policy
+                  </a>{" "}
+                  and{" "}
+                  <a
+                    href="https://thomesinfra.com/termsandcondition"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-900 font-semibold hover:underline"
+                  >
+                    Terms & Conditions
+                  </a>
+                </label>
+              </div>
+              <Button
+                type="submit"
+                disabled={submitting || !agreed}
+                className="w-full h-12 rounded-xl bg-[#3b3b98] hover:bg-[#2e2e7a] text-white font-bold shadow-lg transition-all hover:scale-[1.02]"
+              >
+                {submitting ? (
+                  "Submitting..."
+                ) : (
+                  <>
+                    <Send className="h-4 w-4 mr-2" />
+                    Submit Enquiry
+                  </>
+                )}
               </Button>
             </form>
             {/* <div className="mt-6 pt-5 border-t border-gray-100 text-center">
@@ -1556,35 +1858,65 @@ function YouTubeCarousel({ videos }: { videos: string[] }) {
     return match?.[1] ?? url;
   };
   const scroll = (dir: "left" | "right") =>
-    scrollRef.current?.scrollBy({ left: dir === "left" ? -420 : 420, behavior: "smooth" });
+    scrollRef.current?.scrollBy({
+      left: dir === "left" ? -420 : 420,
+      behavior: "smooth",
+    });
 
   return (
     <section className="py-14 md:py-24 bg-[#0a0a14] overflow-hidden">
       <div className="max-w-[1280px] mx-auto px-4 md:px-8">
         <div className="flex items-end justify-between mb-8 md:mb-12">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.35em] text-amber-500 mb-3">Video Gallery</p>
-            <h2 className="text-2xl md:text-5xl font-black text-white tracking-tight">See It in Action</h2>
+            <p className="text-xs font-black uppercase tracking-[0.35em] text-amber-500 mb-3">
+              Video Gallery
+            </p>
+            <h2 className="text-2xl md:text-5xl font-black text-white tracking-tight">
+              See It in Action
+            </h2>
           </div>
           <div className="flex gap-2">
-            <button onClick={() => scroll("left")} className="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-white/20 text-white flex items-center justify-center hover:border-amber-400 hover:text-amber-400 transition-all">
+            <button
+              onClick={() => scroll("left")}
+              className="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-white/20 text-white flex items-center justify-center hover:border-amber-400 hover:text-amber-400 transition-all"
+            >
               <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
             </button>
-            <button onClick={() => scroll("right")} className="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-white/20 text-white flex items-center justify-center hover:border-amber-400 hover:text-amber-400 transition-all">
+            <button
+              onClick={() => scroll("right")}
+              className="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-white/20 text-white flex items-center justify-center hover:border-amber-400 hover:text-amber-400 transition-all"
+            >
               <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
             </button>
           </div>
         </div>
-        <div ref={scrollRef} className="flex gap-4 md:gap-6 overflow-x-auto pb-4 snap-x snap-mandatory" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+        <div
+          ref={scrollRef}
+          className="flex gap-4 md:gap-6 overflow-x-auto pb-4 snap-x snap-mandatory"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
           {videos.map((video, i) => (
-            <div key={i} className="flex-shrink-0 snap-start w-72 md:w-96 rounded-3xl overflow-hidden border-2 border-white/10 hover:border-amber-400/50 transition-all hover:shadow-2xl hover:shadow-amber-500/10" style={{ aspectRatio: "16/9" }}>
-              <iframe src={`https://www.youtube.com/embed/${getEmbedId(video)}?rel=0`} title={`Video ${i + 1}`} className="w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+            <div
+              key={i}
+              className="flex-shrink-0 snap-start w-72 md:w-96 rounded-3xl overflow-hidden border-2 border-white/10 hover:border-amber-400/50 transition-all hover:shadow-2xl hover:shadow-amber-500/10"
+              style={{ aspectRatio: "16/9" }}
+            >
+              <iframe
+                src={`https://www.youtube.com/embed/${getEmbedId(video)}?rel=0`}
+                title={`Video ${i + 1}`}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
             </div>
           ))}
         </div>
         <div className="flex justify-center gap-2 mt-6">
           {videos.map((_, i) => (
-            <span key={i} className={`block rounded-full transition-all duration-300 ${i === activeIdx ? "w-6 h-1.5 bg-amber-400" : "w-1.5 h-1.5 bg-white/20"}`} />
+            <span
+              key={i}
+              className={`block rounded-full transition-all duration-300 ${i === activeIdx ? "w-6 h-1.5 bg-amber-400" : "w-1.5 h-1.5 bg-white/20"}`}
+            />
           ))}
         </div>
       </div>
@@ -1595,25 +1927,44 @@ function YouTubeCarousel({ videos }: { videos: string[] }) {
 // ─── WHY CHOOSE US ────────────────────────────────────────────────────────────
 const iconList: React.ElementType[] = [ShieldCheck, TrendingUp, MapPin, Star];
 
-function WhyChooseUsSection({ title, points = [] }: { title?: string; points?: string[] }) {
+function WhyChooseUsSection({
+  title,
+  points = [],
+}: {
+  title?: string;
+  points?: string[];
+}) {
   if (!title && points.length === 0) return null;
   return (
     <section className="py-14 md:py-24 bg-gradient-to-b from-white to-[#f8f8fc]">
       <div className="max-w-[1280px] mx-auto px-4 md:px-8">
         <div className="text-center mb-10 md:mb-16">
-          <p className="text-xs font-black uppercase tracking-[0.35em] text-amber-600 mb-3">Why Choose Us</p>
-          <h2 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight mb-6">Your Trusted Investment Partner</h2>
-          {title && <p className="max-w-3xl mx-auto text-gray-600 text-base md:text-lg leading-relaxed font-medium">{title}</p>}
+          <p className="text-xs font-black uppercase tracking-[0.35em] text-amber-600 mb-3">
+            Why Choose Us
+          </p>
+          <h2 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight mb-6">
+            Your Trusted Investment Partner
+          </h2>
+          {title && (
+            <p className="max-w-3xl mx-auto text-gray-600 text-base md:text-lg leading-relaxed font-medium">
+              {title}
+            </p>
+          )}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {points.slice(0, 4).map((point, i) => {
             const Icon = (iconList[i] ?? CheckCircle) as React.ElementType;
             return (
-              <div key={i} className="group bg-white rounded-3xl p-6 md:p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#3b3b98]/30 transition-all duration-300 hover:-translate-y-1">
+              <div
+                key={i}
+                className="group bg-white rounded-3xl p-6 md:p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#3b3b98]/30 transition-all duration-300 hover:-translate-y-1"
+              >
                 <div className="w-12 h-12 md:w-14 md:h-14 mb-5 md:mb-6 rounded-2xl bg-[#3b3b98]/10 flex items-center justify-center group-hover:bg-[#3b3b98] transition-colors duration-300">
                   <Icon className="h-6 w-6 md:h-7 md:w-7 text-[#3b3b98] group-hover:text-white transition-colors" />
                 </div>
-                <p className="text-gray-800 font-semibold leading-relaxed text-sm md:text-base">{point}</p>
+                <p className="text-gray-800 font-semibold leading-relaxed text-sm md:text-base">
+                  {point}
+                </p>
               </div>
             );
           })}
@@ -1625,29 +1976,45 @@ function WhyChooseUsSection({ title, points = [] }: { title?: string; points?: s
 
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 export default function ProjectDetailPage() {
-  const params  = useParams();
-  const slug    = params.slug as string;
-  const router  = useRouter();
+  const params = useParams();
+  const slug = params.slug as string;
+  const router = useRouter();
 
-  const [project,           setProject]           = useState<IProject | null>(null);
-  const [loading,           setLoading]           = useState(true);
+  const [project, setProject] = useState<IProject | null>(null);
+  const [loading, setLoading] = useState(true);
   // ✅ ALL hooks at top level — never after early returns
-  const [galleryOpen,       setGalleryOpen]       = useState(false);
+  const [galleryOpen, setGalleryOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const scrollToMap = () =>
-    document.getElementById("location-map")?.scrollIntoView({ behavior: "smooth" });
+    document
+      .getElementById("location-map")
+      ?.scrollIntoView({ behavior: "smooth" });
 
   // Keyboard navigation for lightbox
   useEffect(() => {
     if (!galleryOpen) return;
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setGalleryOpen(false);
-      if (e.key === "ArrowLeft")  setCurrentImageIndex(p => p === 0 ? (project ? (normaliseGallery(project.gallery_images).length || projectImages[project.slug]?.length || projectImages.default.length) - 1 : 0) : p - 1);
-      if (e.key === "ArrowRight") setCurrentImageIndex(p => {
-        const len = project ? (normaliseGallery(project.gallery_images).length || projectImages[project.slug]?.length || projectImages.default.length) : 0;
-        return p === len - 1 ? 0 : p + 1;
-      });
+      if (e.key === "ArrowLeft")
+        setCurrentImageIndex((p) =>
+          p === 0
+            ? project
+              ? (normaliseGallery(project.gallery_images).length ||
+                  projectImages[project.slug]?.length ||
+                  projectImages.default.length) - 1
+              : 0
+            : p - 1,
+        );
+      if (e.key === "ArrowRight")
+        setCurrentImageIndex((p) => {
+          const len = project
+            ? normaliseGallery(project.gallery_images).length ||
+              projectImages[project.slug]?.length ||
+              projectImages.default.length
+            : 0;
+          return p === len - 1 ? 0 : p + 1;
+        });
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
@@ -1681,16 +2048,34 @@ export default function ProjectDetailPage() {
         console.log("[page] response status:", res.status);
         if (res.ok) {
           const data = await res.json();
-          console.log("[page] raw API response:", JSON.stringify(data, null, 2));
-          console.log("[page] gallery_images from API:", JSON.stringify(data?.gallery_images));
-          console.log("[page] gallery_images type:", typeof data?.gallery_images);
-          console.log("[page] gallery_images isArray:", Array.isArray(data?.gallery_images));
-          if (data && !data.error) { setProject(data); return; }
+          console.log(
+            "[page] raw API response:",
+            JSON.stringify(data, null, 2),
+          );
+          console.log(
+            "[page] gallery_images from API:",
+            JSON.stringify(data?.gallery_images),
+          );
+          console.log(
+            "[page] gallery_images type:",
+            typeof data?.gallery_images,
+          );
+          console.log(
+            "[page] gallery_images isArray:",
+            Array.isArray(data?.gallery_images),
+          );
+          if (data && !data.error) {
+            setProject(data);
+            return;
+          }
         }
         // fallback
-        const res2  = await fetch(`/api/projects?slug=${slug}`);
+        const res2 = await fetch(`/api/projects?slug=${slug}`);
         const data2 = await res2.json();
-        console.log("[page] fallback API response gallery_images:", JSON.stringify(data2?.gallery_images));
+        console.log(
+          "[page] fallback API response gallery_images:",
+          JSON.stringify(data2?.gallery_images),
+        );
         if (data2 && !data2.error) setProject(data2);
       } catch (err) {
         console.error("[page] Failed to load project:", err);
@@ -1703,22 +2088,34 @@ export default function ProjectDetailPage() {
 
   // OTP verification
   const startOTPVerification = () => {
-    if (!window.initSendOTP) { toast.error("OTP service not ready. Please refresh the page."); return; }
+    if (!window.initSendOTP) {
+      toast.error("OTP service not ready. Please refresh the page.");
+      return;
+    }
     const OriginalXHR = window.XMLHttpRequest;
     class PatchedXHR extends OriginalXHR {
       private _url = "";
-      open(method: string, url: string | URL, async?: boolean, u?: string | null, p?: string | null) {
+      open(
+        method: string,
+        url: string | URL,
+        async?: boolean,
+        u?: string | null,
+        p?: string | null,
+      ) {
         this._url = url.toString();
         super.open(method, url as string, async ?? true, u, p);
       }
       send(body?: Document | XMLHttpRequestBodyInit | null) {
         if (this._url.includes("db-ip.com")) {
           setTimeout(() => {
-            Object.defineProperty(this, "status",       { get: () => 200 });
-            Object.defineProperty(this, "responseText", { get: () => JSON.stringify({ countryCode: "IN" }) });
-            Object.defineProperty(this, "readyState",   { get: () => 4 });
+            Object.defineProperty(this, "status", { get: () => 200 });
+            Object.defineProperty(this, "responseText", {
+              get: () => JSON.stringify({ countryCode: "IN" }),
+            });
+            Object.defineProperty(this, "readyState", { get: () => 4 });
             this.onreadystatechange?.(new Event("readystatechange"));
-            if (typeof this.onload === "function") this.onload(new ProgressEvent("load"));
+            if (typeof this.onload === "function")
+              this.onload(new ProgressEvent("load"));
           }, 0);
           return;
         }
@@ -1726,7 +2123,9 @@ export default function ProjectDetailPage() {
       }
     }
     (window as any).XMLHttpRequest = PatchedXHR;
-    const restoreXHR = () => { (window as any).XMLHttpRequest = OriginalXHR; };
+    const restoreXHR = () => {
+      (window as any).XMLHttpRequest = OriginalXHR;
+    };
 
     window.initSendOTP({
       widgetId: "366271695963363335323530",
@@ -1740,7 +2139,9 @@ export default function ProjectDetailPage() {
       },
       failure: (error: any) => {
         restoreXHR();
-        toast.error(error?.message || error?.description || "OTP verification failed.");
+        toast.error(
+          error?.message || error?.description || "OTP verification failed.",
+        );
       },
     });
   };
@@ -1766,7 +2167,9 @@ export default function ProjectDetailPage() {
       <main className="min-h-screen bg-gray-50">
         <Navbar />
         <div className="pt-32 pb-20 container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Project Details Coming Soon</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Project Details Coming Soon
+          </h1>
           <Link href="/projects">
             <Button className="rounded-full bg-amber-500 text-black">
               <ArrowLeft className="mr-2 h-4 w-4" /> Back to Projects
@@ -1778,13 +2181,17 @@ export default function ProjectDetailPage() {
   }
 
   // ── Derive all display values ─────────────────────────────────────────────
-  console.log("[page] project.gallery_images before normalise:", JSON.stringify(project.gallery_images));
+  console.log(
+    "[page] project.gallery_images before normalise:",
+    JSON.stringify(project.gallery_images),
+  );
   const gallery = normaliseGallery(project.gallery_images);
   console.log("[page] normalised gallery:", gallery);
 
-  const heroImages = gallery.length > 0
-    ? gallery
-    : (projectImages[project.slug] ?? projectImages.default);
+  const heroImages =
+    gallery.length > 0
+      ? gallery
+      : (projectImages[project.slug] ?? projectImages.default);
 
   console.log("[page] final heroImages:", heroImages);
   console.log("[page] using DB gallery?", gallery.length > 0);
@@ -1800,71 +2207,121 @@ export default function ProjectDetailPage() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home",     item: "https://thomesinfra.com/" },
-      { "@type": "ListItem", position: 2, name: "Projects", item: "https://thomesinfra.com/projects" },
-      { "@type": "ListItem", position: 3, name: project.name, item: `https://thomesinfra.com/projects/${project.slug}` },
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://thomesinfra.com/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Projects",
+        item: "https://thomesinfra.com/projects",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: project.name,
+        item: `https://thomesinfra.com/projects/${project.slug}`,
+      },
     ],
   };
 
-  const whychooseus       = project.WhychooseUs || defaultWhychooseUs;
-  const whychooseuspoints = project.WhychooseUspoints?.length > 0
-    ? project.WhychooseUspoints
-    : defaultWhychooseUspoints;
+  const whychooseus = project.WhychooseUs || defaultWhychooseUs;
+  const whychooseuspoints =
+    project.WhychooseUspoints?.length > 0
+      ? project.WhychooseUspoints
+      : defaultWhychooseUspoints;
 
   // Lightbox helpers
-  const openLightbox = (i: number) => { setCurrentImageIndex(i); setGalleryOpen(true); };
-  const goPrev = () => setCurrentImageIndex(p => p === 0 ? heroImages.length - 1 : p - 1);
-  const goNext = () => setCurrentImageIndex(p => p === heroImages.length - 1 ? 0 : p + 1);
+  const openLightbox = (i: number) => {
+    setCurrentImageIndex(i);
+    setGalleryOpen(true);
+  };
+  const goPrev = () =>
+    setCurrentImageIndex((p) => (p === 0 ? heroImages.length - 1 : p - 1));
+  const goNext = () =>
+    setCurrentImageIndex((p) => (p === heroImages.length - 1 ? 0 : p + 1));
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <Head>
         <title>{project.name} | T Homes Infra</title>
         <meta name="description" content={project.description} />
-        <meta name="keywords" content={`HMDA plots ${project.location}, plots in ${project.location}, land investment ${project.location}`} />
+        <meta
+          name="keywords"
+          content={`HMDA plots ${project.location}, plots in ${project.location}, land investment ${project.location}`}
+        />
         <meta property="og:title" content={project.name} />
         <meta property="og:description" content={project.description} />
         <meta property="og:type" content="website" />
-        {project.hero_image && <meta property="og:image" content={project.hero_image} />}
-        <link rel="canonical" href={`https://thomesinfra.com/projects/${project.slug}`} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Product",
-            name: project.name,
-            description: project.description,
-            image: project.hero_image,
-            brand: { "@type": "Organization", name: "T Homes Infra" },
-            offers: {
-              "@type": "Offer",
-              priceCurrency: "INR",
-            
-              availability: project.available_plots > 0 ? "https://schema.org/InStock" : "https://schema.org/SoldOut",
-            },
-            address: { "@type": "PostalAddress", addressLocality: project.location, addressCountry: "India" },
-          }),
-        }} />
+        {project.hero_image && (
+          <meta property="og:image" content={project.hero_image} />
+        )}
+        <link
+          rel="canonical"
+          href={`https://thomesinfra.com/projects/${project.slug}`}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Product",
+              name: project.name,
+              description: project.description,
+              image: project.hero_image,
+              brand: { "@type": "Organization", name: "T Homes Infra" },
+              offers: {
+                "@type": "Offer",
+                priceCurrency: "INR",
+
+                availability:
+                  project.available_plots > 0
+                    ? "https://schema.org/InStock"
+                    : "https://schema.org/SoldOut",
+              },
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: project.location,
+                addressCountry: "India",
+              },
+            }),
+          }}
+        />
       </Head>
 
       <main className="min-h-screen bg-white">
         <Toaster position="top-center" />
-
-        <HeroCarousel images={heroImages} project={project} onScrollToMap={scrollToMap} onBrochureClick={handleBrochureClick} />
+        <HeroCarousel
+          images={heroImages}
+          project={project}
+          onScrollToMap={scrollToMap}
+          onBrochureClick={handleBrochureClick}
+        />
         <StatsSection project={project} onScrollToMap={scrollToMap} />
-        {project.amenities?.length > 0 && <AmenitiesSection amenities={project.amenities} />}
+        {project.amenities?.length > 0 && (
+          <AmenitiesSection amenities={project.amenities} />
+        )}
         <ProjectHighlights highlights={project.Highlights} />
         <WhyChooseUsSection title={whychooseus} points={whychooseuspoints} />
-        {normalisedProximity.length > 0 && <ProximitiesSection proximity={normalisedProximity} />}
+        {normalisedProximity.length > 0 && (
+          <ProximitiesSection proximity={normalisedProximity} />
+        )}
         <ExploreLayoutSection project={project} />
         <YouTubeCarousel videos={sampleVideos} />
-
         {/* CTA Gallery */}
         <section className="py-14 md:py-24 bg-[#0a1628] relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-1 bg-amber-500" />
           <div className="max-w-[1280px] mx-auto px-4 md:px-8 text-center relative z-10">
             <p className="text-base md:text-xl text-white/50 mb-10 md:mb-16 max-w-2xl mx-auto">
-              Join hundreds of happy families who have found their dream home with {project.name}. Schedule your site visit today.
+              Join hundreds of happy families who have found their dream home
+              with {project.name}. Schedule your site visit today.
             </p>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
               {heroImages.map((img, i) => (
@@ -1887,7 +2344,6 @@ export default function ProjectDetailPage() {
             </div>
           </div>
         </section>
-
         {/* Lightbox */}
         <AnimatePresence>
           {galleryOpen && (
@@ -1925,7 +2381,10 @@ export default function ProjectDetailPage() {
 
                 {/* Left Arrow */}
                 <button
-                  onClick={(e) => { e.stopPropagation(); goPrev(); }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goPrev();
+                  }}
                   className="absolute left-6 top-1/2 -translate-y-1/2 bg-white/10 text-white rounded-full p-4 hover:bg-white/20 text-2xl leading-none"
                 >
                   ‹
@@ -1933,7 +2392,10 @@ export default function ProjectDetailPage() {
 
                 {/* Right Arrow */}
                 <button
-                  onClick={(e) => { e.stopPropagation(); goNext(); }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goNext();
+                  }}
                   className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/10 text-white rounded-full p-4 hover:bg-white/20 text-2xl leading-none"
                 >
                   ›
@@ -1947,6 +2409,34 @@ export default function ProjectDetailPage() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        <Script
+          id="meta-pixel"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1400323585502475');
+        fbq('track', 'PageView');
+      `,
+          }}
+        />
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src="https://www.facebook.com/tr?id=1400323585502475&ev=PageView&noscript=1"
+            alt=""
+          />
+        </noscript>
 
         <Footer />
       </main>
