@@ -64,9 +64,9 @@ export function FeaturedProjects() {
         {/* Header */}
         <div className="flex flex-col md:flex-row items-end justify-between gap-8 mb-16">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <span className="text-amber-600 font-bold uppercase tracking-widest text-sm mb-4 block">
+            {/* <span className="text-amber-600 font-bold uppercase tracking-widest text-sm mb-4 block">
               Featured Projects
-            </span>
+            </span> */}
             <h2 className="text-4xl md:text-5xl font-black text-gray-900">
               Premium <span className="text-amber-600">Investment</span> Opportunities
             </h2>
