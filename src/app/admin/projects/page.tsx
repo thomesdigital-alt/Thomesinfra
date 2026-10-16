@@ -654,7 +654,7 @@ const handleDelete = async (project: any) => {
               {/* ── Featured ─────────────────────────────────────── */}
               <div className="flex items-center gap-3">
                 <input type="checkbox" id="is_featured" checked={formData.is_featured} onChange={(e) => setFormData({ ...formData, is_featured: e.target.checked })} className="h-5 w-5 rounded border-gray-300" />
-                <label htmlFor="is_featured" className="text-sm font-semibold text-gray-700 cursor-pointer">Featured Project</label>
+                <label htmlFor="is_featured" className="text-sm font-semibold text-gray-700 cursor-pointer">Priority Projects</label>
               </div>
 
             </div>

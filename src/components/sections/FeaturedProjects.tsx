@@ -76,7 +76,7 @@ export function FeaturedProjects() {
             viewport={{ once: true }}
           >
             <span className="text-amber-600 font-bold uppercase tracking-widest text-sm mb-4 block">
-              Featured Projects
+              Priority Projects
             </span>
             <h2 className="text-4xl md:text-5xl font-black text-gray-900">
               Premium <span className="text-amber-600">Investment</span>{" "}
@@ -138,7 +138,7 @@ export function FeaturedProjects() {
 
                       <div className="absolute top-4 left-4 flex gap-2">
                         <span className="bg-amber-500 text-black px-3 py-1 rounded-full text-xs font-bold uppercase">
-                          Featured
+                          Priority Projects
                         </span>
                       </div>
 

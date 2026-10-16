@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     "high appreciation plots Warangal Highway",
     "strategic land investment Telangana",
   ],
-   openGraph: {
+  openGraph: {
     title: "T Homes Infra",
     description:
       "Secure land investments with HMDA approved plots on Warangal Highway and Kondurg.",

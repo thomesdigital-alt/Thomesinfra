@@ -9,19 +9,29 @@ import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
-  MapPin, Building2, ChevronRight, Search,
-  ShieldCheck, CheckCircle,
+  MapPin,
+  Building2,
+  ChevronRight,
+  Search,
+  ShieldCheck,
+  CheckCircle,
 } from "lucide-react";
 
 // ── Local image overrides (slug → image URL) ──────────────────────────────────
 const projectImages: Record<string, string> = {
-  "spark-vision":     "https://thomesinfra.com/wp-content/uploads/2023/11/Spark-Vision-Gallery.jpg?auto=format&fit=crop&q=80&w=800",
-  "spark-city":       "https://thomesinfra.com/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-07-at-20.42.51.jpeg?auto=format&fit=crop&q=80&w=800",
-  "valley-view":      "https://thomesinfra.com/wp-content/uploads/2024/01/DJI_0896-min-scaled-1.jpg?auto=format&fit=crop&q=80&w=800",
-  "yadadri-icon":     "https://thomesinfra.com/wp-content/uploads/2024/04/DJI_0249-1.jpg?auto=format&fit=crop&q=80&w=800",
-  "star-city-phase-4":"https://thomesinfra.com/wp-content/uploads/2024/04/DJI_0261-1.jpg?auto=format&fit=crop&q=80&w=800",
+  "spark-vision":
+    "https://thomesinfra.com/wp-content/uploads/2023/11/Spark-Vision-Gallery.jpg?auto=format&fit=crop&q=80&w=800",
+  "spark-city":
+    "https://thomesinfra.com/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-07-at-20.42.51.jpeg?auto=format&fit=crop&q=80&w=800",
+  "valley-view":
+    "https://thomesinfra.com/wp-content/uploads/2024/01/DJI_0896-min-scaled-1.jpg?auto=format&fit=crop&q=80&w=800",
+  "yadadri-icon":
+    "https://thomesinfra.com/wp-content/uploads/2024/04/DJI_0249-1.jpg?auto=format&fit=crop&q=80&w=800",
+  "star-city-phase-4":
+    "https://thomesinfra.com/wp-content/uploads/2024/04/DJI_0261-1.jpg?auto=format&fit=crop&q=80&w=800",
 };
-const defaultImage = "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=800";
+const defaultImage =
+  "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=800";
 
 // ── Project shape returned by MongoDB API ─────────────────────────────────────
 interface Project {
@@ -55,15 +65,16 @@ function formatAcres(val: number | string | undefined): string {
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading]   = useState(true);
-  const [filter, setFilter]     = useState<"all" | "ongoing" | "completed">("all");
-  const [search, setSearch]     = useState("");
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<"all" | "ongoing" | "completed">("all");
+  const [search, setSearch] = useState("");
 
   // Read ?filter= from URL on mount
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const urlFilter = params.get("filter");
-    if (urlFilter === "ongoing" || urlFilter === "completed") setFilter(urlFilter);
+    if (urlFilter === "ongoing" || urlFilter === "completed")
+      setFilter(urlFilter);
   }, []);
 
   // Fetch from MongoDB API
@@ -91,8 +102,10 @@ export default function ProjectsPage() {
     return matchStatus && matchSearch;
   });
 
-  const ongoingCount   = projects.filter((p) => p.status === "ongoing").length;
-  const completedCount = projects.filter((p) => p.status === "completed").length;
+  const ongoingCount = projects.filter((p) => p.status === "ongoing").length;
+  const completedCount = projects.filter(
+    (p) => p.status === "completed",
+  ).length;
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -111,7 +124,11 @@ export default function ProjectsPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/80 to-[#0a1628]" />
 
         <div className="container relative z-10 mx-auto px-4 pt-16">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-3xl"
+          >
             <span className="inline-block px-4 py-2 rounded-full bg-amber-500/20 text-amber-400 text-sm font-semibold mb-6">
               Our Portfolio
             </span>
@@ -119,8 +136,9 @@ export default function ProjectsPage() {
               Premium <span className="text-amber-400">Projects</span>
             </h1>
             <p className="text-xl text-white/60">
-              Explore our collection of {projects.length} government-approved projects across
-              Hyderabad's prime locations. Each project is designed for maximum appreciation and lifestyle.
+              Explore our collection of {projects.length} government-approved
+              projects across Hyderabad's prime locations. Each project is
+              designed for maximum appreciation and lifestyle.
             </p>
           </motion.div>
 
@@ -131,7 +149,9 @@ export default function ProjectsPage() {
                 <Building2 className="h-6 w-6 text-emerald-400" />
               </div>
               <div>
-                <div className="text-2xl font-black text-white">{ongoingCount}</div>
+                <div className="text-2xl font-black text-white">
+                  {ongoingCount}
+                </div>
                 <div className="text-sm text-white/50">Ongoing Projects</div>
               </div>
             </div>
@@ -140,7 +160,9 @@ export default function ProjectsPage() {
                 <CheckCircle className="h-6 w-6 text-blue-400" />
               </div>
               <div>
-                <div className="text-2xl font-black text-white">{completedCount}</div>
+                <div className="text-2xl font-black text-white">
+                  {completedCount}
+                </div>
                 <div className="text-sm text-white/50">Completed Projects</div>
               </div>
             </div>
@@ -186,7 +208,10 @@ export default function ProjectsPage() {
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="bg-white rounded-3xl overflow-hidden shadow-sm animate-pulse">
+                <div
+                  key={i}
+                  className="bg-white rounded-3xl overflow-hidden shadow-sm animate-pulse"
+                >
                   <div className="aspect-[4/3] bg-gray-200" />
                   <div className="p-6 space-y-4">
                     <div className="h-6 bg-gray-200 rounded w-3/4" />
@@ -199,8 +224,12 @@ export default function ProjectsPage() {
           ) : filtered.length === 0 ? (
             <div className="text-center py-20">
               <div className="text-6xl mb-4">🏗️</div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">No Projects Found</h3>
-              <p className="text-gray-500">Try adjusting your filters or search query.</p>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                No Projects Found
+              </h3>
+              <p className="text-gray-500">
+                Try adjusting your filters or search query.
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -213,7 +242,6 @@ export default function ProjectsPage() {
                 >
                   <Link href={`/projects/${project.slug}`}>
                     <div className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100">
-
                       {/* Image */}
                       <div className="relative aspect-[4/3] overflow-hidden">
                         <NextImage
@@ -226,11 +254,13 @@ export default function ProjectsPage() {
 
                         {/* Status badge */}
                         <div className="absolute top-4 left-4">
-                          <span className={`px-3 py-1.5 rounded-full text-xs font-bold uppercase ${
-                            project.status === "ongoing"
-                              ? "bg-emerald-500 text-white"
-                              : "bg-blue-500 text-white"
-                          }`}>
+                          <span
+                            className={`px-3 py-1.5 rounded-full text-xs font-bold uppercase ${
+                              project.status === "ongoing"
+                                ? "bg-emerald-500 text-white"
+                                : "bg-blue-500 text-white"
+                            }`}
+                          >
                             {project.status}
                           </span>
                         </div>
@@ -239,7 +269,7 @@ export default function ProjectsPage() {
                         {project.is_featured && (
                           <div className="absolute top-4 right-4">
                             <span className="px-3 py-1.5 rounded-full text-xs font-bold uppercase bg-amber-500 text-black">
-                              Featured
+                              Priority Projects
                             </span>
                           </div>
                         )}
@@ -247,7 +277,9 @@ export default function ProjectsPage() {
                         {/* Approval badge */}
                         <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full">
                           <ShieldCheck className="h-4 w-4 text-emerald-600" />
-                          <span className="text-xs font-bold text-gray-900">{project.approval_type}</span>
+                          <span className="text-xs font-bold text-gray-900">
+                            {project.approval_type}
+                          </span>
                         </div>
                       </div>
 
@@ -258,7 +290,9 @@ export default function ProjectsPage() {
                         </h3>
                         <div className="flex items-center gap-1 text-gray-500 text-sm mb-4">
                           <MapPin className="h-4 w-4 flex-shrink-0" />
-                          <span className="line-clamp-1">{project.location}</span>
+                          <span className="line-clamp-1">
+                            {project.location}
+                          </span>
                         </div>
 
                         {/* Stats */}
@@ -267,13 +301,17 @@ export default function ProjectsPage() {
                             <div className="text-lg font-bold text-gray-900">
                               {project.total_plots ?? "—"}
                             </div>
-                            <div className="text-xs text-gray-500">Total Plots</div>
+                            <div className="text-xs text-gray-500">
+                              Total Plots
+                            </div>
                           </div>
                           <div>
                             <div className="text-lg font-bold text-emerald-600">
                               {project.available_plots ?? "—"}
                             </div>
-                            <div className="text-xs text-gray-500">Available</div>
+                            <div className="text-xs text-gray-500">
+                              Available
+                            </div>
                           </div>
                           <div>
                             <div className="text-lg font-bold text-gray-900">
@@ -294,7 +332,10 @@ export default function ProjectsPage() {
                               }
                             </div>
                           </div> */}
-                          <Button size="sm" className="rounded-full bg-amber-500 hover:bg-amber-600 text-black font-bold">
+                          <Button
+                            size="sm"
+                            className="rounded-full bg-amber-500 hover:bg-amber-600 text-black font-bold"
+                          >
                             View Details
                             <ChevronRight className="ml-1 h-4 w-4" />
                           </Button>
@@ -316,10 +357,14 @@ export default function ProjectsPage() {
             Can't Find What You're Looking For?
           </h2>
           <p className="text-xl text-white/60 mb-10 max-w-2xl mx-auto">
-            Our team can help you find the perfect plot that matches your requirements and budget.
+            Our team can help you find the perfect plot that matches your
+            requirements and budget.
           </p>
           <Link href="/contact">
-            <Button size="lg" className="h-16 rounded-full bg-amber-500 hover:bg-amber-600 text-black px-10 text-lg font-bold">
+            <Button
+              size="lg"
+              className="h-16 rounded-full bg-amber-500 hover:bg-amber-600 text-black px-10 text-lg font-bold"
+            >
               Talk to Our Team
               <ChevronRight className="ml-2 h-5 w-5" />
             </Button>
