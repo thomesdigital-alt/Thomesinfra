@@ -98,7 +98,7 @@
   --chart-1: oklch(0.42 0.16 262);
   --chart-2: oklch(0.62 0.24 27);
   --chart-3: oklch(0.55 0.12 240);
-  --chart-4: oklch(0.70 0.15 262);
+  --chart-4: oklch(0.7 0.15 262);
   --chart-5: oklch(0.75 0.18 27);
 
   /* Sidebar */
@@ -115,7 +115,6 @@
 /* DARK MODE */
 
 .dark {
-
   --background: oklch(0.17 0.03 262);
   --foreground: oklch(0.97 0.01 262);
 
@@ -137,7 +136,7 @@
   --secondary-foreground: oklch(0.97 0.01 262);
 
   --muted: oklch(0.27 0.04 262);
-  --muted-foreground: oklch(0.70 0.03 262);
+  --muted-foreground: oklch(0.7 0.03 262);
 
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
@@ -147,8 +146,8 @@
 
   --chart-1: oklch(0.55 0.18 262);
   --chart-2: oklch(0.65 0.25 27);
-  --chart-3: oklch(0.60 0.15 240);
-  --chart-4: oklch(0.70 0.20 262);
+  --chart-3: oklch(0.6 0.15 240);
+  --chart-4: oklch(0.7 0.2 262);
   --chart-5: oklch(0.75 0.22 27);
 
   --sidebar: oklch(0.22 0.04 262);
@@ -164,7 +163,6 @@
 /* Base styles */
 
 @layer base {
-
   * {
     @apply border-border outline-ring/50;
   }
@@ -172,7 +170,6 @@
   body {
     @apply bg-background text-foreground;
   }
-
 }
 
 /* Animation */
@@ -208,11 +205,68 @@
     background: white;
     flex-direction: column;
     padding: 20px;
-    display: none;   /* 👈 hidden by default */
+    display: none; /* 👈 hidden by default */
     z-index: 999;
   }
 
   .nav-links.open {
-    display: flex;   /* 👈 show when clicked */
+    display: flex; /* 👈 show when clicked */
   }
+}
+@font-face {
+  font-family: "Montserrat";
+  src: url("/fonts/montserrat-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("/fonts/montserrat-medium.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("/fonts/montserrat-semibold.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("/fonts/montserrat-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+}
+.connectivity-wordmark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  line-height: 1;
+  gap: 0;
+}
+
+.connectivity-mark-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 0.85em;
+  width: 0.85em;
+  height: 1em;
+  margin: 0 0.02em;
+}
+
+.connectivity-mark {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
