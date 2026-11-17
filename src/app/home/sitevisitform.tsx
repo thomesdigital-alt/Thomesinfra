@@ -1,5 +1,5 @@
 "use client";
-
+import { sendEmail } from "@/lib/sendemail";
 import React from "react";
 
 interface SiteVisitFormProps {
@@ -90,6 +90,16 @@ Additional Message: ${formData.message || "Not provided"}
         throw new Error(result?.error || "Submission failed");
       }
 
+      // Show Thank You popup
+      setShowThankYou(true);
+      void sendEmail({
+        name: formData.name,
+        phone: formData.phone,
+        project: formData.project,
+        message: finalMessage,
+      }).catch((error) => {
+        console.error("Background email error:", error);
+      });
       // Clear all form fields
       setFormData({
         name: "",
@@ -101,9 +111,6 @@ Additional Message: ${formData.message || "Not provided"}
       });
 
       setAgreed(false);
-
-      // Show Thank You popup
-      setShowThankYou(true);
 
       onSubmit?.();
     } catch (err) {
